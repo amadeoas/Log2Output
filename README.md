@@ -7,11 +7,47 @@
 # Introduction
 A Spring Boot command line application.
 
-It reads specified log files and convert them into a formatted output file, e.g. [HTML](#html) or [XLSX](#xlsx).
+It reads specified log files and convert them into a formatted output file, e.g. [HTML](#html) or 
+[XLSX](#xlsx).
 
 Formats supported are
-- [HTML](#html)
+- [HTML](#html) by providing a [Freemarker](https://freemarker.apache.org/index.html) template, 
+default is htmlLogs.ftl
 - [XLSX](#xlsx)
+
+
+Each field is defined by starting character '{', to use the literal character in a log file escape 
+it like '\\\\{' (without the ') and the end character is '}', which if needed to be use as part of 
+the log lines then escape it, i.e. '\\\\{' (without the '). The general format is:
+
+```
+{<name>[, <type>[[, [p:<pattern>]][, [f:<format>]]|[<emun_name1>[,<enum_name>...]]]]}...
+```
+
+The '**type**' may be: **string**, **int**, **long**, **double**, **float**, **char**, **boolean**, 
+**datetime**, **date**, and **enum**. By 
+default it is 'string'.
+
+If the '**type**' is '**enum**' then the following values must be valid enumeration values/names. 
+Example:
+
+```
+{request, enum, REQUEST_RECEIVED, SENT_REQUEST, REQUEST_RESPONSE, SENT_RESPONSE}
+```
+
+Example of using format is:
+
+```
+{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}
+```
+and
+
+```
+{datetime, date, f:yyyyMMdd}
+```
+
+When a pattern is specified the loaded field from the log lines will be verified against the pattern
+and a FormatException thrown if verification fails.
 
 ---
 
@@ -82,7 +118,7 @@ Example:
 	dir
 		the template directory.
  [-template &lt;name&gt;]
-	Sets the template to create HTML, default "logsView.ftl".
+	Sets the template to create HTML, default "htmlLogs.ftl".
 
 	name
 		The name of the tool.

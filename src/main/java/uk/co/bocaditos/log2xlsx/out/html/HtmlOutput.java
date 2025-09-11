@@ -30,7 +30,7 @@ public class HtmlOutput implements LogOutput {
 	public static final String ARG_HTML_SIZE	= "htmlSize";
 
 	// Defaults
-	public static final String DEFAULT_TEMPLATE 	= "logsView.ftl";
+	public static final String DEFAULT_TEMPLATE 	= "htmlLogs.ftl";
 	public static final String DEFAULT_DIR4TEMPLATE = "/templates";
 	public static final String DEFAULT_ENCODING 	= "UTF-8";
 	public static final String DEFAULT_FREEMAKER_VERSION = "2.3.34";
