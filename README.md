@@ -221,12 +221,12 @@ Spring Boot (Command Line) application.
 ---
 
 # XLSX
-Example of HTML result from log lines can be seen at <a href="testOut_.xlsx">testOut.xlsx</a>.
+Example of HTML result from log lines can be seen at [testOut.xlsx](testOut_.xlsx).
 
 ---
 
 # HTML
-Example of HTML result from log lines can be seen at <a href="testOut_.html">testOut.html</a>.
+Example of HTML result from log lines can be seen at [testOut.html](testOut_.html).
 
 ---
 
