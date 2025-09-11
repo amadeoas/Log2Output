@@ -1,0 +1,33 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+Log2Xlsx.log
+docs/*.*
+app*.log
+testOut.xlsx
+testOut.html
+
+### Eclispe ###
+.classpath
+.project
+.settings
+bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/

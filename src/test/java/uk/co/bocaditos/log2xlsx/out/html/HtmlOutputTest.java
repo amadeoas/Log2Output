@@ -1,0 +1,88 @@
+package uk.co.bocaditos.log2xlsx.out.html;
+
+import static org.junit.Assert.assertThrows;
+
+import java.io.File;
+
+import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+
+import uk.co.bocaditos.log2xlsx.in.FormatsTest;
+import uk.co.bocaditos.log2xlsx.model.FieldsSet;
+import uk.co.bocaditos.log2xlsx.model.LogSet;
+import uk.co.bocaditos.log2xlsx.out.LogOutput;
+import uk.co.bocaditos.log2xlsx.out.OutException;
+import uk.co.bocaditos.log2xlsx.out.xlsx.XlsxOutput;
+import uk.co.bocaditos.utils.UtilsException;
+import uk.co.bocaditos.utils.cmd.CmdArgs;
+
+
+/**
+ * JUnit tests for class HtmlOutput.
+ */
+public class HtmlOutputTest {
+
+	@Test
+	public void test() throws UtilsException {
+		final LogSet set = FormatsTest.load();
+		final String[] args = {
+				CmdArgs.START + HtmlOutput.ARG_OUT,			 "testOut.html",
+				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE, "src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
+				// Table sizes
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Datetime", 	"190px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Computer", 	"120px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Class", 	"auto",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Id", 		"60px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Request", 	"auto",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Headers", 	"190px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Body", 		"450px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Message",	"200px",
+				CmdArgs.START + LogOutput.ARG_HEADERS_SORT,				"datetime,computer,class," 
+					+ "id,message,request,headers,body"
+		};
+		final HtmlOutput out = build(args);
+		final FieldsSet fields = FormatsTest.load(set);
+		final File file;
+		CmdArgs cdmArgs;
+		CmdArgs cdmArgs1;
+		CmdArgs cdmArgs2;
+
+		cdmArgs = new CmdArgs(args);
+		file = new File(cdmArgs.getArgument(XlsxOutput.ARG_OUT));
+		if (file.exists()) {
+			file.delete();
+		}
+		out.write(cdmArgs, fields);
+//		if (file.exists()) {
+//			file.delete();
+//		}
+
+		args[3] = "src/test/resources/formats.txt";
+		cdmArgs1 = new CmdArgs(args);
+		assertThrows(OutException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				out.write(cdmArgs1, fields);
+			}
+			
+		});
+		args[3] = "src/test/resources/.unable.lll";
+		cdmArgs2 = new CmdArgs(args);
+		assertThrows(OutException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				out.write(cdmArgs2, fields);
+			}
+			
+		});
+	}
+
+	private HtmlOutput build(final String... args) {
+		final HtmlOutput out = new HtmlOutput();
+
+		return out;
+	}
+
+} // end class HtmlOutputTest

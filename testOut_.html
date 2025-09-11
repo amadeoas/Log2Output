@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<style>
+			body {background-color: white;}
+			.headers {color: #0000ff; background-color: #b4b4b4; font-weight: bold;}
+			table {
+  				table-layout: auto;
+  				border: 0;
+  				border-collapse: collapse;
+			}
+			tr {
+				border-bottom: 1pt solid black;
+			}
+			tr:last-child {
+				border-bottom: 0;
+			}
+			td {
+				border-right: 1pt solid #CCCCCC;
+				min-width: 140px;
+			}
+			td:last-child {
+			 	border-right: 0;
+				min-width: 140px;
+			}
+			.menu {
+				float: right;
+				flex-direction: row;
+				min-width: 55px;
+			}
+			button {
+				float: right;
+				border-radius: 25%;
+				background-color: #b4b4b4;
+				color: white;
+				padding: 2px;
+				font-size: 16px;
+				border: none;
+				cursor: pointer;
+			}
+			button:disabled {
+				cursor: not-allowed;
+				pointer-events: all !important;
+				background-color: #CCCCCC;
+			}
+		</style>
+	</head>
+	<body>
+		<table id="logs">
+			<colgroup>
+				<col style="width:190px;">
+				<col style="width:120px;">
+				<col style="width:auto;">
+				<col style="width:60px;">
+				<col style="width:200px;">
+				<col style="width:auto;">
+				<col style="width:190px;">
+				<col style="width:450px;">
+			</colgroup>
+			<tbody>
+				<tr class="headers">
+					<td>Datetime <div id="menu-0" class="menu">
+						<button id="btn-0" title="Hide column" class="btn" onclick="showHideColumn(0, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-0" title="Descending order" class="btn" onclick="sortDown(0)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-0" title="Ascending order" class="btn" onclick="sortUp(0)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Computer <div id="menu-1" class="menu">
+						<button id="btn-1" title="Hide column" class="btn" onclick="showHideColumn(1, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-1" title="Descending order" class="btn" onclick="sortDown(1)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-1" title="Ascending order" class="btn" onclick="sortUp(1)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Class <div id="menu-2" class="menu">
+						<button id="btn-2" title="Hide column" class="btn" onclick="showHideColumn(2, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-2" title="Descending order" class="btn" onclick="sortDown(2)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-2" title="Ascending order" class="btn" onclick="sortUp(2)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Id <div id="menu-3" class="menu">
+						<button id="btn-3" title="Hide column" class="btn" onclick="showHideColumn(3, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-3" title="Descending order" class="btn" onclick="sortDown(3)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-3" title="Ascending order" class="btn" onclick="sortUp(3)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Message <div id="menu-4" class="menu">
+						<button id="btn-4" title="Hide column" class="btn" onclick="showHideColumn(4, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-4" title="Descending order" class="btn" onclick="sortDown(4)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-4" title="Ascending order" class="btn" onclick="sortUp(4)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Request <div id="menu-5" class="menu">
+						<button id="btn-5" title="Hide column" class="btn" onclick="showHideColumn(5, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-5" title="Descending order" class="btn" onclick="sortDown(5)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-5" title="Ascending order" class="btn" onclick="sortUp(5)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Headers <div id="menu-6" class="menu">
+						<button id="btn-6" title="Hide column" class="btn" onclick="showHideColumn(6, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-6" title="Descending order" class="btn" onclick="sortDown(6)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-6" title="Ascending order" class="btn" onclick="sortUp(6)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+					<td>Body <div id="menu-7" class="menu">
+						<button id="btn-7" title="Hide column" class="btn" onclick="showHideColumn(7, false)"><i class="fa fa-eye-slash"></i></button>
+						<button id="down-7" title="Descending order" class="btn" onclick="sortDown(7)"><i class="fa fa-caret-down"></i></button>
+						<button id="up-7" title="Ascending order" class="btn" onclick="sortUp(7)"><i class="fa fa-caret-up"></i></button>
+					</div></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.203</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td></td>
+					<td>REQUEST_RECEIVED</td>
+					<td>[{"context": "text/json"}]</td>
+					<td>{"id": "id-1", "name": "name-1", "type": "request", "data": {"value": "something"}}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Setting up...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Some processing</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Set up</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.206</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td></td>
+					<td>SENT_REQUEST</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-2", "name": "name-1", "type": "request"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.206</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Wating for "id-2" response...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td></td>
+					<td>SENT_RESPONSE</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-2", "name": "name-1", "type": "response"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Response "id-2" was received</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Building response...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.213</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td>Response built</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.213</td>
+					<td>app1</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-1</td>
+					<td></td>
+					<td>REQUEST_RESPONSE</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-1", "name": "name-2", "type": "response"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.203</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td></td>
+					<td>REQUEST_RECEIVED</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-2", "name": "name-1", "type": "request"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Setting up...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Some processing</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.204</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Set up</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.206</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td></td>
+					<td>SENT_REQUEST</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-3", "name": "name-2", "type": "request"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.206</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Wating for "id-2" response...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td></td>
+					<td>SENT_RESPONSE</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-3", "name": "name-2", "type": "response"}</td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Response "id-2" was received</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.212</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Building response...</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.213</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td>Response built</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>20241223 10:11:10.213</td>
+					<td>app2</td>
+					<td>uk.co.bocaditos.app1.Test1</td>
+					<td>id-2</td>
+					<td></td>
+					<td>REQUEST_RESPONSE</td>
+					<td>{"context": "text/json"}</td>
+					<td>{"id": "id-2", "name": "name-2", "type": "response"}</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<td colspan=8><p><button id="menu-main" title="Show all columns" class="btn" onclick="showAll()" disabled><i class="fa fa-eye"></i></button></p></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script>
+			function sortUp(colNum) {
+				sortTable(colNum, false);
+			}
+
+			function sortDown(colNum) {
+				sortTable(colNum, true);
+			}
+
+			function showHideColumn(colNum, show) {
+				const table = document.getElementById('logs')
+				const column = table.getElementsByTagName('col')[colNum]
+
+				if (column) {
+			    	column.style.visibility = show ? "" : "collapse";
+
+					let menu = document.getElementById('menu-' + colNum)
+
+					if (menu) {
+						menu.style.display = show ? "" : "none";
+			    	}
+
+					menu = document.getElementById('menu-main')
+					if (menu) {
+						menu.disabled = false;
+	    			}
+				}
+			}
+
+			function showAll() {
+				const table = document.getElementById('logs')
+				const columns = table.getElementsByTagName('col')
+				let colNum = -1;
+				let menu;
+
+				for (const column of columns) {		
+					if (column) {
+			    		column.style.visibility = "";
+
+			    		menu = document.getElementById('menu-' + ++colNum)
+						if (menu) {
+							menu.style.display = "";
+			    		}
+					}
+				}
+
+				menu = document.getElementById('menu-main')
+				if (menu) {
+					menu.disabled = true;
+	    		}
+			}
+
+			function sortTable(col, reverse) {
+				const table = document.getElementById('logs')
+				var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+
+        		tr = Array.prototype.slice.call(tb.rows, 1), // put rows into array
+		        	i;
+			    reverse = -((+reverse) || -1);
+    			tr = tr.sort(function (a, b) { // sort rows
+        			return reverse // `-1 *` if want opposite order
+            			* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+                		.	localeCompare(b.cells[col].textContent.trim())
+               		);
+    			});
+
+    			for (i = 0; i < tr.length; ++i) {
+    				tb.appendChild(tr[i]); // append each row in order
+    			}
+			}
+		</script>
+	</body>
+</html>
+
