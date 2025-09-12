@@ -28,7 +28,7 @@ public class HtmlOutput implements LogOutput {
 	public static final String ARG_DIR4TEMPLATE = "dir4template";
 	public static final String ARG_TEMPLATE 	= "template";
 	public static final String ARG_ENCODING 	= "encoding";
-	public static final String ARG_FREEMAKER_VERSION = "freemakerVersion";
+	public static final String ARG_FREEMARKER_VERSION = "freemarkerVersion";
 	public static final String ARG_HTML_DEFAULT_SIZE = "htmlDefaultSize";
 	public static final String ARG_HTML_SIZE	= "htmlSize";
 	public static final String ARG_HTML_MAX_CELL_LENGTH	= "maxCellLength";
@@ -37,7 +37,7 @@ public class HtmlOutput implements LogOutput {
 	public static final String DEFAULT_TEMPLATE 	= "htmlLogs.ftlh";
 	public static final String DEFAULT_DIR4TEMPLATE = "/templates";
 	public static final String DEFAULT_ENCODING 	= "UTF-8";
-	public static final String DEFAULT_FREEMAKER_VERSION = "2.3.34";
+	public static final String DEFAULT_FREEMARKER_VERSION = "2.3.34";
 	public static final String DEFAULT_HTML_SIZE	= "auto";
 	public static final int    DEFAULT_HTML_MAX_CELL_LENGTH = Integer.MAX_VALUE;
 
@@ -76,8 +76,8 @@ public class HtmlOutput implements LogOutput {
 				false, new CmdHelpArgParamDef("name", "the template to convert to HTML.", true));
 		new CmdHelpArgDef(ARG_ENCODING, "Sets the tool name, default \"" + DEFAULT_ENCODING + "\".", 
 				false, new CmdHelpArgParamDef("name", "The name of the tool.", true));
-		new CmdHelpArgDef(ARG_FREEMAKER_VERSION, "Sets the tool name, default \"" 
-				+ DEFAULT_FREEMAKER_VERSION + "\".", 
+		new CmdHelpArgDef(ARG_FREEMARKER_VERSION, "Sets the tool name, default \"" 
+				+ DEFAULT_FREEMARKER_VERSION + "\".", 
 				false, new CmdHelpArgParamDef("name", "The name of the tool.", true));
 		new CmdHelpArgDef(ARG_HTML_DEFAULT_SIZE, "Sets the table default column size, default \"" 
 				+ DEFAULT_HTML_SIZE + "\".", 
@@ -95,7 +95,7 @@ public class HtmlOutput implements LogOutput {
         final File dir4template = new File(args.getParam(ARG_DIR4TEMPLATE, DEFAULT_DIR4TEMPLATE));
 
         try {
-        	final String[] version = args.getParam(ARG_FREEMAKER_VERSION, DEFAULT_FREEMAKER_VERSION)
+        	final String[] version = args.getParam(ARG_FREEMARKER_VERSION, DEFAULT_FREEMARKER_VERSION)
         		.split("\\.");
 			// Create and adjust the configuration singleton
 	        final Configuration config = new Configuration(new Version(Integer.parseInt(version[0]),
