@@ -42,7 +42,8 @@ public class HtmlOutputTest {
 				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Body", 		"450px",
 				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Message",	"200px",
 				CmdArgs.START + LogOutput.ARG_HEADERS_SORT,				"datetime,computer,class," 
-					+ "id,message,request,headers,body"
+					+ "id,message,request,headers,body",
+				CmdArgs.START + HtmlOutput.ARG_HTML_MAX_CELL_LENGTH, "24"
 		};
 		final HtmlOutput out = build(args);
 		final FieldsSet fields = FormatsTest.load(set);
@@ -57,9 +58,9 @@ public class HtmlOutputTest {
 			file.delete();
 		}
 		out.write(cdmArgs, fields);
-		if (file.exists()) {
-			file.delete();
-		}
+//		if (file.exists()) {
+//			file.delete();
+//		}
 
 		args[9] = "src/test/resources/formats.txt";
 		cdmArgs1 = new CmdArgs(args);

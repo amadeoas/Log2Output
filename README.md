@@ -144,6 +144,14 @@ Example:
 
 	name
 		The name of the tool.
+ [-maxCellLength <max_length>]
+ 	Sets the maximum number of characters in a cell before truncating it and providing full text on 
+ 	clicking the cell text. Default value is 2147483647.
+
+	
+	max_length
+		The max. num. of characters in a cell.
+
  [-hBorderStyle &lt;style&gt;]
 	Header border style., default "THIN".
 

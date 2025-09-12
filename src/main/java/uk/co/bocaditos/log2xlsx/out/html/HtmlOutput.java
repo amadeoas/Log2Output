@@ -31,13 +31,15 @@ public class HtmlOutput implements LogOutput {
 	public static final String ARG_FREEMAKER_VERSION = "freemakerVersion";
 	public static final String ARG_HTML_DEFAULT_SIZE = "htmlDefaultSize";
 	public static final String ARG_HTML_SIZE	= "htmlSize";
+	public static final String ARG_HTML_MAX_CELL_LENGTH	= "maxCellLength";
 
 	// Defaults
-	public static final String DEFAULT_TEMPLATE 	= "htmlLogs.ftl";
+	public static final String DEFAULT_TEMPLATE 	= "htmlLogs.ftlh";
 	public static final String DEFAULT_DIR4TEMPLATE = "/templates";
 	public static final String DEFAULT_ENCODING 	= "UTF-8";
 	public static final String DEFAULT_FREEMAKER_VERSION = "2.3.34";
 	public static final String DEFAULT_HTML_SIZE	= "auto";
+	public static final int    DEFAULT_HTML_MAX_CELL_LENGTH = Integer.MAX_VALUE;
 
 
 	public void write(final CmdArgs cmdArgs, final FieldsSet set) throws UtilsException {
@@ -49,6 +51,7 @@ public class HtmlOutput implements LogOutput {
 		variables.put("set", set);
 		variables.put("headers", update(cmdArgs, LogOutput.sorted(cmdArgs, set)));
 		variables.put("info", info);
+		variables.put("maxCellLength", cmdArgs.getParam(ARG_HTML_MAX_CELL_LENGTH, DEFAULT_HTML_MAX_CELL_LENGTH));
 		try (final Writer writer = new FileWriter(filename)) {
 			final Template temp 
 					= config.getTemplate(cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE));
@@ -79,8 +82,13 @@ public class HtmlOutput implements LogOutput {
 		new CmdHelpArgDef(ARG_HTML_DEFAULT_SIZE, "Sets the table default column size, default \"" 
 				+ DEFAULT_HTML_SIZE + "\".", 
 				false, new CmdHelpArgParamDef("size", "A size, e.g. 150px.", true));
-		new CmdHelpArgDef(ARG_HTML_SIZE, "<name> Sets the table column size.", 
+		new CmdHelpArgDef(ARG_HTML_SIZE, "Sets the table column size.", 
 				false, new CmdHelpArgParamDef("size", "A size, e.g. 150px.", true));
+		new CmdHelpArgDef(ARG_HTML_MAX_CELL_LENGTH, "Sets the maximum number of characters in a " 
+				+ "cell before truncating it and providing full text on clicking the cell text."
+				+ "Default value is " + DEFAULT_HTML_MAX_CELL_LENGTH, 
+				false, 
+				new CmdHelpArgParamDef("max_length", "The max. num, of characters in a cell.", true));
 	}
 
 	private Configuration config(final CmdArgs args) throws CmdException, OutException {

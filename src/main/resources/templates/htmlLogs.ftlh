@@ -94,6 +94,10 @@
 				height: 100%;
 				padding: 0;
 			}
+
+			.cellView {
+				cursor: pointer;
+			}
 		</style>
 	</head>
 	<body>
@@ -125,10 +129,9 @@
 		</div>
 
 		<script>
+			const infoTxt = buildInfo();
 			const infoView = document.getElementById("info");
 			const infoTextArea = document.getElementById("json");
-
-			updateInfo();
 
 			function sortUp(colNum) {
 				sortTable(colNum, false);
@@ -200,19 +203,23 @@
     			}
 			}
 
-			function showInfo() {
+			function showValue(value) {
+				infoTextArea.value = value;
 				infoView.style.display = "block";
+			}
+
+			function showInfo() {
+				showValue(infoTxt);
 			}
 
 			function hideInfo() {
 				infoView.style.display = "none";
 			}
 
-			function updateInfo() {
-				let value = ${JSON.writeValueAsString(info)};
-				let json = JSON.stringify(value, null, 4);
+			function buildInfo() {
+				let value = ${JSON.writeValueAsString(info)?no_esc};
 
-				infoTextArea.value = json;
+				return JSON.stringify(value, null, 4);
 			}
 		</script>
 	</body>
@@ -232,7 +239,7 @@
 		<#assign notFound = true />
 		<#list line as field>
 			<#if header.id == field.fieldName>
-					<td>${field.formatedValue}</td>
+					<td><@showValue value=field.formatedValue /></td>
 				<#assign notFound = false />
 				<#break />
 			</#if>
@@ -260,4 +267,10 @@
 					</div></td>
 	</#list>
 				</tr>
+</#macro>
+
+<#macro showValue value>
+	<#if value?length <= maxCellLength>${value}<#else>
+<div class="cellView" onclick="showValue('${value}')">${value?substring(0, maxCellLength)}...</div>
+	</#if>
 </#macro>
