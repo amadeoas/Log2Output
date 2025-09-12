@@ -7,6 +7,7 @@ import java.io.File;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
+import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
@@ -26,6 +27,9 @@ public class HtmlOutputTest {
 	public void test() throws UtilsException {
 		final LogSet set = FormatsTest.load();
 		final String[] args = {
+				CmdArgs.START + Application.ARG_FORMATS,	 "src/test/resources/formats.txt",
+				CmdArgs.START + Application.ARG_ID_FIELD_NAME, "id",
+				CmdArgs.START + Application.ARG_LOGS, 		 "xxx.log",
 				CmdArgs.START + HtmlOutput.ARG_OUT,			 "testOut.html",
 				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE, "src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
 				// Table sizes
@@ -57,7 +61,7 @@ public class HtmlOutputTest {
 //			file.delete();
 //		}
 
-		args[3] = "src/test/resources/formats.txt";
+		args[9] = "src/test/resources/formats.txt";
 		cdmArgs1 = new CmdArgs(args);
 		assertThrows(OutException.class, new ThrowingRunnable() {
 
@@ -67,7 +71,7 @@ public class HtmlOutputTest {
 			}
 			
 		});
-		args[3] = "src/test/resources/.unable.lll";
+		args[9] = "src/test/resources/.unable.lll";
 		cdmArgs2 = new CmdArgs(args);
 		assertThrows(OutException.class, new ThrowingRunnable() {
 

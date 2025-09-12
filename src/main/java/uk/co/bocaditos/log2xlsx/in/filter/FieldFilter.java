@@ -22,7 +22,7 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public abstract class FieldFilter<T> implements Filter {
 
-	private static final String ARG_FILTER_FIELD_NAME = "filter";
+	public static final String ARG_FILTER_FIELD_NAME = "filter";
 
 	private static final String MSG_TOO_MANY_ARGS = "Too many values for CMD Line arguments \"{0}\"";
 

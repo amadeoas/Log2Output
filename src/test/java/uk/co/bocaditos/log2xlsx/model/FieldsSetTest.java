@@ -43,7 +43,7 @@ public class FieldsSetTest {
 				assertEquals("", fileSet.toString());
 				assertFalse(fileSet.equals((FieldsSet) null));
 				assertFalse(fileSet.equals(""));
-				fileSet.load((String[]) null);
+				fileSet.load(null, (String[]) null);
 			}
 
 		});

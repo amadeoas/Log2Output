@@ -128,7 +128,7 @@ public class FormatsTest {
 
 			@Override
 			public void run() throws Throwable {
-				Formats.process(null, set, (String[]) null);
+				Formats.process(null, null, set, (String[]) null);
 			}
 			
 		});
@@ -144,7 +144,7 @@ public class FormatsTest {
 
 	public static FieldsSet load(final String idFieldName, final LogSet set) 
 			throws FormatException {
-		return Formats.process(idFieldName, set, 
+		return Formats.process(null, idFieldName, set, 
 				"src/test/resources/logs/app1.log", "src/test/resources/logs/app2.log");
 	}
 

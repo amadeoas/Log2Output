@@ -31,6 +31,7 @@
 			}
 			button {
 				float: right;
+				margin: 2px;
 				border-radius: 25%;
 				background-color: #b4b4b4;
 				color: white;
@@ -44,6 +45,55 @@
 				pointer-events: all !important;
 				background-color: #CCCCCC;
 			}
+
+			/* The Modal (background) */
+			.modal {
+				display: none; /* Hidden by default */
+				position: fixed; /* Stay in place */
+				z-index: 1; /* Sit on top */
+				padding-top: 100px; /* Location of the box */
+				left: 0;
+				top: 0;
+				width: 100%; /* Full width */
+				height: 100%; /* Full height */
+				overflow: auto; /* Enable scroll if needed */
+				background-color: rgb(0,0,0);
+				background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+			}
+			
+			.modal-header {
+				background-color: #fefefe;
+				margin: auto;
+				padding-right: 10px;
+				padding-left: 10px;
+    			width: 650px;
+    			height: 28px;
+			}
+
+			/* Modal Content */
+			.modal-content {
+				background-color: #fefefe;
+				margin: auto;
+				padding: 10px;
+				border: 1px solid #888;
+				width: 650px;
+				height: 50%;
+			}
+			
+			.modal-footer {
+				background-color: #fefefe;
+				margin: auto;
+				padding-right: 10px;
+				padding-left: 10px;
+    			width: 650px;
+    			height: 28px;
+			}
+
+			.prettyprint {
+				width: 100%;
+				height: 100%;
+				padding: 0;
+			}
 		</style>
 	</head>
 	<body>
@@ -55,13 +105,31 @@
 			</tbody>
 			<tbody>
 				<tr>
-					<td colspan=${headers?size}><p><button id="menu-main" title="Show all columns" class="btn" onclick="showAll()" disabled><i class="fa fa-eye"></i></button></p></td>
+					<td colspan=${headers?size}><div class="menu">
+						<button id="menu-info" title="Show information" class="btn" onclick="showInfo()"><i class="fa fa-info"></i></button>
+						<button id="menu-main" title="Show all columns" class="btn" onclick="showAll()" disabled><i class="fa fa-eye"></i></button>
+					</div></td>
 				</tr>
 			</tbody>
 		</table>
 		</#list>
+		<div id="info" class="modal">
+			<div class="modal-header"><button id="info-close-top" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
+
+  			<!-- Modal content -->
+ 			<div class="modal-content">
+ 				<textarea id="json" class="prettyprint">${info}</textarea>
+ 			</div>
+
+ 			<div class="modal-footer"><button id="info-close-bottom" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
+		</div>
 
 		<script>
+			const infoView = document.getElementById("info");
+			const infoTextArea = document.getElementById("json");
+
+			updateInfo();
+
 			function sortUp(colNum) {
 				sortTable(colNum, false);
 			}
@@ -130,6 +198,21 @@
     			for (i = 0; i < tr.length; ++i) {
     				tb.appendChild(tr[i]); // append each row in order
     			}
+			}
+
+			function showInfo() {
+				infoView.style.display = "block";
+			}
+
+			function hideInfo() {
+				infoView.style.display = "none";
+			}
+
+			function updateInfo() {
+				let value = ${JSON.writeValueAsString(info)};
+				let json = JSON.stringify(value, null, 4);
+
+				infoTextArea.value = json;
 			}
 		</script>
 	</body>

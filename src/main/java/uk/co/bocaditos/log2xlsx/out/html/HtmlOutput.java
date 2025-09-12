@@ -3,6 +3,9 @@ package uk.co.bocaditos.log2xlsx.out.html;
 import freemarker.template.*;
 
 import java.util.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 
 import uk.co.bocaditos.log2xlsx.model.FieldNames;
@@ -41,9 +44,11 @@ public class HtmlOutput implements LogOutput {
 		final Configuration config = config(cmdArgs);
 		final Map<String, Object> variables = new HashMap<>();
 		final String filename = cmdArgs.getArgument(ARG_OUT);
+		final Info info = new Info(cmdArgs);
 
 		variables.put("set", set);
 		variables.put("headers", update(cmdArgs, LogOutput.sorted(cmdArgs, set)));
+		variables.put("info", info);
 		try (final Writer writer = new FileWriter(filename)) {
 			final Template temp 
 					= config.getTemplate(cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE));
@@ -96,6 +101,12 @@ public class HtmlOutput implements LogOutput {
 	        if (!dir4template.isDirectory()) {
 	        	throw new OutException("Provided directory for template \"{0}\" is not a directory", 
 	        			dir4template.getPath());
+	        }
+
+	        try {
+	        	config.setSharedVariable("JSON", config.getObjectWrapper().wrap(new ObjectMapper()));
+	        } catch (TemplateModelException tme) {
+	        	throw new OutException(tme, "Failed to configure freemrker");
 	        }
 			config.setDirectoryForTemplateLoading(dir4template);
 	        config.setDefaultEncoding(DEFAULT_ENCODING);
