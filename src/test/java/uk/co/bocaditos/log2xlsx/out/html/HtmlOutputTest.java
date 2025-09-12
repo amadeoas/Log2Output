@@ -57,9 +57,9 @@ public class HtmlOutputTest {
 			file.delete();
 		}
 		out.write(cdmArgs, fields);
-//		if (file.exists()) {
-//			file.delete();
-//		}
+		if (file.exists()) {
+			file.delete();
+		}
 
 		args[9] = "src/test/resources/formats.txt";
 		cdmArgs1 = new CmdArgs(args);
