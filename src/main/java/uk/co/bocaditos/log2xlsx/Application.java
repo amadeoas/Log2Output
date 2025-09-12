@@ -15,6 +15,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import uk.co.bocaditos.log2xlsx.in.Formats;
+import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
+import uk.co.bocaditos.log2xlsx.in.filter.Filter;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
@@ -149,7 +151,10 @@ public class Application implements CommandLineRunner {
     			}
     		}
     	}
-    	fieldsSet.load(logFileNames);
+
+    	final Filter filter = FieldFilter.build(cmdArgs, set);
+
+    	fieldsSet.load(filter, logFileNames);
 
     	return fieldsSet;
 	}

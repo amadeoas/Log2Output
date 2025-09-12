@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
+import uk.co.bocaditos.log2xlsx.in.filter.Filter;
 import uk.co.bocaditos.utils.Utils;
 import uk.co.bocaditos.utils.model.BaseModel;
 import uk.co.bocaditos.utils.model.BaseModelInterface;
@@ -69,10 +71,16 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 	/**
 	 * Updates from log lines in specified file.
 	 * 
+	 * @param filter a filter, may be null.
 	 * @param logFilenames a list of log files.
 	 * @throws FormatException when .
 	 */
-	public void load(final String... logFilenames) throws FormatException {
+	public void load(Filter filter, final String... logFilenames) 
+			throws FormatException {
+		if (filter == null) {
+			filter = FieldFilter.build();
+		}
+
 		if (Utils.isEmpty(logFilenames)) {
 			throw new FormatException("Missing the log files");
 		}
@@ -85,7 +93,11 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 				String line;
 	
 				while ((line = in.readLine()) != null) {
-					add(this.set.process(line));
+					final FieldsLine f = this.set.process(line);
+
+					if (filter.valid(f)) {
+						add(f);
+					}
 					++lineNum;
 				}
 			} catch (final FormatException fe) {

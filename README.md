@@ -52,7 +52,7 @@ and a FormatException thrown if verification fails.
 ---
 
 # Usage
-java \-jar Log2Xlsx-1.0.000.jar \-formats &lt;filename&gt; \-idFieldName &lt;idFieldName&gt; \-logs &lt;filenames&gt; \-out &lt;filename&gt; \\[\-sort &lt;field names&gt;\] \[\-appName &lt;name&gt;\] \[\-workSheetVersion &lt;version&gt;\] \[\-workSheetName &lt;name&gt;\] \[\-hBorderStyle &lt;style&gt;\] \[\-hFontName &lt;size&gt;\] \[-hFontSize &lt;size&gt;\] \[-hFontColour &lt;colour&gt;\] \[\-hFontWrapTxt &lt;wrap&gt;\] \[\-hFontFillColuor &lt;colour&gt;\] \[\-hFontBold &lt;isBold&gt;\] \[\-borderStyle &lt;style&gt;\] \[\-fontName &lt;size&gt;\] \[\-fontSize &lt;size&gt;\] \[\-fontColour &lt;colour&gt;\] \[-fontWrapTxt &lt;wrap&gt;\] \[\-fontFillColuor &lt;colour&gt;\] \[\-fontBold &lt;isBold&gt;\] \[-dir4template &lt;dir&gt;\] \[-template &lt;name&gt;\] \[\-encoding &lt;name&gt;\] \[\-freemakerVersion &lt;name&gt;\] \[\-htmlDefaultSize &lt;size&gt;\] \[\-htmlSize &lt;size&gt;\]
+java \-jar Log2Xlsx-1.0.000.jar \-formats &lt;filename&gt; \-idFieldName &lt;idFieldName&gt; \-logs &lt;filenames&gt; \-out &lt;filename&gt; \[-format <fieldname> <value/from> [<to>]\] \[\-sort &lt;field names&gt;\] \[\-appName &lt;name&gt;\] \[\-workSheetVersion &lt;version&gt;\] \[\-workSheetName &lt;name&gt;\] \[\-hBorderStyle &lt;style&gt;\] \[\-hFontName &lt;size&gt;\] \[-hFontSize &lt;size&gt;\] \[-hFontColour &lt;colour&gt;\] \[\-hFontWrapTxt &lt;wrap&gt;\] \[\-hFontFillColuor &lt;colour&gt;\] \[\-hFontBold &lt;isBold&gt;\] \[\-borderStyle &lt;style&gt;\] \[\-fontName &lt;size&gt;\] \[\-fontSize &lt;size&gt;\] \[\-fontColour &lt;colour&gt;\] \[-fontWrapTxt &lt;wrap&gt;\] \[\-fontFillColuor &lt;colour&gt;\] \[\-fontBold &lt;isBold&gt;\] \[-dir4template &lt;dir&gt;\] \[-template &lt;name&gt;\] \[\-encoding &lt;name&gt;\] \[\-freemakerVersion &lt;name&gt;\] \[\-htmlDefaultSize &lt;size&gt;\] \[\-htmlSize &lt;size&gt;\]
 
 <br>
  -formats &lt;filename&gt;
@@ -85,6 +85,18 @@ Example:
 
 	filename
 		A filename for the output.
+
+ [-filter &lt;field_name&gt; &lt;value/from&gt; [&lt;to&gt;]]
+ 	Sets the filter of the log lines to consider.
+
+	field_name
+		The name of the field to filter against.
+		
+	value/from
+		The value to equal to the field or is bigger or equal to.
+	to
+		The value to be smaller or equal to.
+
  [-sort &lt;field_names&gt;]
 	Sets the order of the columns based on the fields names separated by comma. The 
 	field names not present will not be part of the output.

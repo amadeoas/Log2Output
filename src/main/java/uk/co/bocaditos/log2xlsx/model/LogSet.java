@@ -51,6 +51,22 @@ public class LogSet extends LogEntry {
 		loadNexts_(offset, line, id);
 	}
 
+	@Override
+	public final LogField getField(final String fieldName) {
+		if (Utils.isEmpty(fieldName)) {
+			return null;
+		}
+
+		for (LogEntry entry : getNexts()) {
+			entry = entry.getField(fieldName);
+			if (entry != null) {
+				return (LogField) entry;
+			}
+		}
+
+		return null;
+	}
+
 	public FieldNames getFieldNames() {
 		if (this.fieldNames == null) {
 			synchronized (LogSet.class) {

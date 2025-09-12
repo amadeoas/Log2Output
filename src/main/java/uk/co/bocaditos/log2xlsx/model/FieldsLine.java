@@ -26,6 +26,10 @@ public class FieldsLine extends ArrayList<Field> implements BaseModelInterface<F
 		return (field == null) ? null : field.getValue();
 	}
 
+	public final Object get(final LogField field) {
+		return get(field.getHeaderName());
+	}
+
 	@Override
 	public boolean equalsIt(final FieldsLine obj) {
 		return Objects.equals((ArrayList<Field>) this, (ArrayList<Field>) obj);

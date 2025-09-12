@@ -192,7 +192,23 @@ public class LogField extends LogEntry {
 		return buf;
 	}
 
-	Object build(final String value) throws FormatException {
+	@Override
+	LogField getField(final String fieldName) {
+		if (getId().equals(fieldName)) {
+			return this;
+		}
+
+		for (LogEntry entry : getNexts()) {
+			entry = entry.getField(fieldName);
+			if (entry != null) {
+				return (LogField) entry;
+			}
+		}
+
+		return null;
+	}
+
+	public Object build(final String value) throws FormatException {
 		validate(value);
 		if (getFieldClass() == String.class) {
 			return value;

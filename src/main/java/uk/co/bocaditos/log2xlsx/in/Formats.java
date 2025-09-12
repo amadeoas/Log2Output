@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import uk.co.bocaditos.log2xlsx.in.filter.Filter;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
@@ -20,7 +21,7 @@ public abstract class Formats {
 	private Formats() {
 	}
 
-	public static FieldsSet process(final String idFieldName, final LogSet set, 
+	public static FieldsSet process(final Filter filter, final String idFieldName, final LogSet set, 
 			final String... filenames) throws FormatException {
 		if (Utils.isEmpty(filenames)) {
 			throw new FormatException("Missing log files");
@@ -29,7 +30,7 @@ public abstract class Formats {
 		final FieldsSet fields = new FieldsSet(set, idFieldName);
 
 		for (final String filename : filenames) {
-			fields.load(filename);
+			fields.load(filter, filename);
 		}
 
 		return fields;

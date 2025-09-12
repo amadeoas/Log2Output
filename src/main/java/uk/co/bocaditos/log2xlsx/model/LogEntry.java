@@ -52,10 +52,6 @@ public class LogEntry implements Comparable<LogEntry> {
 		return false;
 	}
 
-	protected List<LogEntry> getNexts() {
-		return this.nexts;
-	}
-
 	public void setNexts(final List<LogEntry> nexts) {
 		this.nexts = nexts;
 	}
@@ -83,6 +79,21 @@ public class LogEntry implements Comparable<LogEntry> {
 		}
 
 		return buf;
+	}
+
+	LogField getField(final String fieldName) {
+		for (LogEntry entry : getNexts()) {
+			entry = entry.getField(fieldName);
+			if (entry != null) {
+				return (LogField) entry;
+			}
+		}
+
+		return null;
+	}
+
+	protected List<LogEntry> getNexts() {
+		return this.nexts;
 	}
 
 	protected boolean loadNexts(int offset, final String line) throws FormatException {
