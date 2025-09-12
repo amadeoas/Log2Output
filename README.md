@@ -56,7 +56,7 @@ java \-jar Log2Xlsx-1.0.000.jar \-[formats](#formats) &lt;filename&gt; \-[idFiel
 
 <br>
 <a name="formats"></a>
- -formats &lt;filename&gt;
+ -<b>formats</b> &lt;filename&gt;
 	Sets the log formats to use.
 
 	filename
@@ -71,26 +71,26 @@ Example:
 ```
 
 <a name="idFieldName"></a>
- -idFieldName &lt;idFieldName&gt;
+ -<b>idFieldName</b> &lt;idFieldName&gt;
 	Sets the field name to use as ID for groups.
 
 	idFieldName
 		The name of the field used as ID for groups.
 <a name="logs"></a>
- -logs &lt;filenames&gt;
+ -<b>logs</b> &lt;filenames&gt;
 	Sets the files or directory with the log lines.
 
 	filenames
 		If a directory just one without '.' where all files ended with .log will be used
 	 other wise will be considered a comma separated list of log filed.
 <a name="out"></a>
- -out &lt;filename&gt;
+ -<b>out</b> &lt;filename&gt;
 	Sets the output file name.
 
 	filename
 		A filename for the output.
 <a name="filter"></a>
- [-filter &lt;field_name&gt; &lt;value/from&gt; [&lt;to&gt;]]
+ [-<b>filter</b> &lt;field_name&gt; &lt;value/from&gt; [&lt;to&gt;]]
  	Sets the filter of the log lines to consider.
 
 	field_name
@@ -101,7 +101,7 @@ Example:
 	to
 		The value to be smaller or equal to.
 <a name="sort"></a>
- [-sort &lt;field_names&gt;]
+ [-<b>sort</b> &lt;field_names&gt;]
 	Sets the order of the columns based on the fields names separated by comma. The 
 	field names not present will not be part of the output.
 
@@ -111,19 +111,19 @@ Example:
 [XLSX](#xlsx)<br>
 
 <a name="appName"></a>
- [-appName &lt;name&gt;]
+ [-<b>appName</b> &lt;name&gt;]
 	Sets the tool name, default "Log2Xlsx".
 
 	name
 		The name of the tool.
 <a name="workSheetVersion"></a>
- [-workSheetVersion &lt;version&gt;]
+ [-<b>workSheetVersion</b> &lt;version&gt;]
 	Sets the work sheet version, default "1.0".
 
 	version
 		The worksheet version.
 <a name="workSheetName"></a>
- [-workSheetName &lt;name&gt;]
+ [-<b>workSheetName</b> &lt;name&gt;]
 	Sets the worksheet name "Sheet 1".
 
 	name
@@ -132,128 +132,128 @@ Example:
 [HTML](#html)<br>
 
 <a name="dir4template"></a>
- [-dir4template &lt;dir&gt;]
+ [-<b>dir4template</b> &lt;dir&gt;]
 	Sets the template directory, default "/templates".
 
 	dir
 		the template directory.
 <a name="template"></a>
- [-template &lt;name&gt;]
+ [-<b>template</b> &lt;name&gt;]
 	Sets the template to create HTML, default "htmlLogs.ftl".
 
 	name
 		The name of the tool.
 <a name="encoding"></a>
- [-encoding &lt;name&gt;]
+ [-<b>encoding</b> &lt;name&gt;]
 	Sets the tool name, default "UTF-8".
 
 	name
 		The name of the tool.
 <a name="freemarkerVersion"></a>
- [-freemarkerVersion &lt;name&gt;]
+ [-<b>freemarkerVersion</b> &lt;name&gt;]
 	Sets the tool name, default "2.3.34".
 
 	name
 		The name of the tool.
 <a name="maxCellLength"></a>
- [-maxCellLength &lt;max_length&gt;]
+ [-<b>maxCellLength</b> &lt;max_length&gt;]
  	Sets the maximum number of characters in a cell before truncating it and providing full text on 
  	clicking the cell text. Default value is 2147483647.
 
 	max_length
 		The max. num. of characters in a cell.
 <a name="hBorderStyle"></a>
- [-hBorderStyle &lt;style&gt;]
+ [-<b>hBorderStyle</b> &lt;style&gt;]
 	Header border style., default "THIN".
 
 	style
 		The border style.
 <a name="hFontName"></a>
- [-hFontName &lt;size&gt;]
+ [-<b>hFontName</b> &lt;size&gt;]
 	Sets the header font name "Arial".
 
 	size
 		A size in pixels.
 <a name="hFontSize"></a>
- [-hFontSize &lt;size&gt;]
+ [-<b>hFontSize</b> &lt;size&gt;]
 	Sets the header font size "12".
 
 	size
 		a size in pixels.
 <a name="hFontColour"></a>
- [-hFontColour &lt;colour&gt;]
+ [-<b>hFontColour</b> &lt;colour&gt;]
 	Sets the header font colour, default "#000000".
 
 	colour
 		a colour in hexadecimal, e.g. C1CDCD.
 <a name="hFontWrapTxt"></a>
- [-hFontWrapTxt &lt;wrap&gt;]
+ [-<b>hFontWrapTxt</b> &lt;wrap&gt;]
 	Sets the header fount text wrapping, default "false".
 
 	wrap
 		true to wrap the text.
 <a name="hFontFillColuor"></a>
- [-hFontFillColuor &lt;colour&gt;]
+ [-<b>hFontFillColuor</b> &lt;colour&gt;]
 	Sets the headers font filling colour, default "#C1CDCD".
 
 	colour
 		filling colour.
 <a name="hFontBold"></a>
- [-hFontBold &lt;isBold&gt;]
+ [-<b>hFontBold</b> &lt;isBold&gt;]
 	Sets the headers font to bold.
 
 	isBold
 		true if the headers must be in bold font.
 <a name="borderStyle"></a>
- [-borderStyle &lt;style&gt;]
+ [-<b>borderStyle</b> &lt;style&gt;]
 	Header border style, default "THIN".
 
 	style
 		The border style.
 <a name="fontName"></a>
- [-fontName &lt;size&gt;]
+ [-<b>fontName</b> &lt;size&gt;]
 	Sets the header font name "Arial".
 
 	size
 		A size in pixels.
 <a name="fontSize"></a>
- [-fontSize &lt;size&gt;]
+ [-<b>fontSize</b> &lt;size&gt;]
 	Sets the header font size "12".
 
 	size
 		a size in pixels.
 <a name="fontColour"></a>
- [-fontColour &lt;colour&gt;\]
+ [-<b>fontColour</b> &lt;colour&gt;\]
 	Sets the header font colour, default "#000000".
 
 	colour
 		a colour in hexadecimal, e.g. C1CDCD.
 <a name="fontWrapTxt"></a>
- [-fontWrapTxt &lt;wrap&gt;]
+ [-<b>fontWrapTxt</b> &lt;wrap&gt;]
 	Sets the header fount text wrapping, default "false".
 
 	wrap
 		true to wrap the text.
 <a name="fontFillColuor"></a>
- [-fontFillColuor &lt;colour&gt;]
+ [-<b>fontFillColuor</b> &lt;colour&gt;]
 	Sets the font filling colour, default "#FFFFFF".
 
 	colour
 		filling colour.
 <a name="fontBold"></a>
- [-fontBold &lt;isBold&gt;]
+ [-<b>fontBold</b> &lt;isBold&gt;]
 	Sets the rows font to bold.
 
 	isBold
 		true if the rows must be in bold font.
 <a name="htmlDefaultSize"></a>
- [-htmlDefaultSize &lt;size&gt;]
+ [-<b>htmlDefaultSize</b> &lt;size&gt;]
 	Sets the table default column size, default "auto".
 
 	size
 		A size, e.g. 150px.
 <a name="htmlSize"></a>
- [-htmlSize &lt;size&gt;]
+ [-<b>htmlSize</b> &lt;size&gt;]
 	&lt;name&gt; Sets the table column size.
 
 	size
