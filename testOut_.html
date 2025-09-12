@@ -94,6 +94,10 @@
 				height: 100%;
 				padding: 0;
 			}
+
+			.cellView {
+				cursor: pointer;
+			}
 		</style>
 	</head>
 	<body>
@@ -152,224 +156,294 @@
 					</div></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.203</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
+					<td>	20241223 10:11:10.203</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
 					<td></td>
-					<td>REQUEST_RECEIVED</td>
-					<td>[{"context": "text/json"}]</td>
-					<td>{"id": "id-1", "name": "name-1", "type": "request", "data": {"value": "something"}}</td>
+					<td>	REQUEST_RECEIVED</td>
+					<td>	
+<div class="cellView" onclick="showValue('[{&quot;context&quot;: &quot;text/json&quot;}]')">[{&quot;context&quot;: &quot;text/json&quot;...</div>
+</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-1&quot;, &quot;name&quot;: &quot;name-1&quot;, &quot;type&quot;: &quot;request&quot;, &quot;data&quot;: {&quot;value&quot;: &quot;something&quot;}}')">{&quot;id&quot;: &quot;id-1&quot;, &quot;name&quot;: &quot;...</div>
+</td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Setting up...</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Some processing</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Set up</td>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	Setting up...</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.206</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td></td>
-					<td>SENT_REQUEST</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-2", "name": "name-1", "type": "request"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.206</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Wating for "id-2" response...</td>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	Some processing</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td></td>
-					<td>SENT_RESPONSE</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-2", "name": "name-1", "type": "response"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Response "id-2" was received</td>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	Set up</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Building response...</td>
+					<td>	20241223 10:11:10.206</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td></td>
+					<td>	SENT_REQUEST</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;name-1&quot;, &quot;type&quot;: &quot;request&quot;}')">{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.206</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	
+<div class="cellView" onclick="showValue('Wating for &quot;id-2&quot; response...')">Wating for &quot;id-2&quot; respon...</div>
+</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.213</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td>Response built</td>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td></td>
+					<td>	SENT_RESPONSE</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;name-1&quot;, &quot;type&quot;: &quot;response&quot;}')">{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	
+<div class="cellView" onclick="showValue('Response &quot;id-2&quot; was received')">Response &quot;id-2&quot; was rece...</div>
+</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.213</td>
-					<td>app1</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-1</td>
-					<td></td>
-					<td>REQUEST_RESPONSE</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-1", "name": "name-2", "type": "response"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.203</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td></td>
-					<td>REQUEST_RECEIVED</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-2", "name": "name-1", "type": "request"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Setting up...</td>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	Building response...</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Some processing</td>
+					<td>	20241223 10:11:10.213</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td>	Response built</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.204</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Set up</td>
+					<td>	20241223 10:11:10.213</td>
+					<td>	app1</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-1</td>
+					<td></td>
+					<td>	REQUEST_RESPONSE</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-1&quot;, &quot;name&quot;: &quot;name-2&quot;, &quot;type&quot;: &quot;response&quot;}')">{&quot;id&quot;: &quot;id-1&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.203</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td></td>
+					<td>	REQUEST_RECEIVED</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;name-1&quot;, &quot;type&quot;: &quot;request&quot;}')">{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	Setting up...</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.206</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td></td>
-					<td>SENT_REQUEST</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-3", "name": "name-2", "type": "request"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.206</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Wating for "id-2" response...</td>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	Some processing</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td></td>
-					<td>SENT_RESPONSE</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-3", "name": "name-2", "type": "response"}</td>
-				</tr>
-				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Response "id-2" was received</td>
+					<td>	20241223 10:11:10.204</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	Set up</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.212</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Building response...</td>
+					<td>	20241223 10:11:10.206</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td></td>
+					<td>	SENT_REQUEST</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-3&quot;, &quot;name&quot;: &quot;name-2&quot;, &quot;type&quot;: &quot;request&quot;}')">{&quot;id&quot;: &quot;id-3&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.206</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	
+<div class="cellView" onclick="showValue('Wating for &quot;id-2&quot; response...')">Wating for &quot;id-2&quot; respon...</div>
+</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.213</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
-					<td>Response built</td>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td></td>
+					<td>	SENT_RESPONSE</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-3&quot;, &quot;name&quot;: &quot;name-2&quot;, &quot;type&quot;: &quot;response&quot;}')">{&quot;id&quot;: &quot;id-3&quot;, &quot;name&quot;: &quot;...</div>
+</td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	
+<div class="cellView" onclick="showValue('Response &quot;id-2&quot; was received')">Response &quot;id-2&quot; was rece...</div>
+</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td>20241223 10:11:10.213</td>
-					<td>app2</td>
-					<td>uk.co.bocaditos.app1.Test1</td>
-					<td>id-2</td>
+					<td>	20241223 10:11:10.212</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	Building response...</td>
 					<td></td>
-					<td>REQUEST_RESPONSE</td>
-					<td>{"context": "text/json"}</td>
-					<td>{"id": "id-2", "name": "name-2", "type": "response"}</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.213</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td>	Response built</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>	20241223 10:11:10.213</td>
+					<td>	app2</td>
+					<td>	
+<div class="cellView" onclick="showValue('uk.co.bocaditos.app1.Test1')">uk.co.bocaditos.app1.Tes...</div>
+</td>
+					<td>	id-2</td>
+					<td></td>
+					<td>	REQUEST_RESPONSE</td>
+					<td>	{&quot;context&quot;: &quot;text/json&quot;}</td>
+					<td>	
+<div class="cellView" onclick="showValue('{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;name-2&quot;, &quot;type&quot;: &quot;response&quot;}')">{&quot;id&quot;: &quot;id-2&quot;, &quot;name&quot;: &quot;...</div>
+</td>
 				</tr>
 			</tbody>
 			<tbody>
@@ -386,17 +460,16 @@
 
   			<!-- Modal content -->
  			<div class="modal-content">
- 				<textarea id="json" class="prettyprint">uk.co.bocaditos.log2xlsx.out.html.Info@71e5f61d</textarea>
+ 				<textarea id="json" class="prettyprint">uk.co.bocaditos.log2xlsx.out.html.Info@28d6290</textarea>
  			</div>
 
  			<div class="modal-footer"><button id="info-close-bottom" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
 		</div>
 
 		<script>
+			const infoTxt = buildInfo();
 			const infoView = document.getElementById("info");
 			const infoTextArea = document.getElementById("json");
-
-			updateInfo();
 
 			function sortUp(colNum) {
 				sortTable(colNum, false);
@@ -468,19 +541,23 @@
     			}
 			}
 
-			function showInfo() {
+			function showValue(value) {
+				infoTextArea.value = value;
 				infoView.style.display = "block";
+			}
+
+			function showInfo() {
+				showValue(infoTxt);
 			}
 
 			function hideInfo() {
 				infoView.style.display = "none";
 			}
 
-			function updateInfo() {
-				let value = {"formats":"src/test/resources/formats.txt","idFiledName":"src/test/resources/formats.txt","logFiles":"xxx.log","filter":null};
-				let json = JSON.stringify(value, null, 4);
+			function buildInfo() {
+				let value = {"formats":"src/test/resources/formats.txt","idFiledName":"id","logFiles":"xxx.log","filter":null};
 
-				infoTextArea.value = json;
+				return JSON.stringify(value, null, 4);
 			}
 		</script>
 	</body>
