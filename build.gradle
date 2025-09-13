@@ -6,8 +6,11 @@ plugins {
 	id 'jacoco'
 }
 
+def props = new Properties()
+file("src/main/resources/application.properties").withInputStream { props.load(it) }
+
 group = 'uk.co.bocaditos'
-version = '1.0.001'
+version = props.getProperty("app.version")
 sourceCompatibility = '17'
 
 repositories {
@@ -32,7 +35,7 @@ dependencies {
     implementation 'org.dhatim:fastexcel:0.19.0'
 
 	implementation 'org.freemarker:freemarker:2.3.34'
-//	implementation 'co.uk.bocaditos:CdmLib:1.0.000'
+//	implementation 'co.uk.bocaditos:CdmLib:1.00.000'
 
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

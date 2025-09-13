@@ -11,9 +11,8 @@ It reads specified log files and convert them into a formatted output file, e.g.
 [XLSX](#xlsx).
 
 Formats supported are
-- [HTML](#html) by providing a [Freemarker](https://freemarker.apache.org/index.html) template, 
-default is htmlLogs.ftl
-- [XLSX](#xlsx)
+- [HTML](#html) uses [Freemarker](https://freemarker.apache.org/index.html) library and requires [Freemarker](https://freemarker.apache.org/index.html) template, default is htmlLogs.ftl in directory templates.
+- [XLSX](#xlsx) uses fastexcel library.
 
 
 Each field is defined by starting character '{', to use the literal character in a log file escape 
@@ -35,15 +34,15 @@ Example:
 {request, enum, REQUEST-RECEIVED, SENT-REQUEST, REQUEST-RESPONSE, SENT-RESPONSE}
 ```
 
-Example of using format is:
+Example of using datetime format is:
 
 ```
 {datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}
 ```
-and
+and for date 
 
 ```
-{datetime, date, f:yyyyMMdd}
+{date, date, f:yyyyMMdd}
 ```
 
 When a pattern is specified the loaded field from the log lines will be verified against the pattern
@@ -55,7 +54,7 @@ Example HTML output:
 ---
 
 # Usage
-java \-jar Log2Xlsx-1.0.000.jar \-[formats](#formats) &lt;filename&gt; \-[idFieldName](#idFieldName) &lt;idFieldName&gt; \-[logs](#logs) &lt;filenames&gt; \-[out](#out) &lt;filename&gt; \[-[filter](#filter) &lt;fieldname&gt; &lt;value/from&gt; \[&lt;to&gt;\]\] \[\-[sort](#sort) &lt;field names&gt;\] \[\-[appName](#appName) &lt;name&gt;\] \[\-[workSheetVersion](#workSheetVersion) &lt;version&gt;\] \[\-[workSheetName](#workSheetName) &lt;name&gt;\] \[\-[hBorderStyle](#hBorderStyle) &lt;style&gt;\] \[\-[hFontName](#hFontName) &lt;size&gt;\] \[-[hFontSize](#hFontSize) &lt;size&gt;\] \[-[hFontColour](#hFontColour) &lt;colour&gt;\] \[\-[hFontWrapTxt](#hFontWrapTxt) &lt;wrap&gt;\] \[\-[hFontFillColuor](#hFontFillColuor) &lt;colour&gt;\] \[\-[hFontBold](#hFontBold) &lt;isBold&gt;\] \[\-[borderStyle](#borderStyle) &lt;style&gt;\] \[\-[fontName](#fontName) &lt;size&gt;\] \[\-[fontSize](#fontSize) &lt;size&gt;\] \[\-[fontColour](#fontColour) &lt;colour&gt;\] \[-[fontWrapTxt](#fontWrapTxt) &lt;wrap&gt;\] \[\-[fontFillColuor](#fontFillColuor) &lt;colour&gt;\] \[\-[fontBold](#fontBold) &lt;isBold&gt;\] \[\-[dir4template](#dir4template) &lt;dir&gt;\] \[\-[template](#template) &lt;name&gt;\] \[\-[encoding](#encoding) &lt;name&gt;\] \[\-[freemarkerVersion](#freemarkerVersion) &lt;name&gt;\] \[\-[maxCellLength](#maxCellLength) &lt;max_length&gt;\] \[\-[htmlDefaultSize](#htmlDefaultSize) &lt;size&gt;\] \[\-[htmlSize](#htmlSize) &lt;size&gt;\]
+java \-jar Log2Xlsx-&lt;version:?.??.???&gt;.jar \-[formats](#formats) &lt;filename&gt; \-[idFieldName](#idFieldName) &lt;idFieldName&gt; \-[logs](#logs) &lt;filenames&gt; \-[out](#out) &lt;filename&gt; \[-[filter](#filter) &lt;fieldname&gt; &lt;value/from&gt; \[&lt;to&gt;\]\] \[\-[sort](#sort) &lt;field names&gt;\] \[\-[appName](#appName) &lt;name&gt;\] \[\-[workSheetVersion](#workSheetVersion) &lt;version&gt;\] \[\-[workSheetName](#workSheetName) &lt;name&gt;\] \[\-[hBorderStyle](#hBorderStyle) &lt;style&gt;\] \[\-[hFontName](#hFontName) &lt;size&gt;\] \[-[hFontSize](#hFontSize) &lt;size&gt;\] \[-[hFontColour](#hFontColour) &lt;colour&gt;\] \[\-[hFontWrapTxt](#hFontWrapTxt) &lt;wrap&gt;\] \[\-[hFontFillColuor](#hFontFillColuor) &lt;colour&gt;\] \[\-[hFontBold](#hFontBold) &lt;isBold&gt;\] \[\-[borderStyle](#borderStyle) &lt;style&gt;\] \[\-[fontName](#fontName) &lt;size&gt;\] \[\-[fontSize](#fontSize) &lt;size&gt;\] \[\-[fontColour](#fontColour) &lt;colour&gt;\] \[-[fontWrapTxt](#fontWrapTxt) &lt;wrap&gt;\] \[\-[fontFillColuor](#fontFillColuor) &lt;colour&gt;\] \[\-[fontBold](#fontBold) &lt;isBold&gt;\] \[\-[dir4template](#dir4template) &lt;dir&gt;\] \[\-[template](#template) &lt;name&gt;\] \[\-[encoding](#encoding) &lt;name&gt;\] \[\-[freemarkerVersion](#freemarkerVersion) &lt;name&gt;\] \[\-[maxCellLength](#maxCellLength) &lt;max_length&gt;\] \[\-[htmlDefaultSize](#htmlDefaultSize) &lt;size&gt;\] \[\-[htmlSize](#htmlSize) &lt;size&gt;\]
 
 <br>
 <a name="formats"></a>

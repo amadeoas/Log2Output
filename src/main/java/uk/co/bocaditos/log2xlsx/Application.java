@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -48,6 +49,12 @@ public class Application implements CommandLineRunner {
 
     @Autowired
     Environment env;
+
+	@Value("${app.name}")
+	private String appName;
+
+	@Value("${app.version}")
+	private String version;
 
 
     public static void main(final String[] cmdArgs) {
@@ -166,7 +173,7 @@ public class Application implements CommandLineRunner {
     	if (outFilename.endsWith(".xlsx")) {
     		output = new XlsxOutput(cmdArgs);
     	} else if (outFilename.endsWith(".html")) {
-    		output = new HtmlOutput();
+    		output = new HtmlOutput(this.appName, this.version);
     	} else {
     		throw new UtilsException("Unsuported output file \"{0}\"", outFilename);
     	}

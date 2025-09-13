@@ -11,21 +11,34 @@ import uk.co.bocaditos.utils.cmd.CmdException;
  */
 public class Info {
 
+	private final String appName;
+	private final String version;
 	private final String formats;
 	private final String idFiledName;
 	private final String logFiles;
 	private final String filter;
 
 
-	public Info(final CmdArgs cmdArgs) throws CmdException {
+	public Info(final String appName, final String version, final CmdArgs cmdArgs) 
+			throws CmdException {
 		if (cmdArgs == null) {
 			throw new CmdException("Missing CMD Line areguments/parameters");
 		}
 
+		this.appName = appName;
+		this.version = version;
 		this.formats = cmdArgs.getArgument(Application.ARG_FORMATS);
 		this.idFiledName = cmdArgs.getArgument(Application.ARG_ID_FIELD_NAME);
 		this.logFiles = cmdArgs.getArgument(Application.ARG_LOGS);
 		this.filter = cmdArgs.getParam(FieldFilter.ARG_FILTER_FIELD_NAME, (String) null);
+	}
+
+	public String getAppName() {
+		return appName;
+	}
+
+	public String getVersion() {
+		return version;
 	}
 
 	public String getFormats() {

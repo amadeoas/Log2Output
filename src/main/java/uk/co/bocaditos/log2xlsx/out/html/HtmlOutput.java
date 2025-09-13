@@ -4,6 +4,8 @@ import freemarker.template.*;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
@@ -41,12 +43,20 @@ public class HtmlOutput implements LogOutput {
 	public static final String DEFAULT_HTML_SIZE	= "auto";
 	public static final int    DEFAULT_HTML_MAX_CELL_LENGTH = Integer.MAX_VALUE;
 
+	private final String appName;
+	private final String version;
+
+
+	public HtmlOutput(final String appName, final String version) {
+		this.appName = appName;
+		this.version = version;
+	}
 
 	public void write(final CmdArgs cmdArgs, final FieldsSet set) throws UtilsException {
 		final Configuration config = config(cmdArgs);
 		final Map<String, Object> variables = new HashMap<>();
 		final String filename = cmdArgs.getArgument(ARG_OUT);
-		final Info info = new Info(cmdArgs);
+		final Info info = new Info(this.appName, this.version, cmdArgs);
 
 		variables.put("set", set);
 		variables.put("headers", update(cmdArgs, LogOutput.sorted(cmdArgs, set)));

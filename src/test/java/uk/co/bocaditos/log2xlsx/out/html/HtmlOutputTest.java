@@ -6,6 +6,10 @@ import java.io.File;
 
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
@@ -85,9 +89,7 @@ public class HtmlOutputTest {
 	}
 
 	private HtmlOutput build(final String... args) {
-		final HtmlOutput out = new HtmlOutput();
-
-		return out;
+		return new HtmlOutput(XlsxOutput.DEFAULT_APP_NAME, "1.00.000");
 	}
 
 } // end class HtmlOutputTest

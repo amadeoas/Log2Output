@@ -7,6 +7,8 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
 import uk.co.bocaditos.log2xlsx.out.html.HtmlOutput;
@@ -19,6 +21,8 @@ import uk.co.bocaditos.utils.cmd.CmdArgs;
  * JUnit tests for class Application.
  */
 @SpringBootTest
+@TestPropertySource(locations="classpath:application-test.properties")
+@ActiveProfiles("test")
 public class ApplicationTest {
 
 	@Test
@@ -72,7 +76,7 @@ class TApplication extends Application {
 	public void run(final String... args) throws UtilsException {
 		final CmdArgs cmdArgs = new CmdArgs(this.env, args);
 
-		assertTrue(help_(cmdArgs).startsWith("java -jar Log2Xlsx-1."));
+		assertTrue(help_(cmdArgs).startsWith("java -jar Log2Output-1."));
 	}
 
 } // end class TApplication
