@@ -68,8 +68,8 @@ java \-jar Log2Xlsx-1.0.000.jar \-[formats](#formats) &lt;filename&gt; \-[idFiel
 ```
 Example:
 
-[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \{{computer}\} [{class}] - ({id}) {request, enum, REQUEST_RECEIVED, SENT_REQUEST, REQUEST_RESPONSE, SENT_RESPONSE} \\{\"headers\": {headers}, \"payload\": {body}\\} - END
-[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \{{computer}\} [{class}] - ({id}) {request, enum, REQUEST_RECEIVED, SENT_REQUEST, REQUEST_RESPONSE, SENT_RESPONSE} {message} - END
+[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \{{computer}\} [{class}] - ({id}) {request, enum, REQUEST-RECEIVED, SENT-REQUEST, REQUEST-RESPONSE, SENT-RESPONSE} \\{\"headers\": {headers}, \"payload\": {body}\\} - END
+[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \{{computer}\} [{class}] - ({id}) {request, enum, REQUEST-RECEIVED, SENT-REQUEST, REQUEST-RESPONSE, SENT-RESPONSE} {message} - END
 [{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \{{computer}\} [{class}] - ({id}) {message}
 ```
 
