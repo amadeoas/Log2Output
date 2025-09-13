@@ -129,16 +129,28 @@
 
   			<!-- Modal content -->
  			<div class="modal-content">
- 				<textarea id="json" class="prettyprint">${info}</textarea>
+ 				<textarea id="infoJson" class="prettyprint"></textarea>
  			</div>
 
  			<div class="modal-footer"><button id="info-close-bottom" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
+		</div>
+		<div id="view" class="modal">
+			<div class="modal-header"><button id="view-close-top" title="Close view" class="btn" onclick="hideView()"><i class="fa fa-close"></i></button></div>
+
+  			<!-- Modal content -->
+ 			<div class="modal-content">
+ 				<textarea id="viewJson" class="prettyprint"></textarea>
+ 			</div>
+
+ 			<div class="modal-footer"><button id="view-close-bottom" title="Close view" class="btn" onclick="hideView()"><i class="fa fa-close"></i></button></div>
 		</div>
 
 		<script>
 			const infoTxt = buildInfo();
 			const infoView = document.getElementById("info");
-			const infoTextArea = document.getElementById("json");
+			const infoTextArea = document.getElementById("infoJson");
+			const view = document.getElementById("view");
+			const viewTextArea = document.getElementById("viewJson");
 
 			function sortUp(colNum) {
 				sortTable(colNum, false);
@@ -211,8 +223,12 @@
 			}
 
 			function showValue(value) {
-				infoTextArea.value = value;
-				infoView.style.display = "block";
+				viewTextArea.value = value;
+				view.style.display = "block";
+			}
+
+			function hideView() {
+				view.style.display = "none";
 			}
 
 			function showInfo() {
@@ -276,8 +292,10 @@
 				</tr>
 </#macro>
 
-<#macro showValue value>
-	<#if value?length <= maxCellLength>${value}<#else>
-<div class="cellView" onclick="showValue('${value}')">${value?substring(0, maxCellLength)}...</div>
+<#macro showValue value><#lt><#rt>
+	<#if value?length <= maxCellLength><#lt><#rt>
+		${value}<#lt><#rt>
+	<#else><#lt><#rt>
+		<div class="cellView" onclick="showValue('${value}')">${value?substring(0, maxCellLength)}...</div><#lt><#rt>
 	</#if>
 </#macro>
