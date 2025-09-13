@@ -125,7 +125,10 @@
 		</table>
 		</#list>
 		<div id="info" class="modal">
-			<div class="modal-header"><button id="info-close-top" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
+			<div class="modal-header">
+				<button id="info-close-top" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button>
+				<button id="info-copy-top" title="Copy information" class="btn" onclick="copyInfo2Clipboard()"><i class="fa fa-copy"></i></button>
+			</div>
 
   			<!-- Modal content -->
  			<div class="modal-content">
@@ -135,7 +138,10 @@
  			<div class="modal-footer"><button id="info-close-bottom" title="Close information" class="btn" onclick="hideInfo()"><i class="fa fa-close"></i></button></div>
 		</div>
 		<div id="view" class="modal">
-			<div class="modal-header"><button id="view-close-top" title="Close view" class="btn" onclick="hideView()"><i class="fa fa-close"></i></button></div>
+			<div class="modal-header">
+				<button id="view-close-top" title="Close view" class="btn" onclick="hideView()"><i class="fa fa-close"></i></button>
+				<button id="view-copy-top" title="Copy view" class="btn" onclick="copyView2Clipboard()"><i class="fa fa-copy"></i></button>
+			</div>
 
   			<!-- Modal content -->
  			<div class="modal-content">
@@ -236,6 +242,10 @@
 				view.style.display = "none";
 			}
 
+			function copyView2Clipboard() {
+				copy2Clipboard(viewTextArea.value);
+			}
+
 			function showInfo() {
 				showValue(infoTxt);
 			}
@@ -244,10 +254,18 @@
 				infoView.style.display = "none";
 			}
 
+			function copyInfo2Clipboard() {
+				copy2Clipboard(infoTextArea.value);
+			}
+
 			function buildInfo() {
 				let value = ${JSON.writeValueAsString(info)?no_esc};
 
 				return JSON.stringify(value, null, 4);
+			}
+
+			function copy2Clipboard(value) {
+				navigator.clipboard.writeText(value);
 			}
 		</script>
 	</body>
