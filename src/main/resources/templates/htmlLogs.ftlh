@@ -68,6 +68,9 @@
 				padding-left: 10px;
     			width: 650px;
     			height: 28px;
+    			border-top-right-radius: 15px 15px;
+    			border-top-left-radius: 15px 15px;
+    			box-shadow: 8px 8px 8px #444444;
 			}
 
 			/* Modal Content */
@@ -78,6 +81,7 @@
 				border: 1px solid #888;
 				width: 650px;
 				height: 50%;
+    			box-shadow: 8px 8px 8px #444444;
 			}
 			
 			.modal-footer {
@@ -87,6 +91,9 @@
 				padding-left: 10px;
     			width: 650px;
     			height: 28px;
+    			border-bottom-right-radius: 15px 15px;
+    			border-bottom-left-radius: 15px 15px;
+    			box-shadow: 8px 8px 8px #444444;
 			}
 
 			.prettyprint {
