@@ -49,6 +49,9 @@ and
 When a pattern is specified the loaded field from the log lines will be verified against the pattern
 and a FormatException thrown if verification fails.
 
+Example HTML output:
+<img src="Log2Output.png" width="900" />
+
 ---
 
 # Usage
