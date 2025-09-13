@@ -4,8 +4,6 @@ import freemarker.template.*;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;

@@ -6,10 +6,6 @@ import java.io.File;
 
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
