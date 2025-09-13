@@ -30,7 +30,7 @@ public class Info {
 		this.formats = cmdArgs.getArgument(Application.ARG_FORMATS);
 		this.idFiledName = cmdArgs.getArgument(Application.ARG_ID_FIELD_NAME);
 		this.logFiles = cmdArgs.getArgument(Application.ARG_LOGS);
-		this.filter = cmdArgs.getParam(FieldFilter.ARG_FILTER_FIELD_NAME, (String) null);
+		this.filter = cmdArgs.getParam(FieldFilter.ARG_FILTER, (String) null);
 	}
 
 	public String getAppName() {

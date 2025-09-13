@@ -2,13 +2,15 @@ package uk.co.bocaditos.log2xlsx.in.filter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import uk.co.bocaditos.log2xlsx.model.Field;
 import uk.co.bocaditos.log2xlsx.model.FieldsLine;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogField;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
+import uk.co.bocaditos.utils.Utils;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
 import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
@@ -22,7 +24,9 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public abstract class FieldFilter<T> implements Filter {
 
-	public static final String ARG_FILTER_FIELD_NAME = "filter";
+	public static final String ARG_FILTER = "filter";
+
+	private static final List<String> FILTER_EMPTY_ARGS = new ArrayList<>(0);
 
 	private static final String MSG_TOO_MANY_ARGS = "Too many values for CMD Line arguments \"{0}\"";
 
@@ -50,98 +54,105 @@ public abstract class FieldFilter<T> implements Filter {
 			return build();
 		}
 
-		final String fieldName = cmdArgs.getParam(ARG_FILTER_FIELD_NAME, 0, null);
+		final List<String> argValues = cmdArgs.getArguments(ARG_FILTER, FILTER_EMPTY_ARGS);
 
-		if (fieldName == null) {
+		if (Utils.isEmpty(argValues)) {
 			return build();
 		}
 
-		final String[] args = {
-				cmdArgs.getArgument(ARG_FILTER_FIELD_NAME, 1),
-				cmdArgs.getParam(ARG_FILTER_FIELD_NAME, 2, null)
-		};
-
-		final LogField field = set.getField(fieldName);
+		final LogField field = set.getField(argValues.get(0));
 
 		if (field.getFieldClass() == String.class) {
-			if (args[1] != null) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER_FIELD_NAME);
+			if (argValues.size() > 2) {
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 
-			return new StringFilter(field, (String) field.build(args[1]));
+			return new StringFilter(field, (String) field.build(argValues.get(1)));
 		}
 
 		if (field.getFieldClass() == LocalDateTime.class) {
-			if (args[1] == null) {
-				return new LocalDateTimeFilter(field, (LocalDateTime) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new LocalDateTimeFilter(field, (LocalDateTime) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new LocalDateTimeFilter(field, (LocalDateTime) field.build(argValues.get(1)), 
+						(LocalDateTime) field.build(argValues.get(2)));
 			} else {
-				return new LocalDateTimeFilter(field, (LocalDateTime) field.build(args[1]), 
-						(LocalDateTime) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == LocalDate.class) {
-			if (args[1] == null) {
-				return new LocalDateFilter(field, (LocalDate) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new LocalDateFilter(field, (LocalDate) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new LocalDateFilter(field, (LocalDate) field.build(argValues.get(1)), 
+						(LocalDate) field.build(argValues.get(2)));
 			} else {
-				return new LocalDateFilter(field, (LocalDate) field.build(args[1]), 
-						(LocalDate) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == int.class) {
-			if (args[1] == null) {
-				return new IntFilter(field, (Integer) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new IntFilter(field, (Integer) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new IntFilter(field, (Integer) field.build(argValues.get(1)), 
+						(Integer) field.build(argValues.get(2)));
 			} else {
-				return new IntFilter(field, (Integer) field.build(args[1]), 
-						(Integer) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == long.class) {
-			if (args[1] == null) {
-				return new LongFilter(field, (Long) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new LongFilter(field, (Long) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new LongFilter(field, (Long) field.build(argValues.get(1)), 
+						(Long) field.build(argValues.get(2)));
 			} else {
-				return new LongFilter(field, (Long) field.build(args[1]), 
-						(Long) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == double.class) {
-			if (args[1] == null) {
-				return new DoubleFilter(field, (Double) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new DoubleFilter(field, (Double) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new DoubleFilter(field, (Double) field.build(argValues.get(1)), 
+						(Double) field.build(argValues.get(2)));
 			} else {
-				return new DoubleFilter(field, (Double) field.build(args[1]), 
-						(Double) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == float.class) {
-			if (args[1] == null) {
-				return new FloatFilter(field, (Float) field.build(args[1]));
+			if (argValues.size() == 2) {
+				return new FloatFilter(field, (Float) field.build(argValues.get(1)));
+			} else if (argValues.size() == 3) {
+				return new FloatFilter(field, (Float) field.build(argValues.get(1)), 
+						(Float) field.build(argValues.get(2)));
 			} else {
-				return new FloatFilter(field, (Float) field.build(args[1]), 
-						(Float) field.build(args[2]));
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == char.class) {
-			if (args[1] != null) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER_FIELD_NAME);
+			if (argValues.size() != 2) {
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 
-			return new CharFilter(field, (Character) field.build(args[0]));
+			return new CharFilter(field, (Character) field.build(argValues.get(1)));
 		}
 
 		if (field.getFieldClass() == boolean.class) {
-			if (args[1] != null) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER_FIELD_NAME);
+			if (argValues.size() != 2) {
+				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
 			}
 
-			return new BooleanFilter(field, (Boolean) field.build(args[1]));
+			return new BooleanFilter(field, (Boolean) field.build(argValues.get(1)));
 		}
 
-		throw new FormatException("");
+		throw new FormatException("Failed to build filter for value");
 	}
 
 	public final T getFirstValue() {
@@ -149,8 +160,7 @@ public abstract class FieldFilter<T> implements Filter {
 	}
 
 	public boolean valid(final FieldsLine line) {
-		final Field field = (Field) line.get(this.field);
-		final Object value = field.getValue();
+		final Object value = line.get(this.field);
 
 		if (this.values.length == 1) {
 			return Objects.equals(getFirstValue(), value);
@@ -164,7 +174,7 @@ public abstract class FieldFilter<T> implements Filter {
 	}
 
 	public static void initHelp() {
-		new CmdHelpArgDef(ARG_FILTER_FIELD_NAME, "Sets the filter of the log lines to consider.", 
+		new CmdHelpArgDef(ARG_FILTER, "Sets the filter of the log lines to consider.", 
 			true, 
 			new CmdHelpArgParamDef("fieldname", "The name of the field to filter against.",
 				true), 

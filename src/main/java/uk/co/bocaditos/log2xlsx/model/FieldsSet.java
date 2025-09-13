@@ -95,7 +95,7 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 				while ((line = in.readLine()) != null) {
 					final FieldsLine f = this.set.process(line);
 
-					if (filter.valid(f)) {
+					if (f != null && filter.valid(f)) {
 						add(f);
 					}
 					++lineNum;

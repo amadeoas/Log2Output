@@ -364,6 +364,20 @@ public class CmdArgs {
 	 * @throws CmdException when the argument with the specified name doesn't exist.
 	 */
 	public List<String> getArguments(final String argName) throws CmdException {
+		return getArguments(argName, null);
+	}
+
+	/**
+	 * Gets all the values for the specified argument.
+	 * 
+	 * @param argName the argument name.
+	 * @param defaultValues the default value.
+	 * @return all the value for specified argument name.
+	 * @throws CmdException when the argument with the specified name doesn't exist and the default 
+	 * 			is null.
+	 */
+	public List<String> getArguments(final String argName, final List<String> defaultValues) 
+			throws CmdException {
 		List<String> values = this.args.get(argName);
 		
 		if (values == null) {
@@ -374,6 +388,10 @@ public class CmdArgs {
 				values.add(value);
 
 				return values;
+			}
+
+			if (defaultValues != null) {
+				return defaultValues;
 			}
 
 			throw new CmdException("Command Line argument {0} doesn't exist", argName);
