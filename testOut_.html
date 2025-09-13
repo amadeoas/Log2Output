@@ -491,6 +491,11 @@
 			}
 
 			function showValue(value) {
+				if ((value.charAt(0) == '{' && value.charAt(1) == '"') || (value.charAt(0) == '[' && (value.charAt(1) == '{' || value.charAt(1) == '"'))) {
+					let obj = JSON.parse(value);
+
+					value = JSON.stringify(obj, null, 4);
+				}
 				viewTextArea.value = value;
 				view.style.display = "block";
 			}
