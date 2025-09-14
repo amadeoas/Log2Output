@@ -26,12 +26,12 @@ public abstract class ComparableFilter<T extends Comparable<T>> extends FieldFil
 					getClass().getName());
 		}
 
-		if (from == null || to == null) {
+		if (to == null) {
 			throw new FilterException("Missing the 'to' to use in filter {0}", getClass().getName());
 		}
 
 		if (from.compareTo(to) > 0) {
-			throw new FilterException("The 'from' bigger than the 'to' one: {0, number} > {1, nuber}", 
+			throw new FilterException("The 'from' bigger than the 'to' one: {0, number} > {1, number}", 
 					from, to);
 		}
 	}

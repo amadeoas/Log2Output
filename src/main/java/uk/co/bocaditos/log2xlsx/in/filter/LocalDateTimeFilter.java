@@ -44,7 +44,7 @@ public class LocalDateTimeFilter extends FieldFilter<LocalDateTime> {
 		final LocalDateTime value = (LocalDateTime) v;
 		boolean valid = from().equals(value) || from().isBefore(value);
 
-		if (valid) {
+		if (valid && to() != null) {
 			valid = to().equals(value) || to().isAfter(value);
 		}
 
