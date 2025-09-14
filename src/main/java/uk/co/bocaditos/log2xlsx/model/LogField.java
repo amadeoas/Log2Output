@@ -377,6 +377,8 @@ public class LogField extends LogEntry {
 				elements[INDEX_CLASS] = LocalDateTime.class;
 			} else if ("boolean".equals(type)) {
 				elements[INDEX_CLASS] = boolean.class;
+			} else if ("byte".equals(type)) {
+				elements[INDEX_CLASS] = byte.class;
 			} else if ("enum".equals(type)) {
 				if (parts.length > 3) {
 					// Enum of fixed value - verification type
@@ -556,8 +558,12 @@ public class LogField extends LogEntry {
 		if (values.length > 1) {
 			final int lastIndex = values.length - 1;
 
+			for (int index = 0; index < values.length; ++index) {
+				values[index] = values[index].trim();
+			}
+
 			for (int index = 0; index < lastIndex; ++index) {
-				final String v = values[index];
+				final String v = values[index].trim();
 
 				if (v.charAt(v.length() - 1) == '\\') {
 					final String[] newValues = new String[lastIndex];

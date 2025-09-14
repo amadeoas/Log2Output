@@ -2,6 +2,7 @@ package uk.co.bocaditos.log2xlsx.in.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -126,6 +127,16 @@ public class FieldFilterTest {
 				assertFalse("Index " + index, valids[index]);
 			}
 		}
+	}
+
+	@Test
+	public void byteFilterTest() throws UtilsException {
+		final LogField field = new LogField(null, "{byte, byte}", 1);
+		ByteFilter filter = new ByteFilter(field, (byte) 10);
+
+		assertNotNull(filter);
+		filter = new ByteFilter(field, (byte) 10, (byte) 11);
+		assertNotNull(filter);
 	}
 
 } // end class FieldFilterTest

@@ -62,7 +62,7 @@ public class LogFieldTest {
 		assertNotNull(field.build("20241223"));
 
 		field = new LogField(null, ID, Level.class, null, null);
-		assertEquals(Level.WARN.name(), field.build(Level.WARN.name()));
+		assertEquals(Level.WARN, field.build(Level.WARN.name()));
 		assertEquals("id: \"" + ID + "\", numNexts: 0, enum: [\"ERROR\", \"WARN\", \"INFO\", \"DEBUG\"]", 
 				field.toString());
 	}
