@@ -4,11 +4,11 @@ import uk.co.bocaditos.log2xlsx.model.LogField;
 
 
 /**
- * .
+ * Filter for boolean.
  */
-public class BooleanFilter extends FieldFilter<Boolean> {
+public class BooleanFilter extends ComparableFilter<Boolean> {
 
-	BooleanFilter(final LogField field, final Boolean value) {
+	BooleanFilter(final LogField field, final Boolean value) throws FilterException {
 		super(field, value);
 	}
 

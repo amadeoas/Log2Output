@@ -49,7 +49,7 @@ public abstract class FieldFilter<T> implements Filter {
 	}
 
 	public static FieldFilter<?> build(final CmdArgs cmdArgs, final LogSet set) 
-			throws CmdException, FormatException {
+			throws CmdException, FormatException, FilterException {
 		if (cmdArgs == null) {
 			return build();
 		}

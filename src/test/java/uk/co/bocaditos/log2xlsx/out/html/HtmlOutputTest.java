@@ -1,6 +1,7 @@
 package uk.co.bocaditos.log2xlsx.out.html;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -58,9 +59,7 @@ public class HtmlOutputTest {
 			file.delete();
 		}
 		out.write(cdmArgs, fields);
-//		if (file.exists()) {
-//			file.delete();
-//		}
+		assertTrue(file.delete());
 
 		args[9] = "src/test/resources/formats.txt";
 		cdmArgs1 = new CmdArgs(args);

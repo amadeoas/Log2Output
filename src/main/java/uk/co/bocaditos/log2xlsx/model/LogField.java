@@ -149,7 +149,7 @@ public class LogField extends LogEntry {
 		if (!matcher.matches()) {
 			throw new FormatException(
 					"Invalid format: value \"{0}\" for log field \"{1}\" is not valid for pattern " 
-					+ "\"{3}\"",
+					+ "\"{2}\"",
 					value, getId(), getPattern().pattern());
 		}
 	}
@@ -211,6 +211,19 @@ public class LogField extends LogEntry {
 	public Object build(final String value) throws FormatException {
 		validate(value);
 		if (getFieldClass() == String.class) {
+			if (this.enumValues != null) {
+				for (final String v : this.enumValues) {
+					if (v.equals(value)) {
+						return value;
+					}
+				}
+
+				throw new FormatException(
+						"Invalid format: the log field \"{0}\" value \"{1}\" is not valid for " 
+						+ "enumeration",
+						getId(), value);
+			}
+
 			return value;
 		}
 
@@ -257,17 +270,8 @@ public class LogField extends LogEntry {
 				return LocalDate.parse(value);
 			}
 
-			if (this.enumValues != null) {
-				for (final String v : this.enumValues) {
-					if (v.equals(value)) {
-						return value;
-					}
-				}
-
-				throw new FormatException(
-						"Invalid format: the log field \"{0}\" value \"{1}\" is not valid for " 
-						+ "enumeration",
-						getId(), value);
+			if (getFieldClass() == Boolean.class) {
+				return Boolean.valueOf(value);
 			}
 
 			if (getFieldClass().isEnum()) {
@@ -349,14 +353,14 @@ public class LogField extends LogEntry {
 
 	private Object[] set_(final String value) throws FormatException {
 		final Object[] elements = {null, null, null, null};
-		final String[] parts = value.split(",");
+		final String[] parts = split(value, ",");
 
 		elements[INDEX_ID] = parts[0];
 		if (parts.length > 1 && !parts[1].isEmpty()) {
 			final String type = parts[1].trim().toLowerCase();
 
 			if (type.isEmpty() || "string".equals(type)) {
-				elements[INDEX_ID] = String.class;
+				elements[INDEX_CLASS] = String.class;
 			} else if ("int".equals(type)) {
 				elements[INDEX_CLASS] = int.class;
 			} else if ("long".equals(type)) {
@@ -371,6 +375,8 @@ public class LogField extends LogEntry {
 				elements[INDEX_CLASS] = LocalDate.class;
 			} else if ("datetime".equals(type)) {
 				elements[INDEX_CLASS] = LocalDateTime.class;
+			} else if ("boolean".equals(type)) {
+				elements[INDEX_CLASS] = boolean.class;
 			} else if ("enum".equals(type)) {
 				if (parts.length > 3) {
 					// Enum of fixed value - verification type
@@ -408,13 +414,15 @@ public class LogField extends LogEntry {
 		}
 
 		for (int i = 2; i < parts.length; ++i) {
-			final String part = parts[i].trim();
+			final String part = decode(parts[i]);
 
 			if (part.startsWith("f:")) {
 				if (elements[INDEX_FORMAT] != null) {
 					throw new FormatException(
-							"Invalid format; field {0} formats was already initialised", getId());
+							"Invalid format for field {0}: the format was already initialised", 
+							elements[INDEX_ID]);
 				}
+
 				elements[INDEX_FORMAT] = part.substring("f:".length());
 				if (elements[INDEX_CLASS] == LocalDateTime.class 
 						|| elements[INDEX_CLASS] == LocalDate.class) {
@@ -423,12 +431,15 @@ public class LogField extends LogEntry {
 			} else if (part.startsWith("p:")) {
 				if (elements[INDEX_PATTERN] != null) {
 					throw new FormatException(
-							"Invalid format; field {0} pattern was already initialised", getId());
+							"Invalid format for field \"{0}\": pattern was already initialised", 
+							elements[INDEX_ID]);
 				}
+
 				elements[INDEX_PATTERN] = Pattern.compile(part.substring(2));
 			} else {
 				throw new FormatException(
-						"Invalid format; invalid field part with index {0, number}", i);
+						"Invalid format for field \"{0}\"; invalid field part with index {1, number}", 
+						elements[INDEX_ID], i);
 			}
 		}
 
@@ -519,6 +530,53 @@ public class LogField extends LogEntry {
 		}
 
 		return value.substring(offset, j).trim();
+	}
+
+	private String decode(String value) {
+		final String[][] chars = {
+				{"\\{", "{"}, {"\\}", "}"}, {"\\[", "["}, {"\\]", "]"}, {"\\,", ","}
+		};
+
+		value = value.trim();
+		for (int index = 0; index < chars.length; ++index) {
+			value = value.replace(chars[index][0], chars[index][1]);
+		}
+
+
+		return value;
+	}
+
+	private String[] split(String value, final String character) {
+		if (value == null) {
+			return null;
+		}
+
+		String[] values = value.split(character);
+
+		if (values.length > 1) {
+			final int lastIndex = values.length - 1;
+
+			for (int index = 0; index < lastIndex; ++index) {
+				final String v = values[index];
+
+				if (v.charAt(v.length() - 1) == '\\') {
+					final String[] newValues = new String[lastIndex];
+
+					for (int i = 0; i < index; ++i) {
+						newValues[i] = values[i];
+					}
+					newValues[index] = v.substring(0, values[index].length() - 1) 
+							+ character + values[index + 1];
+					for (int i = index + 1, j = index + 2; j < values.length; ++i) {
+						newValues[i] = values[j];
+					}
+					values = newValues;
+					++index;
+				}
+			}
+		}
+
+		return values;
 	}
 
 } // end class LogField

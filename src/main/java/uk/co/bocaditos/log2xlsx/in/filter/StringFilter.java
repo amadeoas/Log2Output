@@ -1,8 +1,6 @@
 package uk.co.bocaditos.log2xlsx.in.filter;
 
-import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogField;
-import uk.co.bocaditos.utils.cmd.CmdException;
 
 
 /**
@@ -10,9 +8,12 @@ import uk.co.bocaditos.utils.cmd.CmdException;
  */
 public class StringFilter extends FieldFilter<String> {
 
-	public StringFilter(final LogField field, final String value) 
-			throws CmdException, FormatException {
+	public StringFilter(final LogField field, final String value) throws FilterException {
 		super(field, value);
+
+		if (value == null) {
+			throw new FilterException("Missing the date to use in filter");
+		}
 	}
 
 } // end class StringFilter

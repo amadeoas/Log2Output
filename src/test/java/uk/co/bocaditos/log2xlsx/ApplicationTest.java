@@ -67,6 +67,18 @@ public class ApplicationTest {
 
 		Application.main(args);
 		assertEquals(421, readFileLines(OUT_FILE));
+
+		args[args.length - 1] = "99991231 23:59:59.999";
+		Application.main(args);
+		assertEquals(461, readFileLines(OUT_FILE));
+
+		final String[] args1 = new String[args.length - 1];
+
+		for (int index = 0; index < args1.length; ++index) {
+			args1[index] = args[index];
+		}
+		Application.main(args1);
+		assertEquals(361, readFileLines(OUT_FILE));
 	}
 
 	@Test

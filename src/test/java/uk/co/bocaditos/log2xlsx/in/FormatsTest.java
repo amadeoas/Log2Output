@@ -97,41 +97,55 @@ public class FormatsTest {
 
 	@Test
 	public void loadAllTest() throws FormatException {
-		final LogSet set = Formats.loadAll("src/test/resources/formats.txt");
+		final String[][] allFiles = {
+				{"src/test/resources/formats.txt"},
+				{"formats.txt"}
+			};
 
-		assertNotNull(set);
-		assertThrows(FormatException.class, new ThrowingRunnable() {
+		for (int index = 0; index < allFiles.length; ++index) {
+			final String[] files = allFiles[index];
 
-			@Override
-			public void run() throws Throwable {
-				Formats.loadFile(set, (File) null);
+			try {
+				final LogSet set = Formats.loadAll(files);
+
+				assertEquals(0, index);
+				assertNotNull(set);
+				assertThrows(FormatException.class, new ThrowingRunnable() {
+		
+					@Override
+					public void run() throws Throwable {
+						Formats.loadFile(set, (File) null);
+					}
+					
+				});
+				assertThrows(FormatException.class, new ThrowingRunnable() {
+		
+					@Override
+					public void run() throws Throwable {
+						Formats.loadAll((String[]) null);
+					}
+					
+				});
+				assertThrows(FormatException.class, new ThrowingRunnable() {
+		
+					@Override
+					public void run() throws Throwable {
+						Formats.loadFiles((String[]) null);
+					}
+					
+				});
+				assertThrows(FormatException.class, new ThrowingRunnable() {
+		
+					@Override
+					public void run() throws Throwable {
+						Formats.process(null, null, set, (String[]) null);
+					}
+					
+				});
+			} catch (final FormatException fe) {
+				assertEquals(1, index);
 			}
-			
-		});
-		assertThrows(FormatException.class, new ThrowingRunnable() {
-
-			@Override
-			public void run() throws Throwable {
-				Formats.loadAll((String[]) null);
-			}
-			
-		});
-		assertThrows(FormatException.class, new ThrowingRunnable() {
-
-			@Override
-			public void run() throws Throwable {
-				Formats.loadFiles((String[]) null);
-			}
-			
-		});
-		assertThrows(FormatException.class, new ThrowingRunnable() {
-
-			@Override
-			public void run() throws Throwable {
-				Formats.process(null, null, set, (String[]) null);
-			}
-			
-		});
+		}
 	}
 
 	public static LogSet load() throws FormatException {

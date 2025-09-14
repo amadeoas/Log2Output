@@ -4,25 +4,16 @@ import uk.co.bocaditos.log2xlsx.model.LogField;
 
 
 /**
- * .
+ * Filter for integer numbers.
  */
-public class IntFilter extends FieldFilter<Integer> {
+public class IntFilter extends ComparableFilter<Integer> {
 
-	IntFilter(final LogField field, final Integer equal) {
+	IntFilter(final LogField field, final Integer equal) throws FilterException {
 		super(field, equal);
 	}
 
-	IntFilter(final LogField field, final Integer from, final Integer to) {
+	IntFilter(final LogField field, final Integer from, final Integer to) throws FilterException {
 		super(field, from, to);
-	}
-
-	@Override
-	boolean valid_(final Object v) {
-		final int value = (int) v;
-		final int from = (int) getFirstValue();
-		final int to = (int) getValues()[1];
-
-		return (from >= value) ? true : (to <= value);
 	}
 
 } // end class IntFilter

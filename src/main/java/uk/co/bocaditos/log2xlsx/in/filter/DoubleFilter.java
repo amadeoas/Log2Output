@@ -4,25 +4,16 @@ import uk.co.bocaditos.log2xlsx.model.LogField;
 
 
 /**
- * .
+ * Filter for double numbers.
  */
-public class DoubleFilter extends FieldFilter<Double> {
+public class DoubleFilter extends ComparableFilter<Double> {
 
-	DoubleFilter(final LogField field, final Double equal) {
+	DoubleFilter(final LogField field, final Double equal) throws FilterException {
 		super(field, equal);
 	}
 
-	DoubleFilter(final LogField field, final Double from, final Double to) {
+	DoubleFilter(final LogField field, final Double from, final Double to) throws FilterException {
 		super(field, from, to);
-	}
-
-	@Override
-	boolean valid_(final Object v) {
-		final double value = (double) v;
-		final double from = (double) getFirstValue();
-		final double to = (double) getValues()[1];
-
-		return (from >= value) ? true : (to <= value);
 	}
 
 } // end class DoubleFilter

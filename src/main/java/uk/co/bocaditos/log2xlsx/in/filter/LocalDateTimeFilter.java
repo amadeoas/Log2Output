@@ -10,12 +10,25 @@ import uk.co.bocaditos.log2xlsx.model.LogField;
  */
 public class LocalDateTimeFilter extends FieldFilter<LocalDateTime> {
 
-	LocalDateTimeFilter(final LogField field, final LocalDateTime from) {
+	LocalDateTimeFilter(final LogField field, final LocalDateTime from) throws FilterException {
 		super(field, from);
+
+		if (from == null) {
+			throw new FilterException("Missing the date to use in filter");
+		}
 	}
 
-	LocalDateTimeFilter(final LogField field, final LocalDateTime from, final LocalDateTime to) {
+	LocalDateTimeFilter(final LogField field, final LocalDateTime from, final LocalDateTime to) 
+			throws FilterException {
 		super(field, from, to);
+
+		if (from == null || to == null) {
+			throw new FilterException("Missing at least on of the dates and times to use in filter");
+		}
+
+		if (from.isAfter(to)) {
+			throw new FilterException("Date and time 'from' bigger than the 'to' one");
+		}
 	}
 
 	public final LocalDateTime from() {
