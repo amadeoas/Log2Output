@@ -24,13 +24,17 @@ public class LogEntry implements Comparable<LogEntry> {
 			throws FormatException {
 		this(parent, getId(line, offset));
 
-		offset = offset(LogField.START, line, offset);
-		if (offset == -1) {
-			throw new FormatException(
-					"Invalid format: missing end character \"{0}\" for log field for parent \"{1}\"", 
-					LogField.START, this.parent.getId());
-		}
+		int i = offset;
 
+		offset = offset(LogField.START, line, offset);
+		while ((i = line.indexOf(LogField.END, i)) < offset && i != -1) {
+			if (i == 0 || line.charAt(i - 1) != '\\') {
+				throw new FormatException(
+						"Invalid format: missing end character \"{0}\" for log field for parent \"{1}\"", 
+						LogField.START, (this.parent == null) ? null : this.parent.getId());
+			}
+			++i;
+		}
 		loadNexts(++offset, line);
 	}
 

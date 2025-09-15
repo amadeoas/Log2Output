@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 
 /**
@@ -65,6 +67,59 @@ public class LogFieldTest {
 		assertEquals(Level.WARN, field.build(Level.WARN.name()));
 		assertEquals("id: \"" + ID + "\", numNexts: 0, enum: [\"ERROR\", \"WARN\", \"INFO\", \"DEBUG\"]", 
 				field.toString());
+	}
+
+	@Test
+	public void getValueTest() throws FormatException {
+		final LogField field = new LogField(null, "ID", LocalDate.class, "yyyyMMdd", null);
+		final LocalDate now = LocalDate.now();
+
+		field.add("} Testing {", 1);
+		assertNull(field.getValue((Object) null));
+		assertNotNull(field.getValue(now));
+		assertNull(field.getField(""));
+		assertNotNull(new LogField(null, "ID", String.class, "yyyyMMdd", null));
+	}
+
+	@Test
+	public void verifyTest() {
+		final LogField field = new LogField(null, "ID", LocalDate.class, "yyyyMMdd", null);
+
+		assertThrows(FormatException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				field.verify("{int, int}", 1);
+			}
+			
+		});
+		assertThrows(FormatException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				field.verify("{ID, int}", 1);
+			}
+			
+		});
+		assertThrows(FormatException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				field.verify("{ID, date, p:^\\[A-Z\\]\\{1\\,30\\}}", 1);
+			}
+			
+		});
+
+		final LogField field1 = new LogField(null, "ID", LocalDate.class, null, null);
+
+		assertThrows(FormatException.class, new ThrowingRunnable() {
+
+			@Override
+			public void run() throws Throwable {
+				field1.verify("{ID, date, f:yyyyMMdd}", 1);
+			}
+			
+		});
 	}
 
 } // end class LogFieldTest

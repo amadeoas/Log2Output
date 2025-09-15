@@ -449,13 +449,7 @@ public class LogField extends LogEntry {
 	}
 
 	protected void verify(final String line, int offset) throws FormatException {
-		int i = offset(END, line, offset);
-
-		if (i == -1) {
-			throw new FormatException("Invalid format; missing log field end character \"{0}\"", 
-					END);
-		}
-
+		int i = offset(END, line, offset); // never will return -1
 		final Object[] elements = set_(line.substring(offset, i)); 
 
 		if (!getId().equals(elements[0])) {
