@@ -1,0 +1,12 @@
+[20241223 10:11:10.203] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) REQUEST_RECEIVED {"headers": {"context": "text/json"}, "payload": {"id": "id-2", "name": "name-1", "type": "request"}} - END
+[20241223 10:11:10.204] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Setting up...
+[20241223 10:11:10.204] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Some processing
+[20241223 10:11:10.204] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Set up
+[20241223 10:11:10.206] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) SENT_REQUEST {"headers": {"context": "text/json"}, "payload": {"id": "id-3", "name": "name-2", "type": "request"}} - END
+[20241223 10:11:10.206] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Wating for "id-2" response...
+[20241223 10:11:10.212] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) SENT_RESPONSE {"headers": {"context": "text/json"}, "payload": {"id": "id-3", "name": "name-2", "type": "response"}} - END
+[20241223 10:11:10.212] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Response "id-2" was received
+[20241223 10:11:10.212] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Building response...
+[20241223 10:11:10.213] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) Response built
+
+[20241223 10:11:10.213] {app2} [uk.co.bocaditos.app1.Test1] - (id-2) REQUEST_RESPONSE {"headers": {"context": "text/json"}, "payload": {"id": "id-2", "name": "name-2", "type": "response"}} - END

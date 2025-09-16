@@ -24,7 +24,7 @@ public class ComparableFilterTest {
 
 				@Override
 				public void run() throws Throwable {
-					new ComparableFilter<>(field, (String) null) {};
+					new ComparableFilter<String>(field, (String) null) {};
 				}
 
 			});
@@ -32,7 +32,7 @@ public class ComparableFilterTest {
 
 			@Override
 			public void run() throws Throwable {
-				new ComparableFilter<>(field, null, "") {};
+				new ComparableFilter<String>(field, null, "") {};
 			}
 
 		});
@@ -40,7 +40,7 @@ public class ComparableFilterTest {
 
 			@Override
 			public void run() throws Throwable {
-				new ComparableFilter<>(field, "", null) {};
+				new ComparableFilter<String>(field, "", null) {};
 			}
 
 		});
@@ -48,7 +48,7 @@ public class ComparableFilterTest {
 
 			@Override
 			public void run() throws Throwable {
-				new ComparableFilter<>(field, 10, 9) {};
+				new ComparableFilter<Integer>(field, 10, 9) {};
 			}
 
 		});
@@ -59,12 +59,12 @@ public class ComparableFilterTest {
 		final LogField field = mock(LogField.class);
 		final Integer from = 8;
 		final Integer to = 9;
-		ComparableFilter<Integer> filter = new ComparableFilter<>(field, from, to) {};
+		ComparableFilter<Integer> filter = new ComparableFilter<Integer>(field, from, to) {};
 
 		assertEquals(from, filter.from());
 		assertEquals(to, filter.to());
 
-		filter = new ComparableFilter<>(field, from) {};
+		filter = new ComparableFilter<Integer>(field, from) {};
 		assertEquals(from, filter.from());
 		assertNull(filter.to());
 	}
