@@ -141,7 +141,7 @@ public class LogEntry implements Comparable<LogEntry> {
 
 	boolean loadNexts_(int offset, final String line, final String id) throws FormatException {
 		if (id.length() == 0) {
-			throw new FormatException("Invalid format; missing log field ID for next to \"{0\"}",
+			throw new FormatException("Invalid format; missing log field ID for next to \"{0}\"}",
 					getId());
 		}
 
