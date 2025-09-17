@@ -216,7 +216,7 @@ public class LogField extends LogEntry {
 			if (this.enumValues != null) {
 				for (final String v : this.enumValues) {
 					if (v.equals(value)) {
-						return value;
+						return v;
 					}
 				}
 
@@ -297,7 +297,7 @@ public class LogField extends LogEntry {
 						getId(), getFieldClass());
 			}
 		} catch (final NumberFormatException nfe) {
-			throw new FormatException(nfe, "Invalid numeric field \"{0}\"; for value {1}", 
+			throw new FormatException(nfe, "Invalid numeric field \"{0}\"; for value \"{1}\"", 
 					getId(), value);
 		}
 	}
@@ -392,7 +392,7 @@ public class LogField extends LogEntry {
 				} else {
 					// Enum class
 					if (parts.length < 2) {
-						throw new FormatException("Invalid format {0}", parts[1]);
+						throw new FormatException("Invalid format \"{0}\"", parts[1]);
 					}
 	
 					if (parts.length >= 3 && Utils.allToUpperCase(parts[2])) {
