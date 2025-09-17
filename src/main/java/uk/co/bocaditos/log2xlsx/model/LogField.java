@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import uk.co.bocaditos.utils.Utils;
+
 
 /**
  * {<id>[, <class>[, f:<format>][,p:<pattern>]]}.
@@ -393,12 +395,21 @@ public class LogField extends LogEntry {
 						throw new FormatException("Invalid format {0}", parts[1]);
 					}
 	
-					// Will be used for JSON conversion
-					try {
-						elements[INDEX_CLASS] = Class.forName(parts[2]);
-					} catch (final ClassNotFoundException cnfe) {
-						throw new FormatException(cnfe, "Unsupported class {1} for log field \"{0}\"", 
-								elements[INDEX_ID], parts[1]);
+					if (parts.length >= 3 && Utils.allToUpperCase(parts[2])) {
+						this.enumValues = Arrays.copyOfRange(parts, 2, parts.length);
+						for (int index = 0; index < this.enumValues.length; ++index) {
+							this.enumValues[index] = this.enumValues[index].trim();
+						}
+						elements[INDEX_CLASS] = String.class;
+					} else {
+						// Used for JSON conversion
+						try {
+							elements[INDEX_CLASS] =  Class.forName(parts[2]);
+						} catch (final ClassNotFoundException cnfe) {
+							throw new FormatException(cnfe, 
+									"Unsupported class {1} for log field \"{0}\"", 
+									elements[INDEX_ID], parts[1]);
+						}
 					}
 				}
 
