@@ -50,6 +50,17 @@ public class FilesInputTest {
 			in.close();
 			assertNull(in.getFilename());
 		}
+
+		assertThrows(InputException.class, () -> {
+				try (final FilesInput in = new FilesInput("")) {
+					// Nothing to do
+				}
+			});
+		assertThrows(InputException.class, () -> {
+				try (final FilesInput in = new FilesInput("src/test/resources")) {
+					// Nothing to do
+				}
+			});
 	}
 
 	@Test
