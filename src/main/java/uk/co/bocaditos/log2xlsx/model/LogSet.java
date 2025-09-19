@@ -28,7 +28,7 @@ public class LogSet extends LogEntry {
 			int i;
 
 			offset = offset(LogField.END, line, 1);
-			if (offset == -1) {
+			if (offset == line.length()) {
 				throw new FormatException("Invalid format; missing log field end character \"{0}\"",
 						LogField.END);
 			}

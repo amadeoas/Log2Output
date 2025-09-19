@@ -2,6 +2,8 @@ package uk.co.bocaditos.log2xlsx.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -38,6 +40,9 @@ public class LogSetTest {
 		final LogSet set = new LogSet();
 		LogEntry entry;
 
+		assertThrows(FormatException.class, () -> {
+				set.process("something");
+		});
 		assertEquals(0, set.getNexts().size());
 		set.load(null);
 		assertEquals(0, set.getNexts().size());
@@ -51,6 +56,14 @@ public class LogSetTest {
 		assertEquals(1, entry.getNexts().size());
 		entry = entry.getNexts().get(0);
 		assertEquals(0, entry.getNexts().size());
+		assertThrows(FormatException.class, () -> {
+				set.load(LogField.START + "id]" + LogField.START);
+			});
+		set.load("] - [");
+		set.load("{id, string}");
+
+		assertNull(set.getField(null));
+		assertNull(set.getField(".SOMTHING."));
 	}
 
 	@Test

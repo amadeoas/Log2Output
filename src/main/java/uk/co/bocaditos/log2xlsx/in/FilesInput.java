@@ -25,7 +25,17 @@ public class FilesInput extends Input {
 
 		this.filenames = new String[filenames.length];
 		for (int i = 0; i < filenames.length; ++i) {
+			final File file;
+
 			this.filenames[i] = filenames[i].trim();
+			file = new File(this.filenames[i]);
+			if (!file.isFile()) {
+				throw new InputException("The file \"{0}\" is not a fale", file.getName());
+			}
+
+			if (!file.exists()) {
+				throw new InputException("The file \"{0}\" doesn't exist", file.getName());
+			}
 		}
 		next();
 	}
