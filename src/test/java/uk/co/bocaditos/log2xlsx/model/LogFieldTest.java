@@ -18,9 +18,11 @@ import org.junit.function.ThrowingRunnable;
  */
 public class LogFieldTest {
 
+	private final String ID = "id";
+
+
 	@Test
-	public void test() throws FormatException {
-		final String ID = "id";
+	public void buildTest() throws FormatException {
 		final String PATTERN = "^[a-z]{1,10}$";
 		final String[] values = {"abz", "", "a1", "aaaaaaaaaaa"};
 		LogField field = new LogField(null, ID, String.class, null, PATTERN);
@@ -43,30 +45,31 @@ public class LogFieldTest {
 				assertNotEquals(values[0], value);
 			}
 		}
-
-		field = new LogField(null, ID, int.class, null, null);
-		assertEquals(-20, field.build("-20"));
-		field = new LogField(null, ID, long.class, null, null);
-		assertEquals(-20l, field.build("-20"));
-		field = new LogField(null, ID, float.class, null, null);
-		assertEquals(-20f, field.build("-20"));
-		field = new LogField(null, ID, double.class, null, null);
-		assertEquals(-20d, field.build("-20"));
-		field = new LogField(null, ID, char.class, null, null);
-		assertEquals('c', field.build("c"));
-
+		numTests();
+		charTests();
+		enumTests();
 		field = new LogField(null, ID, LocalDateTime.class, "yyyyMMdd HH:mm:ss.SSS", null);
 		assertNotNull(field.build("20241223 10:11:10.203"));
 		assertEquals("id: \"" + ID + "\", numNexts: 0, format: " 
-				+ "\"Value(YearOfEra,4,19,EXCEEDS_PAD)Value(MonthOfYear,2)Value(DayOfMonth,2)' 'Value(HourOfDay,2)':'Value(MinuteOfHour,2)':'Value(SecondOfMinute,2)'.'Fraction(NanoOfSecond,3,3)\"", 
+				+ "\"Value(YearOfEra,4,19,EXCEEDS_PAD)Value(MonthOfYear,2)Value(DayOfMonth,2)' " 
+				+ "'Value(HourOfDay,2)':'Value(MinuteOfHour,2)':'Value(SecondOfMinute,2)'." 
+				+ "'Fraction(NanoOfSecond,3,3)\"", 
 				field.toString());
+		field = new LogField(null, ID, LocalDateTime.class, null, null);
+		assertEquals(LocalDateTime.of(2024, 12, 23, 10, 11, 10, 203000000), 
+				field.build("2024-12-23T10:11:10.203"));
 		field = new LogField(null, ID, LocalDate.class, "yyyyMMdd", null);
-		assertNotNull(field.build("20241223"));
-
-		field = new LogField(null, ID, Level.class, null, null);
-		assertEquals(Level.WARN, field.build(Level.WARN.name()));
-		assertEquals("id: \"" + ID + "\", numNexts: 0, enum: [\"ERROR\", \"WARN\", \"INFO\", \"DEBUG\"]", 
-				field.toString());
+		assertEquals(LocalDate.of(2024, 12, 23), field.build("20241223"));
+		field = new LogField(null, ID, LocalDate.class, null, null);
+		assertEquals(LocalDate.of(2024, 12, 23), field.build("2024-12-23"));
+		classEnumTests();
+		// Boolean
+		field = new LogField(null, ID, Boolean.class, null, null);
+		assertEquals(Boolean.TRUE, field.build(""  + Boolean.TRUE));
+		assertEquals(Boolean.FALSE, field.build(""  + Boolean.FALSE));
+		assertEquals(Boolean.FALSE, field.build("yes"));
+		assertEquals(Boolean.FALSE, field.build("no"));
+		jsonTests();
 	}
 
 	@Test
@@ -79,6 +82,14 @@ public class LogFieldTest {
 		assertNotNull(field.getValue(now));
 		assertNull(field.getField(""));
 		assertNotNull(new LogField(null, "ID", String.class, "yyyyMMdd", null));
+
+		assertEquals("1.22", new LogField(null, "ID", String.class, "%.2f", null).getValue(1.222));
+		assertThrows(FormatException.class, () -> {
+				new LogField(null, "ID", String.class, "%.2f", null).getValue("text");
+			});
+		assertThrows(FormatException.class, () -> {
+				new LogField(null, "ID", String.class, "%.2f", null).getValue("text");
+			});
 	}
 
 	@Test
@@ -120,6 +131,67 @@ public class LogFieldTest {
 			}
 			
 		});
+	}
+
+	private void numTests() throws FormatException {
+		LogField field;
+
+		field = new LogField(null, ID, int.class, null, null);
+		assertEquals(-20, field.build("-20"));
+		field = new LogField(null, ID, long.class, null, null);
+		assertEquals(-20l, field.build("-20"));
+		field = new LogField(null, ID, float.class, null, null);
+		assertEquals(-20f, field.build("-20"));
+		field = new LogField(null, ID, double.class, null, null);
+		assertEquals(-20d, field.build("-20"));
+
+		final LogField f = new LogField(null, ID, int.class, null, null);
+
+		assertThrows(FormatException.class, () -> {
+			f.build("12.1");
+		});
+	}
+
+	private void charTests() throws FormatException {
+		final LogField field = new LogField(null, ID, char.class, null, null);
+
+		assertEquals('c', field.build("c"));
+		assertThrows(FormatException.class, () -> {
+				field.build("more");
+			});
+	}
+
+	private void enumTests() throws FormatException {
+		final LogField field = new LogField(null, "{" + ID + ", enum, FIRST, SECOND}", 1);
+
+		assertEquals("SECOND", field.build("SECOND"));
+		assertThrows(FormatException.class, () -> {
+				field.build("THIRD");
+			});
+	}
+
+	private void classEnumTests() throws FormatException {
+		final LogField field = new LogField(null, ID, Level.class, null, null);
+
+		assertEquals(Level.WARN, field.build(Level.WARN.name()));
+		assertEquals("id: \"" + ID + "\", numNexts: 0, enum: [\"ERROR\", \"WARN\", \"INFO\", \"DEBUG\"]", 
+				field.toString());
+		assertThrows(FormatException.class, () -> {
+				field.build(".LOWEST.");
+			});
+	}
+
+	private void jsonTests() throws FormatException {
+		final String VALUE = "something";
+		final NameValue nv = new NameValue();
+		final LogField field = new LogField(null, ID, NameValue.class, null, null);
+
+		nv.setName(ID);
+		nv.setValue(VALUE);
+		assertEquals(nv, field.build("{\"name\": \"" + ID + "\", \"value\": \"" + VALUE + "\"}"));
+		assertThrows(FormatException.class, () -> {
+				field.build(VALUE);
+			});
 	}
 
 } // end class LogFieldTest

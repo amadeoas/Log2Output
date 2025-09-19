@@ -88,7 +88,7 @@ public class FilesInput extends Input {
 
 			do {
 				line = this.reader.readLine();
-				if (line != null || this.currentFile == this.filenames.length) {
+				if (line != null) {
 					++this.lineNum;
 
 					return line;

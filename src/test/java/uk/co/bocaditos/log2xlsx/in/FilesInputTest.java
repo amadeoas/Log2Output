@@ -44,13 +44,23 @@ public class FilesInputTest {
 			assertEquals("FILES", in.getId());
 			assertEquals(filename, in.getFilename());
 			assertEquals(0, in.getLineNum());
-			while (in.readLine() != null) {
-			}
+			while (in.readLine() != null) {}
 			assertNull(in.readLine());
 
 			in.close();
 			assertNull(in.getFilename());
 		}
+	}
+
+	@Test
+	public void exceptionTest() throws InputException, IOException {
+		final String filename = "src/test/resources/logs/app1.log";
+
+		assertThrows(InputException.class, () -> {
+				try (final FilesInput in = (FilesInput) Input.build(filename, "")) {
+					while (in.readLine() != null) {}
+				}
+			});
 	}
 
 } // end class FilesInputTest

@@ -1,6 +1,5 @@
 package uk.co.bocaditos.log2xlsx.model;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -85,16 +84,25 @@ public class LogField extends LogEntry {
 			return null;
 		}
 
-		if (this.format != null && this.format instanceof DateTimeFormatter) {
-			if (value instanceof LocalDateTime) {
-				final LocalDateTime datetime = (LocalDateTime) value;
-
-				return ((DateTimeFormatter) this.format).format(datetime);
-			} else if (value instanceof LocalDate) {
-				final LocalDate date = (LocalDate) value;
-
-				return ((DateTimeFormatter) this.format).format(date);
+		if (this.format != null) {
+			if (this.format instanceof DateTimeFormatter) {
+				if (value instanceof LocalDateTime) {
+					// Date and time
+					final LocalDateTime datetime = (LocalDateTime) value;
+	
+					return ((DateTimeFormatter) this.format).format(datetime);
+				} else {
+					// Date
+					final LocalDate date = (LocalDate) value;
+	
+					return ((DateTimeFormatter) this.format).format(date);
+				}
+			} else if (value instanceof Number) {
+				// Format like "%.2f"
+				return String.format((String) this.format, value);
 			}
+
+			throw new FormatException("Invalid format in field \"{0}\"", getId());
 		}
 
 		return value.toString();
@@ -219,11 +227,7 @@ public class LogField extends LogEntry {
 						return v;
 					}
 				}
-
-				throw new FormatException(
-						"Invalid format: the log field \"{0}\" value \"{1}\" is not valid for " 
-						+ "enumeration",
-						getId(), value);
+				// Should not reach this part as validation should fail
 			}
 
 			return value;
@@ -281,8 +285,9 @@ public class LogField extends LogEntry {
 					return getFieldClass()
 							.getDeclaredMethod("valueOf", String.class)
 							.invoke(null, value);
-				} catch (final IllegalAccessException | IllegalArgumentException 
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				} catch (final ReflectiveOperationException | IllegalArgumentException 
+						| SecurityException e) {
+					// Should not reach this part as the validation would first throw an exception
 					throw new FormatException(
 							"Invalid format; value \"{0}\" not of enumeration \"{1}\"",
 							value, getFieldClass());
