@@ -2,6 +2,7 @@ package uk.co.bocaditos.log2xlsx;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import uk.co.bocaditos.log2xlsx.in.Formats;
+import uk.co.bocaditos.log2xlsx.in.Input;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
 import uk.co.bocaditos.log2xlsx.in.filter.Filter;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
@@ -160,10 +163,12 @@ public class Application implements CommandLineRunner {
     	}
 
     	final Filter filter = FieldFilter.build(cmdArgs, set);
-
-    	fieldsSet.load(filter, logFileNames);
-
-    	return fieldsSet;
+    	
+    	try (final Input in = Input.build(logFileNames)) {
+    		return fieldsSet.load(filter, in);
+    	} catch (final IOException ioe) {
+			throw new InputException(ioe, "Failed to proceed inputs");
+		}
 	}
 
 	private LogOutput buildOuter(final CmdArgs cmdArgs) throws UtilsException {

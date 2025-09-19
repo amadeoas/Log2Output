@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
+import uk.co.bocaditos.log2xlsx.in.Input;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 
 
 /**
@@ -43,14 +45,14 @@ public class FieldsSetTest {
 				assertEquals("", fileSet.toString());
 				assertFalse(fileSet.equals((FieldsSet) null));
 				assertFalse(fileSet.equals(""));
-				fileSet.load(null, (String[]) null);
+				fileSet.load(null, (Input) null);
 			}
 
 		});
 	}
 
 	@Test
-	public void tests() throws FormatException {
+	public void tests() throws FormatException, InputException {
 		final LogSet logSet = FormatsTest.load();
 		final FieldsSet fileSet = FormatsTest.load(logSet);
 		FieldsSet fileSet1;
@@ -66,7 +68,7 @@ public class FieldsSetTest {
 	}
 
 	@Test
-	public void valueTest() throws FormatException {
+	public void valueTest() throws FormatException, InputException {
 		final LogSet logSet = FormatsTest.load();
 		final FieldsSet fileSet = FormatsTest.load(logSet);
 		final FieldsLine fieldsLine = fileSet.get(0).get(0);

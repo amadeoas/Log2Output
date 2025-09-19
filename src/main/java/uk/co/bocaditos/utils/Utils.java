@@ -54,6 +54,31 @@ public abstract class Utils {
 		return true;
 	}
 
+	public static String concatenate(final String... values) {
+		if (isEmpty(values)) {
+			return "";
+		}
+
+		if (values.length == 1) {
+			return values[0];
+		}
+
+		final StringBuilder buf = new StringBuilder();
+
+		for (final String value : values) {
+			if (value == null) {
+				continue;
+			}
+
+			if (buf.length() > 0) {
+				buf.append(", ");
+			}
+			buf.append(value);
+		}
+
+		return buf.toString();
+	}
+
 	private Utils() {
 	}
 

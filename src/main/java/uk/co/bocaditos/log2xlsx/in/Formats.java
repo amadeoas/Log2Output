@@ -22,18 +22,12 @@ public abstract class Formats {
 	}
 
 	public static FieldsSet process(final Filter filter, final String idFieldName, final LogSet set, 
-			final String... filenames) throws FormatException {
-		if (Utils.isEmpty(filenames)) {
-			throw new FormatException("Missing log files");
+			final Input input) throws FormatException, InputException {
+		if (input == null) {
+			throw new FormatException("Missing log inputs");
 		}
 
-		final FieldsSet fields = new FieldsSet(set, idFieldName);
-
-		for (final String filename : filenames) {
-			fields.load(filter, filename);
-		}
-
-		return fields;
+		return new FieldsSet(set, idFieldName).load(filter, input);
 	}
 
 	public static LogSet loadFiles(final String... formatFiles) throws FormatException {

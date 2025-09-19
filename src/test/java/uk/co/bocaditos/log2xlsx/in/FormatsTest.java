@@ -28,16 +28,6 @@ public class FormatsTest {
 			"[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \\{{computer}\\} [{class}] - ({id}) {message}"
 		};
 
-
-	@Test
-	public void processTest() throws FormatException {
-		final LogSet set = load();
-		final FieldsSet fields = load(set);
-
-		assertNotNull(fields);
-		assertEquals(2, fields.size());
-	}
-
 	@Test
 	public void loadLinesTest() throws FormatException {
 		final String[][] formatLines = {
@@ -138,7 +128,7 @@ public class FormatsTest {
 		
 					@Override
 					public void run() throws Throwable {
-						Formats.process(null, null, set, (String[]) null);
+						Formats.process(null, null, set, null);
 					}
 					
 				});
@@ -152,14 +142,16 @@ public class FormatsTest {
 		return Formats.load(FormatsTest.lines);
 	}
 
-	public static FieldsSet load(final LogSet set) throws FormatException {
+	public static FieldsSet load(final LogSet set) throws FormatException, InputException {
 		return load("id", set);
 	}
 
 	public static FieldsSet load(final String idFieldName, final LogSet set) 
-			throws FormatException {
-		return Formats.process(null, idFieldName, set, 
-				"src/test/resources/logs/app1.log", "src/test/resources/logs/app2.log");
+			throws FormatException, InputException {
+		final Input in = Input.build("src/test/resources/logs/app1.log", 
+				"src/test/resources/logs/app2.log");
+
+		return Formats.process(null, idFieldName, set, in);
 	}
 
 } // end class FormatsTest

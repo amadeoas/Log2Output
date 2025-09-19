@@ -1,12 +1,10 @@
 package uk.co.bocaditos.log2xlsx.model;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.bocaditos.log2xlsx.in.Input;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
 import uk.co.bocaditos.log2xlsx.in.filter.Filter;
 import uk.co.bocaditos.utils.Utils;
@@ -70,45 +68,32 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 
 	/**
 	 * Updates from log lines in specified file.
+	 * It doesn't close the input.
 	 * 
 	 * @param filter a filter, may be null.
-	 * @param logFilenames a list of log files.
+	 * @param in a list of log files.
 	 * @throws FormatException when .
 	 */
-	public void load(Filter filter, final String... logFilenames) 
-			throws FormatException {
+	public FieldsSet load(Filter filter, final Input in) throws FormatException, InputException {
 		if (filter == null) {
 			filter = FieldFilter.build();
 		}
 
-		if (Utils.isEmpty(logFilenames)) {
-			throw new FormatException("Missing the log files");
+		if (in == null) {
+			throw new FormatException("Missing the inputs");
 		}
 
-		for (String logFilename : logFilenames) {
-			int lineNum = 0;
-	
-			logFilename = logFilename.trim();
-			try (final BufferedReader in = new BufferedReader(new FileReader(logFilename, StandardCharsets.UTF_8))) {
-				String line;
-	
-				while ((line = in.readLine()) != null) {
-					final FieldsLine f = this.set.process(line);
+		String line;
 
-					if (f != null && filter.valid(f)) {
-						add(f);
-					}
-					++lineNum;
-				}
-			} catch (final FormatException fe) {
-				throw new FormatException(fe, 
-						"Failed to load logs from file \"{0}\" at line {2, number}: {1}", 
-						logFilename, fe.getMessage(), lineNum);
-			} catch (final IOException ioe) {
-				throw new FormatException(ioe, "Failed to read file \"{0}\" at line {1, number}", 
-						logFilenames, lineNum);
+		while ((line = in.readLine()) != null) {
+			final FieldsLine f = this.set.process(line);
+	
+			if (f != null && filter.valid(f)) {
+				add(f);
 			}
 		}
+
+		return this;
 	}
 
 	@Override
@@ -173,7 +158,7 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 			return false;
 		}
 
-		final String id = (String) value(fields, this.idFieldName);
+		final Object id = value(fields, this.idFieldName);
 
 		if (id != null) {
 			for (int index = (size() - 1); index >= 0; --index) {
@@ -185,7 +170,7 @@ public class FieldsSet extends ArrayList<FieldsGroup> implements BaseModelInterf
 			}
 
 			// New one
-			return super.add(new FieldsGroup(id, fields));
+			return super.add(new FieldsGroup(id.toString(), fields));
 		}
 
 		return false;
