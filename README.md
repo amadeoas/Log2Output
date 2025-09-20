@@ -55,6 +55,7 @@ Example HTML output:
 
 # Usage
 java \-jar Log2Output-&lt;version:?.??.???&gt;.jar \-[formats](#formats) &lt;filename&gt; \-[idFieldName](#idFieldName) &lt;idFieldName&gt; \-[logs](#logs) &lt;filenames&gt; \-[out](#out) &lt;filename&gt; \[-[filter](#filter) &lt;fieldname&gt; &lt;value/from&gt; \[&lt;to&gt;\]\] \[\-[sort](#sort) &lt;field names&gt;\] \[\-[appName](#appName) &lt;name&gt;\] \[\-[workSheetVersion](#workSheetVersion) &lt;version&gt;\] \[\-[workSheetName](#workSheetName) &lt;name&gt;\] \[\-[hBorderStyle](#hBorderStyle) &lt;style&gt;\] \[\-[hFontName](#hFontName) &lt;size&gt;\] \[-[hFontSize](#hFontSize) &lt;size&gt;\] \[-[hFontColour](#hFontColour) &lt;colour&gt;\] \[\-[hFontWrapTxt](#hFontWrapTxt) &lt;wrap&gt;\] \[\-[hFontFillColuor](#hFontFillColuor) &lt;colour&gt;\] \[\-[hFontBold](#hFontBold) &lt;isBold&gt;\] \[\-[borderStyle](#borderStyle) &lt;style&gt;\] \[\-[fontName](#fontName) &lt;size&gt;\] \[\-[fontSize](#fontSize) &lt;size&gt;\] \[\-[fontColour](#fontColour) &lt;colour&gt;\] \[-[fontWrapTxt](#fontWrapTxt) &lt;wrap&gt;\] \[\-[fontFillColuor](#fontFillColuor) &lt;colour&gt;\] \[\-[fontBold](#fontBold) &lt;isBold&gt;\] \[\-[dir4template](#dir4template) &lt;dir&gt;\] \[\-[template](#template) &lt;name&gt;\] \[\-[encoding](#encoding) &lt;name&gt;\] \[\-[freemarkerVersion](#freemarkerVersion) &lt;name&gt;\] \[\-[maxCellLength](#maxCellLength) &lt;max_length&gt;\] \[\-[htmlDefaultSize](#htmlDefaultSize) &lt;size&gt;\] \[\-[htmlSize](#htmlSize) &lt;size&gt;\]
+\[\-[jschKnownHost](#jschKnownHost) &lt;hos&gt;\] \[\-[jschPassword](#jschPassword) &lt;filename&gt;\] \[\-[jschUsername](#jschUsername) &lt;username&gt;\] \[\-[jschDir](#jschDir) &lt;dir&gt;\] \[\-[jschFiles](#jschFiles) &lt;filenames&gt;\]
 
 <br>
 <a name="formats"></a>
@@ -260,6 +261,40 @@ Example:
 
 	size
 		A size, e.g. 150px.
+
+[Jsch](#Jsch)<br />
+
+<a name="jschKnownHost"></a>
+ [-<b>jschKnownHost</b> &lt;hos&gt;]
+	Sets the host to JSCH.
+
+	hos
+		The name of the host.
+<a name="jschPassword"></a>
+ [-<b>jschPassword</b> &lt;filename&gt;]
+	Sets the know hosts. Default /Users/john/.ssh/known_hosts.
+
+	filename
+		The name of the knowhots.
+<a name="jschUsername"></a>
+ [-<b>jschUsername</b> &lt;username&gt;]
+	Sets the user's name.
+
+	username
+		The user's name.
+<a name="jschDir"></a>
+ [-<b>jschDir</b> &lt;dir&gt;]
+	Sets the directory from where to reade the loag files.
+
+	dir
+		The directory.
+<a name="jschDir"></a>
+ [-<b>jschFiles</b> &lt;filenames&gt;]
+	Sets the log files to read as comma separated list if jschDir has not been set o
+	otherwise the starting text in the name of the files to read from the set directory.
+
+	filenames
+		The directory.
 
 ---
 

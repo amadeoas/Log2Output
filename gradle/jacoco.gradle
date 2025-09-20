@@ -32,7 +32,8 @@ jacocoTestCoverageVerification {
 				value = 'COVEREDRATIO'
 				minimum = .83
 			}
-			excludes = ['uk.co.bocaditos.bootstrap.*']
+			excludes = ['uk.co.bocaditos.bootstrap.*',
+				'uk.co.bocaditos.log2xlsx.in.jsch.JschOutput']
 		}
 	}
 }
