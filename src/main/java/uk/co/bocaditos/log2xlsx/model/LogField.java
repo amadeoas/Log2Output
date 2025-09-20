@@ -312,7 +312,7 @@ public class LogField extends LogEntry {
 			throws FormatException {
 		String value;
 
-		if (getNexts() == null || getNexts().isEmpty()) {
+		if (Utils.isEmpty(getNexts())) {
 			value = line.substring(offset);
 
 			return fields.add(new Field(this, value));
@@ -358,7 +358,7 @@ public class LogField extends LogEntry {
 		}
 	}
 
-	private Object[] set_(final String value) throws FormatException {
+	Object[] set_(final String value) throws FormatException {
 		final Object[] elements = {null, null, null, null};
 		final String[] parts = split(value, ",");
 
@@ -387,34 +387,26 @@ public class LogField extends LogEntry {
 			} else if ("byte".equals(type)) {
 				elements[INDEX_CLASS] = byte.class;
 			} else if ("enum".equals(type)) {
-				if (parts.length > 3) {
+				if (parts.length < 3) {
+					throw new FormatException("Invalid format \"{0}\"", parts[1]);
+				}
+
+				// Enum class
+				if (parts[2].indexOf(".") == -1) {
 					// Enum of fixed value - verification type
 					this.enumValues = Arrays.copyOfRange(parts, 2, parts.length);
 					for (int index = 0; index < this.enumValues.length; ++index) {
 						this.enumValues[index] = this.enumValues[index].trim();
 					}
 					elements[INDEX_CLASS] = String.class;
-				} else {
-					// Enum class
-					if (parts.length < 2) {
-						throw new FormatException("Invalid format \"{0}\"", parts[1]);
-					}
-	
-					if (parts.length >= 3 && Utils.allToUpperCase(parts[2])) {
-						this.enumValues = Arrays.copyOfRange(parts, 2, parts.length);
-						for (int index = 0; index < this.enumValues.length; ++index) {
-							this.enumValues[index] = this.enumValues[index].trim();
-						}
-						elements[INDEX_CLASS] = String.class;
-					} else {
-						// Used for JSON conversion
-						try {
-							elements[INDEX_CLASS] =  Class.forName(parts[2]);
-						} catch (final ClassNotFoundException cnfe) {
-							throw new FormatException(cnfe, 
-									"Unsupported class {1} for log field \"{0}\"", 
-									elements[INDEX_ID], parts[1]);
-						}
+				} else if (parts.length == 3) {
+					// Used for JSON conversion
+					try {
+						elements[INDEX_CLASS] = Class.forName(parts[2]);
+					} catch (final ClassNotFoundException cnfe) {
+						throw new FormatException(cnfe, 
+								"Unsupported class {1} for log field \"{0}\"", 
+								elements[INDEX_ID], parts[1]);
 					}
 				}
 
@@ -422,7 +414,7 @@ public class LogField extends LogEntry {
 			} else if (type.startsWith("class:")) {
 				// Will be used for Json conversion
 				try {
-					elements[INDEX_CLASS] = Class.forName(parts[1]);
+					elements[INDEX_CLASS] = Class.forName(parts[1].substring("class:".length()));
 				} catch (final ClassNotFoundException cnfe) {
 					throw new FormatException(cnfe, "Unsupported class {0}", parts[1]);
 				}
@@ -511,26 +503,13 @@ public class LogField extends LogEntry {
 					"Invalid format; missing log field start character \"{0}\"", START);
 		}
 
-		int i = offset(END, value, offset);
-
-		if (i == -1) {
-			throw new FormatException(
-					"Invalid format; missing log field end character \"{0}\"", END);
-		}
-
-		int j = value.indexOf(SEPARATOR, offset);
-
-		if (j == -1 || j >= i) {
-			j = i;
-		}
-
-		return value.substring(offset, j).trim();
+		return getId_(value, offset);
 	}
 
 	protected static String getId_(final String value, int offset) throws FormatException {
 		int i = offset(END, value, offset);
 
-		if (i == -1) {
+		if (i == value.length()) {
 			throw new FormatException(
 					"Invalid format; missing log field end character \"{0}\"", END);
 		}
@@ -558,7 +537,7 @@ public class LogField extends LogEntry {
 		return value;
 	}
 
-	private String[] split(String value, final String character) {
+	static String[] split(String value, final String character) {
 		if (value == null) {
 			return null;
 		}

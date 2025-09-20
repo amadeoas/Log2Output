@@ -3,6 +3,7 @@ package uk.co.bocaditos.utils.cmd;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class CmdArgsTest {
 
 		args = new String[] {CmdArgs.START + "a", "abc", CmdArgs.START + "b", "11",
 				CmdArgs.START + "d", "1.1", CmdArgs.START + "f", "true",
-				CmdArgs.START + "g", "c"};
+				CmdArgs.START + "g", "c",
+				CmdArgs.START + "value", Level.ALL.name()};
 		cmdArgs = new CmdArgs(args);
 		assertEquals("abc", cmdArgs.getParam("a", "default"));
 		assertEquals(11, cmdArgs.getParam("b", 10));
@@ -59,6 +61,29 @@ public class CmdArgsTest {
 				assertNotEquals(0, index);
 			}
 		}
+		assertEquals(Level.ALL, cmdArgs.getParam("value", Level.NONE));
+		assertEquals(Level.NONE.name(), cmdArgs.getParam("value1", Level.NONE.name()));
+		assertEquals("17", cmdArgs.getParam("javaSpecificationVersion", (String) null));
+		assertEquals('2', cmdArgs.getParam("d", 0, '2'));
+
+		final CmdArgs cmdArgs1 = new CmdArgs(args);
+
+		assertThrows(CmdException.class, () -> {
+				cmdArgs1.getArgument("java.specification.version", 0);
+			});
+		assertThrows(CmdException.class, () -> {
+			cmdArgs1.getArgument("d", 1);
+		});
 	}
 
 } // end class CmdArgsTest
+
+
+/**
+ * Example of enumeration.
+ */
+enum Level {
+	NONE,
+	ALL;
+
+} // end enum Level

@@ -22,6 +22,24 @@ public class LogFieldTest {
 
 
 	@Test
+	public void test() {
+		assertThrows(FormatException.class, () -> {
+				LogField.getId("", -1);
+			});
+		assertThrows(FormatException.class, () -> {
+			LogField.getId(" ", 1);
+		});
+		assertThrows(FormatException.class, () -> {
+			LogField.getId(" ", 0);
+		});
+		assertThrows(FormatException.class, () -> {
+			LogField.getId_(LogField.START + "value", 1);
+		});
+		
+		assertNull(LogField.split(null, ""));
+	}
+
+	@Test
 	public void buildTest() throws FormatException {
 		final String PATTERN = "^[a-z]{1,10}$";
 		final String[] values = {"abz", "", "a1", "aaaaaaaaaaa"};
@@ -70,6 +88,17 @@ public class LogFieldTest {
 		assertEquals(Boolean.FALSE, field.build("yes"));
 		assertEquals(Boolean.FALSE, field.build("no"));
 		jsonTests();
+
+		final LogField field1 = new LogField(null, ID, Boolean.class, null, null);
+
+		assertThrows(FormatException.class, () -> {
+				field1.set_("value, enum");
+			});
+		field1.set_("value, enum, uk.co.bocaditos.log2xlsx.model.Level");
+		assertThrows(FormatException.class, () -> {
+				field1.set_("value, class:uk.co.bocaditos.log2xlsx.model.noTing");
+			});
+		assertNotNull(field1.set_("value, class:uk.co.bocaditos.log2xlsx.model.LogFieldTest"));
 	}
 
 	@Test

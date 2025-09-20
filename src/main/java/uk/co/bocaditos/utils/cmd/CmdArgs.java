@@ -99,7 +99,7 @@ public class CmdArgs {
 			return defaultValue;
 		}
 
-		return (E) defaultValue.valueOf(defaultValue.getClass(), argName);
+		return (E) defaultValue.valueOf(defaultValue.getClass(), value);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class CmdArgs {
 				value = getPropertyValue(argName);
 			}
 
-			return value == null ? defaultValue : value;
+			return (value == null) ? defaultValue : value;
 		}
 	}
 

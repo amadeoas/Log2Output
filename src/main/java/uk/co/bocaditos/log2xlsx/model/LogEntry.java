@@ -192,7 +192,7 @@ public class LogEntry implements Comparable<LogEntry> {
 	}
 
 	static String getId(String value) {
-		int offset = value.indexOf(',');
+		final int offset = value.indexOf(',');
 
 		if (offset != -1) {
 			value = value.substring(offset);
@@ -214,7 +214,8 @@ public class LogEntry implements Comparable<LogEntry> {
 	}
 
 	protected static String getId(String value, int offset) throws FormatException {
-		if (offset < 0 || (offset > 0 && value.charAt(offset - 1) != LogField.END)) {
+		if (offset < 0 || value == null 
+				|| (offset > 0 && value.charAt(offset - 1) != LogField.END)) {
 			throw new FormatException(
 					"Invalid format; constant log entry is missing start delimiter \"{0}\"",
 					LogField.END);
@@ -226,9 +227,7 @@ public class LogEntry implements Comparable<LogEntry> {
 	protected static String getId_(String value, int offset) throws FormatException {
 		int i = offset(LogField.START, value, offset);
 
-		if (i != -1) {
-			value = value.substring(offset, i);
-		}
+		value = value.substring(offset, i);
 		value = removeAll(value, END);
 
 		return removeAll(value, START);
