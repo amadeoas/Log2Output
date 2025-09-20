@@ -30,7 +30,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = .78
+				minimum = .83
 			}
 			excludes = ['uk.co.bocaditos.bootstrap.*']
 		}

@@ -3,6 +3,7 @@ package uk.co.bocaditos.log2xlsx.model;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import uk.co.bocaditos.utils.Utils;
 import uk.co.bocaditos.utils.model.BaseModel;
 import uk.co.bocaditos.utils.model.BaseModelInterface;
 
@@ -14,7 +15,7 @@ import uk.co.bocaditos.utils.model.BaseModelInterface;
 public class FieldsLine extends ArrayList<Field> implements BaseModelInterface<FieldsLine> {
 
 	public Object get(final String fieldName) {
-		if (fieldName == null || fieldName.isEmpty()) {
+		if (Utils.isEmpty(fieldName)) {
 			return null;
 		}
 

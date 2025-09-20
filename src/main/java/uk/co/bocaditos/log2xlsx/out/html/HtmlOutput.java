@@ -109,20 +109,10 @@ public class HtmlOutput implements LogOutput {
 	        final Configuration config = new Configuration(new Version(Integer.parseInt(version[0]),
 	        		Integer.parseInt(version[1]), Integer.parseInt(version[2])));
 
-	        if (!dir4template.exists()) {
-	        	throw new OutException("Missing directory for template \"{0}\"", 
-	        			dir4template.getPath());
-	        }
-
-	        if (!dir4template.isDirectory()) {
-	        	throw new OutException("Provided directory for template \"{0}\" is not a directory", 
-	        			dir4template.getPath());
-	        }
-
 	        try {
 	        	config.setSharedVariable("JSON", config.getObjectWrapper().wrap(new ObjectMapper()));
 	        } catch (final TemplateModelException tme) {
-	        	throw new OutException(tme, "Failed to configure freemrker");
+	        	throw new OutException(tme, "Failed to configure freemarker");
 	        }
 			config.setDirectoryForTemplateLoading(dir4template);
 	        config.setDefaultEncoding(DEFAULT_ENCODING);

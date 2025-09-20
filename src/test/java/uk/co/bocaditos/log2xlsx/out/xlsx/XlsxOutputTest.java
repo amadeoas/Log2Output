@@ -1,5 +1,7 @@
 package uk.co.bocaditos.log2xlsx.out.xlsx;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.File;
 
 import org.junit.Test;
@@ -26,18 +28,25 @@ public class XlsxOutputTest {
 				+ "request,headers,body"
 			};
 		final XlsxOutput out = build(args);
-		final CmdArgs cdmArgs = new CmdArgs(args);
 		final FieldsSet fields = FormatsTest.load(set);
+		final CmdArgs cdmArgs = new CmdArgs(args);
 
 		final File file = new File(cdmArgs.getArgument(LogOutput.ARG_OUT));
 
 		if (file.exists()) {
 			file.delete();
 		}
+
 		out.write(cdmArgs, fields);
 		if (file.exists()) {
 			file.delete();
 		}
+
+		args[1] = ".";
+		final CmdArgs cdmArgs1 = new CmdArgs(args);
+		assertThrows(UtilsException.class, () -> {
+				out.write(cdmArgs1, fields);
+			});
 	}
 
 	private XlsxOutput build(final String... args) {
@@ -46,12 +55,12 @@ public class XlsxOutputTest {
 				// Headers
 				XlsxOutput.DEFAULT_HEADER_FONT_NAME, XlsxOutput.DEFAULT_HEADER_FONT_SIZE, 
 				XlsxOutput.DEFAULT_HEADER_FONT_COLOUR, XlsxOutput.DEFAULT_HEADER_FONT_FILL_COLOUR, 
-				XlsxOutput.DEFAULT_FONT_WRAP_TXT, XlsxOutput.DEFAULT_HEADER_FONT_BOLD,
+				XlsxOutput.DEFAULT_FONT_WRAP_TXT, false,
 				XlsxOutput.DEFAULT_HEADER_BORDER_STYLE,
 				// Rows
 				XlsxOutput.DEFAULT_FONT_NAME, XlsxOutput.DEFAULT_FONT_SIZE, 
 				XlsxOutput.DEFAULT_FONT_COLOUR, XlsxOutput.DEFAULT_FONT_FILL_COLOUR, 
-				XlsxOutput.DEFAULT_FONT_WRAP_TXT, XlsxOutput.DEFAULT_FONT_BOLD,
+				XlsxOutput.DEFAULT_FONT_WRAP_TXT, true,
 				XlsxOutput.DEFAULT_BORDER_STYLE);
 	}
 
