@@ -21,6 +21,7 @@ import uk.co.bocaditos.log2xlsx.out.LogOutput;
 import uk.co.bocaditos.log2xlsx.out.OutException;
 import uk.co.bocaditos.utils.UtilsException;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
+import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
 
@@ -205,7 +206,7 @@ public class XlsxOutput implements LogOutput {
 		}
 	}
 
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(ARG_APP_NAME, "Sets the tool name, default \"" + DEFAULT_APP_NAME + "\".", 
 				false, new CmdHelpArgParamDef("name", "The name of the tool.", true));
 		new CmdHelpArgDef(ARG_WORK_SHEET_VERSION, "Sets the work sheet version, default \"" 

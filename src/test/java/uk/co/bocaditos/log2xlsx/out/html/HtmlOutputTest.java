@@ -4,13 +4,18 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
+import freemarker.template.TemplateException;
 import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
+import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
 import uk.co.bocaditos.log2xlsx.out.OutException;
@@ -23,6 +28,54 @@ import uk.co.bocaditos.utils.cmd.CmdArgs;
  * JUnit tests for class HtmlOutput.
  */
 public class HtmlOutputTest {
+
+	@Test
+	public void exceptionsTest() throws FormatException, InputException {
+		final String[] args = {
+				CmdArgs.START + Application.ARG_FORMATS,	 "src/test/resources/formats.txt",
+				CmdArgs.START + Application.ARG_ID_FIELD_NAME, "id",
+				CmdArgs.START + Application.ARG_LOGS, 		 "xxx.log",
+				CmdArgs.START + HtmlOutput.ARG_OUT,			 "testOut.html",
+				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE, "src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
+				// Table sizes
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Datetime", 	"190px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Computer", 	"120px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Class", 	"auto",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Id", 		"60px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Request", 	"auto",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Headers", 	"190px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Body", 		"450px",
+				CmdArgs.START + HtmlOutput.ARG_HTML_SIZE + "Message",	"200px",
+				CmdArgs.START + LogOutput.ARG_HEADERS_SORT,				"datetime,computer,class," 
+					+ "id,message,request,headers,body",
+				CmdArgs.START + HtmlOutput.ARG_HTML_MAX_CELL_LENGTH, "24"
+		};
+		final CmdArgs cmdArgs = new CmdArgs(args);
+		final LogSet set = FormatsTest.load();
+		final FieldsSet fields = FormatsTest.load(set);
+		final HtmlOutput out = new HtmlOutput("Log2Output", "0.00.000") {
+
+				private int count = 0; 
+
+
+				@Override
+				Writer buildWrite(final String filename) throws Exception {
+					if (++this.count == 1) {
+						throw new IOException("Testing!");
+					}
+
+					throw new TemplateException(null);
+				}
+
+			};
+
+		assertThrows(UtilsException.class, () -> {
+				out.write(cmdArgs, fields);
+			});
+		assertThrows(UtilsException.class, () -> {
+			out.write(cmdArgs, fields);
+		});
+	}
 
 	@Test
 	public void test() throws UtilsException {

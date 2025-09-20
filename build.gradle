@@ -1,17 +1,27 @@
+// Java application
 plugins {
 	id 'java'
+	id 'application'
+	id 'maven-publish'
 	id 'eclipse'
+	id 'jacoco'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'jacoco'
 }
+apply from: "${rootDir}/gradle/jacoco.gradle"
+
 
 def props = new Properties()
 file("src/main/resources/application.properties").withInputStream { props.load(it) }
 
 group = 'uk.co.bocaditos'
 version = props.getProperty("app.version")
+def title = props.getProperty("app.title")
+def description = props.getProperty("app.description")
+mainClassName = "${group}.log2xlsx.Application"
 sourceCompatibility = '17'
+
+println("Application ${project.name} v${version}")
 
 repositories {
 	mavenLocal()
@@ -34,6 +44,9 @@ dependencies {
 	implementation 'org.dhatim:fastexcel-reader:0.19.0'
     implementation 'org.dhatim:fastexcel:0.19.0'
 
+	implementation 'io.fabric8:openshift-client:7.4.0'
+//	implementation 'com.openshift:openshift-restclient-java:9.0.5.Final'
+//	implementation 'com.openshift:openshift-java-client:2.7.0.Final'
 	implementation 'org.freemarker:freemarker:2.3.34'
 //	implementation 'co.uk.bocaditos:CdmLib:1.00.000'
 
@@ -41,29 +54,40 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-check.dependsOn jacocoTestCoverageVerification
+build {
+	dependsOn compileJava, compileTestJava, test, jar
+}
+
+// Create a single Jar with all dependencies
+task fatJar(type: Jar) {
+//	classifier = 'fat'
+	manifest {
+		attributes 'Implementation-Title': title,
+			'Implementation-Version': version,
+			'Main-Class': mainClassName
+	}
+	archiveBaseName = "${project.name}-${version}.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from {
+		configurations.runtimeClasspath.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+	with jar
+
+	doLast {
+		print "Far jar ${archiveName} was built"
+	}
+}
 
 javadoc {
     destinationDir = file("${buildDir}/libs/javadoc")
 }
-
-test {
-	jacoco {
-		enabled = true
-	}
-	finalizedBy jacocoTestReport
-}
-
+/*
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-eclipse {
-  classpath {
-    downloadJavadoc = true
-    downloadSources = true
-  }
-}
+*/
 
 tasks.processResources {
 	filesMatching("**/application.properties") {expand(project.properties)}
@@ -73,40 +97,69 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-jacocoTestReport {
-	group 'documentation'
-    reports {
-        xml.required = true
-        csv.required = false
-        html.destination file("${buildDir}/reports/jacoco")
-    }
-    afterEvaluate {
-    	getClassDirectories().setFrom(files(classDirectories.files.collect {
-    		fileTree(dir: it,
-    			exclude: [])
-    	}))
-    }
-    finalizedBy jacocoTestCoverageVerification
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-        	element = 'CLASS'
-            limit {
-                counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.70
-            }
-            excludes = ['uk.com.bocaditos.test.*']
-        }
-    }
-}
-
-build {
-	dependsOn compileJava, compileTestJava, test, jar
+task testReportZip(type: Zip, dependsOn: jacocoTestReport) {
+	archiveClassifier = 'testreport'
+	from 'build/reports/'
+	include '*'
+	include '*/**' // to include content of other folders present inside the repository directory
+	archiveBaseName = "${project.name}-${version}-testreport.zip"
+	destinationDirectory = file('build/libs/')
 }
 
 jar {
-	enabled = true
+	manifest {
+		attributes 'Implementation-Title': title,
+			'Implementation-Version': version,
+			'Main-Class': mainClassName
+	}
+}
+
+publishing {
+	publications {
+        mavenJava(MavenPublication) {
+            pom {
+            	name = title
+            	description = description
+            	url = 'bocaditos.co.uk/apps/Log2Output'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'AAS'
+                        name = 'Amadeo Asco Signes'
+                        email = 'a.asco@bocaditos.co.uk'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/amadeoas/Log2Output.git'
+                    developerConnection = 'scm:git:ssh://github.com/amadeoas/Log2Output.git'
+                    url = 'http://github.com/amadeoas/Log2Output'
+                }
+            }
+		}
+	}
+
+	repositories {
+		
+	}
+}
+
+eclipse {
+  classpath {
+    downloadJavadoc = true
+    downloadSources = true
+  }
+}
+/*
+artifact {
+	archives testReportZip
+}*/
+
+jacoco {
+	toolVersion = "0.8.13"
+	reportsDirectory = file("$buildDir/customJacocoReportDir/")
 }

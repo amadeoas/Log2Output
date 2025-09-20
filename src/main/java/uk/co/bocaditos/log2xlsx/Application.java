@@ -29,6 +29,7 @@ import uk.co.bocaditos.log2xlsx.out.xlsx.XlsxOutput;
 import uk.co.bocaditos.utils.UtilsException;
 import uk.co.bocaditos.utils.cmd.CdmHelp;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
+import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
 
@@ -92,7 +93,7 @@ public class Application implements CommandLineRunner {
 		process(cmdArgs);
 	}
 
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(ARG_FORMATS, "Sets the log formats to use.", true, 
 				new CmdHelpArgParamDef("filename", "The format filename",
 					true));

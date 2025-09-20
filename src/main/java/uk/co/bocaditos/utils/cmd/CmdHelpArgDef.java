@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.bocaditos.utils.ToString;
+import uk.co.bocaditos.utils.Utils;
+
 
 /**
  * Command Line help argument definition.
  * 
  * @author aasco
  */
-public class CmdHelpArgDef {
+public class CmdHelpArgDef implements ToString {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CmdHelpArgDef.class);
 	
@@ -24,35 +27,44 @@ public class CmdHelpArgDef {
 	/**
 	 * Builds CMD help for argument.
 	 * 
-	 * @param name the argument name.
-	 * @param description the description.
+	 * @param name the argument name. It's required.
+	 * @param description the description. It's required.
+	 * @throws CmdException when missing required constructor values.
 	 */
-	public CmdHelpArgDef(final String name, final String description) {
-		this(name, description, false, (CmdHelpArgParamDef[]) null);
+	public CmdHelpArgDef(final String name, final String description) throws CmdException {
+		this(name, description, false);
 	}
 
 	/**
 	 * Builds CMD help for argument.
 	 * 
-	 * @param name the argument name.
-	 * @param description the description.
-	 * @param required true if parameter is required.
+	 * @param name the argument name. It's required.
+	 * @param description the description. It's required.
+	 * @throws CmdException when missing required constructor values.
 	 */
-	public CmdHelpArgDef(final String name, final String description, final boolean required) {
+	public CmdHelpArgDef(final String name, final String description, final boolean required) 
+			throws CmdException {
 		this(name, description, required, (CmdHelpArgParamDef[]) null);
 	}
 
 	/**
 	 * Builds CMD help for argument.
 	 * 
-	 * @param name the argument name.
-	 * @param description the description.
+	 * @param name the argument name. It's required.
+	 * @param description the description. It's required.
 	 * @param required true if argument is required.
 	 * @param params list of parameters for this argument.
+	 * @throws CmdException when missing required constructor values.
 	 */
 	public CmdHelpArgDef(final String name, final String description, final boolean required, 
-			final CmdHelpArgParamDef... params) {
+			final CmdHelpArgParamDef... params) throws CmdException {
+		if (Utils.isEmpty(name)) {
+			throw new CmdException("Missing argument name");
+		}
 		this.name = name;
+		if (Utils.isEmpty(description)) {
+			throw new CmdException("Missing argument description for argument \"{0}\"", this.name);
+		}
 		this.description = CdmHelp.build(description, CdmHelp.DEFAULT_MAX_LINE_SIZE);
 		this.required = required;
 		this.params = params;
@@ -79,6 +91,13 @@ public class CmdHelpArgDef {
 	 */
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * @return the description of this argument.
+	 */
+	public String getDescription() {
+		return this.description;
 	}
 
 	/**
@@ -116,11 +135,9 @@ public class CmdHelpArgDef {
 	 */
 	public StringBuilder buildBody(final StringBuilder buf) {
 		buildHeader(buf);
-		if (this.description != null && this.description.length() > 0) {
-			buf.append("\n\t");
-			buf.append(this.description);
-			buf.append('\n');
-		}
+		buf.append("\n\t");
+		buf.append(this.description);
+		buf.append('\n');
 		if (this.params != null) {
 			for (final CmdHelpArgParamDef def : this.params) {
 				def.buildBody(buf);
@@ -141,8 +158,14 @@ public class CmdHelpArgDef {
 	 * @param buf the buffer.
 	 * @return the buffer.
 	 */
+	@Override
 	public StringBuilder toString(final StringBuilder buf) {
-		return buildHeader(buf);
+		Utils.append(buf, "name", this.name);
+		Utils.append(buf, "description", this.description);
+		Utils.append(buf, "required", this.required);
+		Utils.append(buf, "params", this.params);
+
+		return buf;
 	}
 
 } // end class CmdArgDef

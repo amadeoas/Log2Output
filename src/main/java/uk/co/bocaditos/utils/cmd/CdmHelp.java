@@ -108,8 +108,9 @@ public class CdmHelp {
 
 	/**
 	 * Initialisation of the help.
+	 * @throws CmdException when missing values.
 	 */
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(PARAM_HELP, DESC_HELP);
 		new CmdHelpArgDef(PARAM_HELP1, DESC_HELP);
 	}

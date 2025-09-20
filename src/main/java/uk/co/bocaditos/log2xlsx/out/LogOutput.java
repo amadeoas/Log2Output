@@ -4,6 +4,7 @@ import uk.co.bocaditos.log2xlsx.model.FieldNames;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.utils.UtilsException;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
+import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
 
@@ -24,7 +25,7 @@ public interface LogOutput {
 	 */
 	public void write(CmdArgs args, FieldsSet set) throws UtilsException;
 
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(ARG_OUT, "Sets the output file name.", true, 
 				new CmdHelpArgParamDef("filename", "A filename for the outpur.", true));
 		new CmdHelpArgDef(ARG_HEADERS_SORT, "Sets the order of the columns based on the fields " 

@@ -60,7 +60,7 @@ public class HtmlOutput implements LogOutput {
 		variables.put("headers", update(cmdArgs, LogOutput.sorted(cmdArgs, set)));
 		variables.put("info", info);
 		variables.put("maxCellLength", cmdArgs.getParam(ARG_HTML_MAX_CELL_LENGTH, DEFAULT_HTML_MAX_CELL_LENGTH));
-		try (final Writer writer = new FileWriter(filename)) {
+		try (final Writer writer = buildWrite(filename)) {
 			final Template temp 
 					= config.getTemplate(cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE));
 
@@ -68,14 +68,14 @@ public class HtmlOutput implements LogOutput {
 		} catch (final TemplateException te) {
 			throw new OutException(te, "Issue with template file \"{0}\": {1}", 
 					cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE), te.getMessage());
-		} catch (final IOException ioe) {
+		} catch (final Exception ioe) {
 			throw new OutException(ioe, 
 					"Access to template file \"{0}\" or output file \"{1}\": {2}", 
 					cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE), filename, ioe.getMessage());
 		}
 	}
 
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(ARG_DIR4TEMPLATE, "Sets the template directory, default \"" 
 				+ DEFAULT_DIR4TEMPLATE + "\".", 
 				false, new CmdHelpArgParamDef("dir", "the template directory.", true));
@@ -121,7 +121,7 @@ public class HtmlOutput implements LogOutput {
 
 	        try {
 	        	config.setSharedVariable("JSON", config.getObjectWrapper().wrap(new ObjectMapper()));
-	        } catch (TemplateModelException tme) {
+	        } catch (final TemplateModelException tme) {
 	        	throw new OutException(tme, "Failed to configure freemrker");
 	        }
 			config.setDirectoryForTemplateLoading(dir4template);
@@ -137,6 +137,10 @@ public class HtmlOutput implements LogOutput {
 			throw new OutException(ioe, "Failed to set directory for template to \"{0}\"", 
 					dir4template.getPath());
 		}
+	}
+
+	Writer buildWrite(final String filename) throws Exception {
+		return new FileWriter(filename);
 	}
 
 	private FieldNames update(final CmdArgs cmdArgs, final FieldNames names) {

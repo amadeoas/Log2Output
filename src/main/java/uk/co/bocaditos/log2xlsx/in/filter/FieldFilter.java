@@ -173,7 +173,7 @@ public abstract class FieldFilter<T> implements Filter {
 		return this.field;
 	}
 
-	public static void initHelp() {
+	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(ARG_FILTER, "Sets the filter of the log lines to consider.", 
 			true, 
 			new CmdHelpArgParamDef("fieldname", "The name of the field to filter against.",
