@@ -28,7 +28,7 @@ public class XlsxOutputTest {
 				+ "request,headers,body"
 			};
 		final XlsxOutput out = build(args);
-		final FieldsSet fields = FormatsTest.load(set);
+		final FieldsSet fields = FormatsTest.load(null, set);
 		final CmdArgs cdmArgs = new CmdArgs(args);
 
 		final File file = new File(cdmArgs.getArgument(LogOutput.ARG_OUT));

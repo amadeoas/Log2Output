@@ -165,10 +165,10 @@ public class Application implements CommandLineRunner {
 
     	final Filter filter = FieldFilter.build(cmdArgs, set);
     	
-    	try (final Input in = Input.build(logFileNames)) {
+    	try (final Input in = Input.build(cmdArgs, logFileNames)) {
     		return fieldsSet.load(filter, in);
     	} catch (final IOException ioe) {
-			throw new InputException(ioe, "Failed to proceed inputs");
+			throw new InputException(ioe, "Failed to process inputs");
 		}
 	}
 

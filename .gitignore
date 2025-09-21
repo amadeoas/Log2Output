@@ -2,7 +2,7 @@
 build/
 !gradle/wrapper/gradle-wrapper.jar
 Log2Xlsx.log
-docs/*.*
+docs/tmp/**
 testOut.xlsx
 testOut.html
 

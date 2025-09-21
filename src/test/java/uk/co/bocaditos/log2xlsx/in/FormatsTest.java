@@ -14,6 +14,8 @@ import org.junit.function.ThrowingRunnable;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
+import uk.co.bocaditos.utils.UtilsException;
+import uk.co.bocaditos.utils.cmd.CmdArgs;
 
 
 /**
@@ -142,13 +144,13 @@ public class FormatsTest {
 		return Formats.load(FormatsTest.lines);
 	}
 
-	public static FieldsSet load(final LogSet set) throws FormatException, InputException {
-		return load("id", set);
+	public static FieldsSet load(final CmdArgs cmdArgs, final LogSet set) throws UtilsException {
+		return load(cmdArgs, "id", set);
 	}
 
-	public static FieldsSet load(final String idFieldName, final LogSet set) 
-			throws FormatException, InputException {
-		final Input in = Input.build("src/test/resources/logs/app1.log", 
+	public static FieldsSet load(final CmdArgs cmdArgs, final String idFieldName, final LogSet set) 
+			throws UtilsException {
+		final Input in = Input.build(cmdArgs, "src/test/resources/logs/app1.log", 
 				"src/test/resources/logs/app2.log");
 
 		return Formats.process(null, idFieldName, set, in);

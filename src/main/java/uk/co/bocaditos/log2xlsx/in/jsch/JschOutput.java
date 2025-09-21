@@ -15,7 +15,6 @@ import com.jcraft.jsch.ChannelSftp.LsEntry;
 
 import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.in.InputException;
-import uk.co.bocaditos.utils.UtilsException;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
 import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
@@ -26,6 +25,8 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  * Support to use JSch library to access remote log files.
  */
 public class JschOutput extends Input {
+
+	public static final String ID = "JSCH";
 
 	private static final String ARG_HOST	  = "jschKnownHost";
 	private static final String ARG_KNOWHOSTS = "jschPassword";
@@ -44,7 +45,8 @@ public class JschOutput extends Input {
 	private int indexFile;
 
 
-	public JschOutput(final CmdArgs cmdArgs) throws UtilsException {
+	public JschOutput(final CmdArgs cmdArgs, final String... args) 
+			throws InputException, CmdException {
 		this.sftp = setupJsch(cmdArgs);
 
 		final String dir = cmdArgs.getParam(ARG_DIR, (String) null);
@@ -134,7 +136,7 @@ public class JschOutput extends Input {
 
 	@Override
 	public String getId() {
-		return "JSCH";
+		return ID;
 	}
 
 	public static void initHelp() throws CmdException {

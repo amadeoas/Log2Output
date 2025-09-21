@@ -1,4 +1,4 @@
-package uk.co.bocaditos.log2xlsx.in;
+package uk.co.bocaditos.log2xlsx.in.local;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import uk.co.bocaditos.log2xlsx.in.Input;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.utils.Utils;
 
 
@@ -14,13 +16,15 @@ import uk.co.bocaditos.utils.Utils;
  */
 public class FilesInput extends Input {
 
+	public static final String ID = "FILES";
+
 	private final String[] filenames;
 	private BufferedReader reader;
 	private int currentFile = -1;
 	private int lineNum;
 
 
-	protected FilesInput(final String... filenames) throws InputException {
+	public FilesInput(final String... filenames) throws InputException {
 		super(filenames);
 
 		this.filenames = new String[filenames.length];
@@ -110,7 +114,7 @@ public class FilesInput extends Input {
 
 	@Override
 	public String getId() {
-		return "FILES";
+		return ID;
 	}
 
 	private boolean next() throws InputException {

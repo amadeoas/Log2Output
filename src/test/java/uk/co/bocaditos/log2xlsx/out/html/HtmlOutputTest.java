@@ -13,9 +13,7 @@ import org.junit.function.ThrowingRunnable;
 import freemarker.template.TemplateException;
 import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
-import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
-import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
 import uk.co.bocaditos.log2xlsx.out.OutException;
@@ -30,7 +28,7 @@ import uk.co.bocaditos.utils.cmd.CmdArgs;
 public class HtmlOutputTest {
 
 	@Test
-	public void exceptionsTest() throws FormatException, InputException {
+	public void exceptionsTest() throws UtilsException {
 		final String[] args = {
 				CmdArgs.START + Application.ARG_FORMATS,	 "src/test/resources/formats.txt",
 				CmdArgs.START + Application.ARG_ID_FIELD_NAME, "id",
@@ -52,7 +50,7 @@ public class HtmlOutputTest {
 		};
 		final CmdArgs cmdArgs = new CmdArgs(args);
 		final LogSet set = FormatsTest.load();
-		final FieldsSet fields = FormatsTest.load(set);
+		final FieldsSet fields = FormatsTest.load(null, set);
 		final HtmlOutput out = new HtmlOutput("Log2Output", "0.00.000") {
 
 				private int count = 0; 
@@ -100,7 +98,7 @@ public class HtmlOutputTest {
 				CmdArgs.START + HtmlOutput.ARG_HTML_MAX_CELL_LENGTH, "24"
 		};
 		final HtmlOutput out = build(args);
-		final FieldsSet fields = FormatsTest.load(set);
+		final FieldsSet fields = FormatsTest.load(null, set);
 		final File file;
 		CmdArgs cdmArgs;
 		CmdArgs cdmArgs1;

@@ -18,7 +18,7 @@ public class InputTest {
 
 		for (final String[] args : argss) {
 			assertThrows(InputException.class, () -> {
-				Input.build((String[]) args);
+				Input.build(null, (String[]) args);
 			});
 		}
 	}

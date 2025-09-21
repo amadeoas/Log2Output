@@ -1,4 +1,4 @@
-package uk.co.bocaditos.log2xlsx.in;
+package uk.co.bocaditos.log2xlsx.in.local;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,7 +9,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import uk.co.bocaditos.log2xlsx.in.Input;
+import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
+import uk.co.bocaditos.utils.cmd.CmdException;
 
 
 /**
@@ -37,10 +40,10 @@ public class FilesInputTest {
 	}
 
 	@Test
-	public void test() throws InputException, IOException {
+	public void test() throws InputException, IOException, CmdException {
 		final String filename = "src/test/resources/logs/app1.log";
 
-		try (final FilesInput in = (FilesInput) Input.build(filename)) {
+		try (final FilesInput in = (FilesInput) Input.build(null, filename)) {
 			assertEquals("FILES", in.getId());
 			assertEquals(filename, in.getFilename());
 			assertEquals(0, in.getLineNum());
@@ -68,7 +71,7 @@ public class FilesInputTest {
 		final String filename = "src/test/resources/logs/app1.log";
 
 		assertThrows(InputException.class, () -> {
-				try (final FilesInput in = (FilesInput) Input.build(filename, "")) {
+				try (final FilesInput in = (FilesInput) Input.build(null, filename, "")) {
 					while (in.readLine() != null) {}
 				}
 			});
