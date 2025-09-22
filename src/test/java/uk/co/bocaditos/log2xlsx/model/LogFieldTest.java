@@ -68,10 +68,7 @@ public class LogFieldTest {
 		enumTests();
 		field = new LogField(null, ID, LocalDateTime.class, "yyyyMMdd HH:mm:ss.SSS", null);
 		assertNotNull(field.build("20241223 10:11:10.203"));
-		assertEquals("id: \"" + ID + "\", numNexts: 0, format: " 
-				+ "\"Value(YearOfEra,4,19,EXCEEDS_PAD)Value(MonthOfYear,2)Value(DayOfMonth,2)' " 
-				+ "'Value(HourOfDay,2)':'Value(MinuteOfHour,2)':'Value(SecondOfMinute,2)'." 
-				+ "'Fraction(NanoOfSecond,3,3)\"", 
+		assertEquals("id: \"" + ID + "\", numNexts: 0, format: \"yyyyMMdd HH:mm:ss.SSS\"", 
 				field.toString());
 		field = new LogField(null, ID, LocalDateTime.class, null, null);
 		assertEquals(LocalDateTime.of(2024, 12, 23, 10, 11, 10, 203000000), 

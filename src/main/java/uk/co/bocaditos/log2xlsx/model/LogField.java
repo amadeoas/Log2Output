@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,6 +22,7 @@ import uk.co.bocaditos.utils.Utils;
 /**
  * {<id>[, <class>[, f:<format>][,p:<pattern>]]}.
  */
+@JsonPropertyOrder({"id", "fieldClass", "format", "pattern", "enumValues", "title", "size", "nexts"})
 public class LogField extends LogEntry {
 
     private static final Logger logger = LoggerFactory.getLogger(LogField.class);
@@ -37,6 +40,7 @@ public class LogField extends LogEntry {
 	private Object format;
 	private Pattern pattern;
 	private String[] enumValues;
+	@JsonIgnore
 	private String title; // ID with first character upper case
 	private String size;
 
@@ -68,7 +72,7 @@ public class LogField extends LogEntry {
 		loadEnumValues();
 		if (format != null) {
 			if (clazz == LocalDateTime.class || clazz == LocalDate.class) {
-				this.format = DateTimeFormatter.ofPattern(format);
+				this.format = new DateTimeFormatterInternal(format);
 			} else {
 				this.format = format;
 			}
@@ -85,17 +89,17 @@ public class LogField extends LogEntry {
 		}
 
 		if (this.format != null) {
-			if (this.format instanceof DateTimeFormatter) {
+			if (this.format instanceof DateTimeFormatterInternal) {
 				if (value instanceof LocalDateTime) {
 					// Date and time
 					final LocalDateTime datetime = (LocalDateTime) value;
 	
-					return ((DateTimeFormatter) this.format).format(datetime);
+					return ((DateTimeFormatterInternal) this.format).format(datetime);
 				} else {
 					// Date
 					final LocalDate date = (LocalDate) value;
-	
-					return ((DateTimeFormatter) this.format).format(date);
+
+					return ((DateTimeFormatterInternal) this.format).format(date);
 				}
 			} else if (value instanceof Number) {
 				// Format like "%.2f"
@@ -112,6 +116,13 @@ public class LogField extends LogEntry {
 		this.size = size;
 	}
 
+	@Override
+	public void setId(final String id) {
+		super.setId(id);
+		this.title = Character.toUpperCase(id.charAt(0)) + id.substring(1);
+	}
+
+	@JsonIgnore
 	public String getHeaderName() {
 		return getId();
 	}
@@ -120,12 +131,20 @@ public class LogField extends LogEntry {
 		return this.title;
 	}
 
-	public String getSize() {
+	public final String getSize() {
 		return this.size;
 	}
 
-	public Class<?> getFieldClass() {
+	public final Class<?> getFieldClass() {
 		return this.clazz;
+	}
+
+	public final void setFieldClass(final Class<?> clazz) {
+		if (this.clazz != null) {
+			throw new RuntimeException("The cass for the log field is already set; cannot set " 
+					+ "clazz to \"" + clazz.getName() + "\"");
+		}
+		this.clazz = clazz;
 	}
 
 	public Object getFormat() {
@@ -172,6 +191,54 @@ public class LogField extends LogEntry {
 	@Override
 	LogEntry build(final String line, int offset) throws FormatException {
 		return new LogEntry(this, line, offset);
+	}
+
+	@Override
+	StringBuilder toTxtNexts(final StringBuilder txt, final StringBuilder buf) {
+		if (this.clazz != null && this.clazz != String.class) {
+			buf.append(", ");
+			if (this.clazz == int.class) {
+				buf.append("int");
+			} else if (this.clazz == long.class) {
+				buf.append("long");
+			} else if (this.clazz == double.class) {
+				buf.append("double");
+			} else if (this.clazz == float.class) {
+				buf.append("float");
+			} else if (this.clazz == char.class) {
+				buf.append("char");
+			} else if (this.clazz == byte.class) {
+				buf.append("byte");
+			} else if (this.clazz == LocalDateTime.class) {
+				buf.append("datetime");
+			} else if (this.clazz == LocalDate.class) {
+				buf.append("date");
+			} else {
+				buf.append(this.clazz.getName());
+			}
+		} else if (this.enumValues != null) {
+			buf.append(", enum");
+		}
+
+		if (this.format != null) {
+			buf.append(", f:")
+				.append(this.format);
+		}
+
+		if (this.pattern != null) {
+			buf.append(", p:")
+				.append(this.pattern);
+		}
+
+		if (!Utils.isEmpty(this.enumValues)) {
+			for (final String value : this.enumValues) {
+				buf.append(", ").
+					append(value);
+			}
+		}
+		buf.append('}');
+
+		return super.toTxtNexts(txt, buf);
 	}
 
 	@Override
@@ -262,7 +329,7 @@ public class LogField extends LogEntry {
 
 			if (getFieldClass() == LocalDateTime.class) {
 				if (this.format != null) {
-					return LocalDateTime.parse(value, (DateTimeFormatter) this.format);
+					return ((DateTimeFormatterInternal) this.format).parseDateTime(value);
 				}
 
 				return LocalDateTime.parse(value);
@@ -270,7 +337,7 @@ public class LogField extends LogEntry {
 
 			if (getFieldClass() == LocalDate.class) {
 				if (this.format != null) {
-					return LocalDate.parse(value, (DateTimeFormatter) this.format);
+					return ((DateTimeFormatterInternal) this.format).parseDate(value);
 				}
 
 				return LocalDate.parse(value);
@@ -436,7 +503,7 @@ public class LogField extends LogEntry {
 				elements[INDEX_FORMAT] = part.substring("f:".length());
 				if (elements[INDEX_CLASS] == LocalDateTime.class 
 						|| elements[INDEX_CLASS] == LocalDate.class) {
-					elements[INDEX_FORMAT] = DateTimeFormatter.ofPattern((String) elements[INDEX_FORMAT]);
+					elements[INDEX_FORMAT] = new DateTimeFormatterInternal((String) elements[INDEX_FORMAT]);
 				}
 			} else if (part.startsWith("p:")) {
 				if (elements[INDEX_PATTERN] != null) {
@@ -575,3 +642,51 @@ public class LogField extends LogEntry {
 	}
 
 } // end class LogField
+
+
+/**
+ * .
+ */
+class DateTimeFormatterInternal {
+
+	private final DateTimeFormatter formatter;
+	private final String format;
+
+
+	public DateTimeFormatterInternal(final String format) {
+		this.formatter = DateTimeFormatter.ofPattern(format);
+		this.format = format;
+	}
+
+	public LocalDateTime parseDateTime(final String value) {
+		return LocalDateTime.parse(value, this.formatter);
+	}
+
+	public LocalDate parseDate(final String value) {
+		return LocalDate.parse(value, this.formatter);
+	}
+
+	public String format(final LocalDate date) {
+		return this.formatter.format(date);
+	}
+
+	public String format(final LocalDateTime dateTime) {
+		return this.formatter.format(dateTime);
+	}
+
+	@Override
+	public String toString() {
+		return this.format;
+	}
+
+	public StringBuilder toString(final StringBuilder buf) {
+		buf.append(this.format);
+
+		return buf;
+	}
+
+	final DateTimeFormatter formatter() {
+		return this.formatter;
+	}
+
+} // end class DateTimeFormatterInternal

@@ -1,7 +1,6 @@
 package uk.co.bocaditos.log2xlsx.in;
 
 import java.io.File;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,6 +13,7 @@ import org.junit.function.ThrowingRunnable;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
+import uk.co.bocaditos.utils.Utils;
 import uk.co.bocaditos.utils.UtilsException;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
 
@@ -31,7 +31,7 @@ public class FormatsTest {
 		};
 
 	@Test
-	public void loadLinesTest() throws FormatException {
+	public void loadLinesTest() throws UtilsException {
 		final String[][] formatLines = {
 				// Success
 				FormatsTest.lines,
@@ -41,18 +41,33 @@ public class FormatsTest {
 				null,
 				new String[] {}
 			};
+		final String[] expected = {
+				Utils.read("src/test/resources/formats_.txt"),
+				"[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \\{{computer}\\} [{class}] - ({id}) {request, enum, REQUEST_RECEIVED, SENT_REQUEST, REQUEST_RESPONSE, SENT_RESPONSE} \\{\"headers\": {headers}, \"payload\": {body}\\} - END\n"
+						+ "[{datetime, datetime, f:yyyyMMdd HH:mm:ss.SSS}] \\{{computer}\\} [{class}] - ({id}) {request, enum, REQUEST_RECEIVED, SENT_REQUEST, REQUEST_RESPONSE, SENT_RESPONSE} {message} - END",
+				null,
+				null
+			};
 
 		for (int index = 0; index < formatLines.length; ++index) {
 			final String[] formats = formatLines[index];
 
 			try {
 				final LogSet set = Formats.load(formats);
+				final String str = set.toTxt();
+//				File file;
 
 				assertTrue(index < 2);
 				assertNotNull(set);
+
+//				if ((file = new File(filename)).exists()) {
+//					file.delete();
+//				}
+//				Utils.write(filename, str);
+				assertEquals("Index: " + index, expected[index], str);
 			} catch (final FormatException fe) {
 				assertTrue(index > 1);
-				assertEquals("Missing format lines", fe.getMessage());
+				assertEquals("Index: " + index, "Missing format lines", fe.getMessage());
 			}
 		}
 	}

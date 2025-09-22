@@ -1,5 +1,7 @@
 package uk.co.bocaditos.log2xlsx.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import uk.co.bocaditos.utils.Utils;
 
 
@@ -52,6 +54,12 @@ public class LogSet extends LogEntry {
 	}
 
 	@Override
+	@JsonIgnore
+	public String getId() {
+		return super.getId();
+	}
+
+	@Override
 	public final LogField getField(final String fieldName) {
 		if (Utils.isEmpty(fieldName)) {
 			return null;
@@ -67,6 +75,7 @@ public class LogSet extends LogEntry {
 		return null;
 	}
 
+	@JsonIgnore
 	public FieldNames getFieldNames() {
 		if (this.fieldNames == null) {
 			synchronized (LogSet.class) {

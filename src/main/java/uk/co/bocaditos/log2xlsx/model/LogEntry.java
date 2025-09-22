@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import uk.co.bocaditos.utils.Utils;
+
 
 /**
  * [{]<fix_text>[}]
@@ -16,6 +20,7 @@ public class LogEntry implements Comparable<LogEntry> {
 	static final int INDEX_ENTRY = 1;
 
 	public String id;
+	@JsonIgnore
 	public LogEntry parent;
 	private List<LogEntry> nexts;
 
@@ -39,7 +44,7 @@ public class LogEntry implements Comparable<LogEntry> {
 	}
 
 	protected LogEntry(final LogEntry parent, final String id) {
-		this.id = id;
+		setId(id);
 		this.parent = parent;
 		this.nexts = new ArrayList<>();
 	}
@@ -48,16 +53,34 @@ public class LogEntry implements Comparable<LogEntry> {
 		return this.parent;
 	}
 
-	public final String getId() {
+	public String getId() {
 		return this.id;
 	}
 
+	public void setId(final String id) {
+		if (this.id != null) {
+			throw new RuntimeException("The ID for log entity has already been set; not allowed " 
+					+ "new value \"" + id + "\"");
+		}
+		this.id = id;
+	}
+
+	@JsonIgnore
 	public boolean isField() {
 		return false;
 	}
 
+	public List<LogEntry> getNexts() {
+		return this.nexts;
+	}
+
 	public void setNexts(final List<LogEntry> nexts) {
 		this.nexts = nexts;
+		if (this.nexts != null) {
+			for (final LogEntry entry : this.nexts) {
+				entry.setParent(this);
+			}
+		}
 	}
 
 	@Override
@@ -76,13 +99,67 @@ public class LogEntry implements Comparable<LogEntry> {
 	}
 
 	public StringBuilder toString(final StringBuilder buf) {
-		buf.append("id: \"").append(this.id).append('"')
-			.append(", numNexts: ").append(this.nexts.size());
+		Utils.append(buf, "id", this.id);
+		Utils.append(buf, "numNexts", this.nexts.size());
 		if (this.parent != null) {
-			buf.append(", parent: \"").append(this.parent.id).append('"');
+			Utils.append(buf, "parent", this.parent.id);
 		}
 
 		return buf;
+	}
+
+	/**
+	 * Builds a full representation of the entity and children.
+	 * 
+	 * @return the full representation of the entity and children.
+	 */
+	public final String toTxt() {
+		final StringBuilder txt = new StringBuilder();
+
+		toTxt(txt, new StringBuilder());
+
+		return txt.toString();
+	}
+
+	final StringBuilder toTxt(final StringBuilder txt, final StringBuilder buf) {
+		final int length = buf.length();
+
+		if (!Utils.isEmpty(getId())) {
+			String id = getId();
+
+			if (this instanceof LogField) {
+				buf.append('{');
+			} else {
+				id = processId(id, '{');
+				id = processId(id, '}');
+			}
+			buf.append(id);
+		}
+		toTxtNexts(txt, buf)
+			.setLength(length);
+
+		return buf;
+	}
+
+	StringBuilder toTxtNexts(final StringBuilder txt, final StringBuilder buf) {
+		if (Utils.isEmpty(this.nexts)) {
+			if (txt.length() > 0) {
+				txt.append('\n');
+			}
+			txt.append(buf);
+
+			return buf;
+		}
+
+		for (final LogEntry entry : this.nexts) {
+			entry.toTxt(txt, buf);
+		}
+
+		return buf;
+	}
+
+	void setParent(final LogEntry parent) {
+		this.parent = parent;
 	}
 
 	LogField getField(final String fieldName) {
@@ -94,10 +171,6 @@ public class LogEntry implements Comparable<LogEntry> {
 		}
 
 		return null;
-	}
-
-	protected List<LogEntry> getNexts() {
-		return this.nexts;
 	}
 
 	protected boolean loadNexts(int offset, final String line) throws FormatException {
@@ -281,6 +354,29 @@ public class LogEntry implements Comparable<LogEntry> {
 		}
 
 		return fieldNames;
+	}
+
+	private static String processId(final String id, final char c) {
+		if (id.indexOf(c) == -1) {
+			return id;
+		}
+
+		final StringBuilder buf = new StringBuilder();
+		int from = 0;
+		int to;
+
+		while ((to = id.indexOf(c, from)) != -1) {
+			buf.append(id, from, to)
+				.append('\\')
+				.append(c);
+			from = to + 1;
+		}
+
+		if (from < id.length()) {
+			buf.append(id, from, id.length());
+		}
+
+		return buf.toString();
 	}
 
 } // end class LogEntry

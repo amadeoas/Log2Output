@@ -1,6 +1,17 @@
 package uk.co.bocaditos.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 /**
@@ -37,6 +48,75 @@ public abstract class Utils {
 		}
 
 		return true;
+	}
+
+	public static void save(final String filename, final Object obj) throws UtilsException {
+		try {
+			final ObjectMapper mapper = new ObjectMapper();
+
+			mapper.registerModule(new JavaTimeModule());
+			mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			mapper.writeValue(new File(filename), obj);
+		} catch (final IOException ioe) {
+			throw new UtilsException(ioe, "Failed to write JSON to specified file \"{0}\"", 
+					filename);
+		}
+	}
+
+	public static String save(final Object obj) throws UtilsException {
+		try {
+			return objectMapper().writeValueAsString(obj);
+		} catch (final IOException ioe) {
+			throw new UtilsException(ioe, "Failed to write JSON to an string");
+		}
+	}
+
+	public static <T> T read(final String filename, final Class<T> clazz) throws UtilsException {
+		try {
+			return objectMapper().readValue(new File(filename), clazz);
+		} catch (final IOException ioe) {
+			throw new UtilsException(ioe, "Failed to read JSON from the specified file \"{0}\"", 
+					filename);
+		}
+	}
+
+	public static void write(final String filename, final String value) throws UtilsException {
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+			writer.write(value);
+		} catch (final IOException ioe) {
+			throw new UtilsException(ioe, "Failed to write string to the specified file \"{0}\"", 
+					filename);
+		}
+	}
+
+	public static String read(final String filename) throws UtilsException {
+		try (final BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+			final StringBuilder buf = new StringBuilder();
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				if (buf.length() > 0) {
+					buf.append('\n');
+				}
+				buf.append(line);
+			}
+
+			return buf.toString();
+		} catch (final IOException ioe) {
+			throw new UtilsException(ioe, "Failed to read JSON from the specified file \"{0}\"", 
+					filename);
+		}
+	}
+
+	public static ObjectMapper objectMapper() {
+		final ObjectMapper mapper = new ObjectMapper();
+
+		mapper.registerModule(new JavaTimeModule());
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		mapper.setSerializationInclusion(Include.NON_NULL);
+
+		return mapper;
 	}
 
 	public static boolean allToLowerCase(final String value) {
@@ -77,6 +157,35 @@ public abstract class Utils {
 		}
 
 		return buf.toString();
+	}
+
+	public static StringBuilder append(final StringBuilder buf, final String name, 
+			final String... values) {
+		return append(buf, name, false, values);
+	}
+
+	public static StringBuilder append(final StringBuilder buf, final String name, 
+			final boolean appendNulls, final String... values) {
+		if (isEmpty(name) || (values == null && !appendNulls)) {
+			return buf;
+		}
+
+		if (buf.length() > 0) {
+			final char c = buf.charAt(buf.length() - 1);
+
+			if (c != '{' && c != '[' && c != '\t') {
+				buf.append(", ");
+			}
+		}
+
+		buf.append(name)
+			.append(": [");
+		for (final String value : values) {
+			append_(buf, null, value, appendNulls);
+		}
+		buf.append(']');
+
+		return buf;
 	}
 
 	public static StringBuilder append(final StringBuilder buf, final String name, 
