@@ -16,6 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
+import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
 import uk.co.bocaditos.log2xlsx.out.html.HtmlOutput;
@@ -42,7 +43,7 @@ public class ApplicationTest {
 				CmdArgs.START + LogOutput.ARG_OUT,				OUT_FILE,
 				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
 				CmdArgs.START + Application.ARG_ID_FIELD_NAME,	"id",
-				CmdArgs.START + Application.ARG_LOGS,			"src/test/resources/logs"
+				CmdArgs.START + Input.ARG_LOGS,					"src/test/resources/logs"
 		};
 
 		Application.main(args);
@@ -59,7 +60,7 @@ public class ApplicationTest {
 				CmdArgs.START + LogOutput.ARG_OUT,				OUT_FILE,
 				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
 				CmdArgs.START + Application.ARG_ID_FIELD_NAME,	"id",
-				CmdArgs.START + Application.ARG_LOGS,			"src/test/resources/logs",
+				CmdArgs.START + Input.ARG_LOGS,					"src/test/resources/logs",
 				CmdArgs.START + FieldFilter.ARG_FILTER,			"datetime", 
 																"20241223 10:11:10.206", 
 																"20241223 10:11:10.212"

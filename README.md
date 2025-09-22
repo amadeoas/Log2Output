@@ -84,11 +84,13 @@ Example:
 	Sets the files or directory with the log lines.
 
 	type
-		The type of input, i.e. FILE or JSCH. FILE will read the log file from local 
-		system and JSCH from a remote.
-	filenames
-		If a directory just one without '.' where all files ended with .log will be used
-	 	other wise will be considered a comma separated list of log filed.
+		The type of input, i.e. "FILE" or "JSCH". "FILE" reads the log file from the local 
+		file system and "JSCH" from a remote.
+	others
+		If a just one value without '.' then it is interpreted as a directory. A type of 
+		"FILES" means the following arguments are a comma separated list of filenames, where
+		all filenames must end with ".log", in the case of a directory only the contained
+		files ending with ".log" will be used.
 <a name="out"></a>
  -<b>out</b> &lt;filename&gt;
 	Sets the output file name.

@@ -1,7 +1,5 @@
 package uk.co.bocaditos.log2xlsx;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -37,6 +35,7 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
 /**
  * Starting point of the application.
  * 
+ * Format like:
  * [{string, pattern=^[a-zA-Z\d]\{1,3\}$}] [{string, pattern=^[a-zA-Z\d]\{1,3\}$}] [{string}] - [{}]: [{}]
  * [{string, pattern=^[a-zA-Z\d]\{1,3\}$}] [{string, pattern=^[a-zA-Z\d]\{1,3\}$}] [{string}] - [{}]
  * 
@@ -49,7 +48,6 @@ public class Application implements CommandLineRunner {
 
     public static final String ARG_FORMATS		 = "formats";
     public static final String ARG_ID_FIELD_NAME = "idFieldName";
-    public static final String ARG_LOGS			 = "logs";
 
     @Autowired
     Environment env;
@@ -100,10 +98,6 @@ public class Application implements CommandLineRunner {
 		new CmdHelpArgDef(ARG_ID_FIELD_NAME, "Sets the field name to use as ID for groups.", true, 
 				new CmdHelpArgParamDef("idFieldName", "The name of the field used as ID for groups",
 					true));
-		new CmdHelpArgDef(ARG_LOGS, "Sets the files or directory with the log lines.", true, 
-				new CmdHelpArgParamDef("filenames", "If a directory just one wothout '.' where all " 
-					+ "files ended with .log will be used other wise will be considered a comma " 
-					+ "separated list of log filed", true));
 	}
 
 	private void process(final CmdArgs cmdArgs) throws UtilsException {
@@ -132,40 +126,9 @@ public class Application implements CommandLineRunner {
 	private FieldsSet load(final CmdArgs cmdArgs) throws UtilsException {
     	final LogSet set = Formats.loadFiles(cmdArgs.getArgument(ARG_FORMATS).split(","));
     	final FieldsSet fieldsSet = new FieldsSet(set, cmdArgs.getArgument(ARG_ID_FIELD_NAME));
-    	String[] logFileNames = cmdArgs.getArgument(ARG_LOGS).split(",");
-
-    	if (logFileNames.length == 1) {
-    		// Maybe a directory
-    		if (logFileNames[0].indexOf('.') == -1) {
-    			// It's a directory
-    			final File dir = new File(logFileNames[0]);
-
-    			if (dir.isDirectory()) {
-    				String dirPath = logFileNames[0];
-
-    				logFileNames = dir.list(new FilenameFilter() {
-
-						@Override
-						public boolean accept(final File dir, final String name) {
-							return name.endsWith(".log");
-						}
-
-    				});
-    				if (dirPath.charAt(dirPath.length() - 1) != '\\' 
-    						&& dirPath.charAt(dirPath.length() - 1) != '/') {
-    					dirPath += '/';
-    				}
-
-    				for (int index = 0; index < logFileNames.length; ++index) {
-    					logFileNames[index] = dirPath + logFileNames[index];
-    				}
-    			}
-    		}
-    	}
-
     	final Filter filter = FieldFilter.build(cmdArgs, set);
     	
-    	try (final Input in = Input.build(cmdArgs, logFileNames)) {
+    	try (final Input in = Input.build(cmdArgs)) {
     		return fieldsSet.load(filter, in);
     	} catch (final IOException ioe) {
 			throw new InputException(ioe, "Failed to process inputs");

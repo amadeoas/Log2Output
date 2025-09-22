@@ -1,6 +1,7 @@
 package uk.co.bocaditos.utils.cmd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +101,10 @@ public class CmdArgs {
 		}
 
 		return (E) defaultValue.valueOf(defaultValue.getClass(), value);
+	}
+
+	public void set(final String key, final String... values) {
+		this.args.put(key, Arrays.asList(values));
 	}
 
 	/**
@@ -423,7 +428,7 @@ public class CmdArgs {
 		while (++index < args.length) {
 			final String arg = args[index];
 
-			if (arg == null) {
+			if (Utils.isEmpty(arg)) {
 				continue;
 			}
 

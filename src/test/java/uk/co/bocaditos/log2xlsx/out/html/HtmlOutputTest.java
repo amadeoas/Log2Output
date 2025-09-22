@@ -13,6 +13,7 @@ import org.junit.function.ThrowingRunnable;
 import freemarker.template.TemplateException;
 import uk.co.bocaditos.log2xlsx.Application;
 import uk.co.bocaditos.log2xlsx.in.FormatsTest;
+import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
 import uk.co.bocaditos.log2xlsx.out.LogOutput;
@@ -32,7 +33,7 @@ public class HtmlOutputTest {
 		final String[] args = {
 				CmdArgs.START + Application.ARG_FORMATS,	 "src/test/resources/formats.txt",
 				CmdArgs.START + Application.ARG_ID_FIELD_NAME, "id",
-				CmdArgs.START + Application.ARG_LOGS, 		 "xxx.log",
+				CmdArgs.START + Input.ARG_LOGS, 			 "xxx.log",
 				CmdArgs.START + HtmlOutput.ARG_OUT,			 "testOut.html",
 				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE, "src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
 				// Table sizes
@@ -81,7 +82,7 @@ public class HtmlOutputTest {
 		final String[] args = {
 				CmdArgs.START + Application.ARG_FORMATS,	 "src/test/resources/formats.txt",
 				CmdArgs.START + Application.ARG_ID_FIELD_NAME, "id",
-				CmdArgs.START + Application.ARG_LOGS, 		 "xxx.log",
+				CmdArgs.START + Input.ARG_LOGS, 			 "xxx.log",
 				CmdArgs.START + HtmlOutput.ARG_OUT,			 "testOut.html",
 				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE, "src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
 				// Table sizes

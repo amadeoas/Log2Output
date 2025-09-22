@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
+import uk.co.bocaditos.log2xlsx.in.local.FilesInput;
 import uk.co.bocaditos.log2xlsx.model.FieldsSet;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
 import uk.co.bocaditos.log2xlsx.model.LogSet;
@@ -163,10 +164,15 @@ public class FormatsTest {
 		return load(cmdArgs, "id", set);
 	}
 
-	public static FieldsSet load(final CmdArgs cmdArgs, final String idFieldName, final LogSet set) 
+	public static FieldsSet load(CmdArgs cmdArgs, final String idFieldName, final LogSet set) 
 			throws UtilsException {
-		final Input in = Input.build(cmdArgs, "src/test/resources/logs/app1.log", 
-				"src/test/resources/logs/app2.log");
+		if (cmdArgs == null) {
+			cmdArgs = new CmdArgs(new String[] {});
+		}
+		cmdArgs.set(Input.ARG_LOGS, FilesInput.ID, 
+				"src/test/resources/logs/app1.log,src/test/resources/logs/app2.log");
+
+		final Input in = Input.build(cmdArgs);
 
 		return Formats.process(null, idFieldName, set, in);
 	}

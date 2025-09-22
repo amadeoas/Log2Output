@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -132,6 +133,10 @@ public abstract class Utils {
 		}
 
 		return true;
+	}
+
+	public static String concatenate(final List<String> values) {
+		return concatenate(values.toArray(new String[values.size()]));
 	}
 
 	public static String concatenate(final String... values) {

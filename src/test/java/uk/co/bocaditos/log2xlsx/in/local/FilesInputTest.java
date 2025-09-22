@@ -12,6 +12,7 @@ import org.junit.Test;
 import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.in.InputException;
 import uk.co.bocaditos.log2xlsx.model.FormatException;
+import uk.co.bocaditos.utils.cmd.CmdArgs;
 import uk.co.bocaditos.utils.cmd.CmdException;
 
 
@@ -42,16 +43,24 @@ public class FilesInputTest {
 	@Test
 	public void test() throws InputException, IOException, CmdException {
 		final String filename = "src/test/resources/logs/app1.log";
+		final String[][] argss = {
+				{CmdArgs.START + Input.ARG_LOGS, FilesInput.ID, filename},
+				{CmdArgs.START + Input.ARG_LOGS, filename}
+			};
 
-		try (final FilesInput in = (FilesInput) Input.build(null, filename)) {
-			assertEquals("FILES", in.getId());
-			assertEquals(filename, in.getFilename());
-			assertEquals(0, in.getLineNum());
-			while (in.readLine() != null) {}
-			assertNull(in.readLine());
-
-			in.close();
-			assertNull(in.getFilename());
+		for (final String[] args : argss) {
+			final CmdArgs cmdArgs = new CmdArgs(args);
+	
+			try (final FilesInput in = (FilesInput) Input.build(cmdArgs)) {
+				assertEquals("FILES", in.getId());
+				assertEquals(filename, in.getFilename());
+				assertEquals(0, in.getLineNum());
+				while (in.readLine() != null) {}
+				assertNull(in.readLine());
+	
+				in.close();
+				assertNull(in.getFilename());
+			}
 		}
 
 		assertThrows(InputException.class, () -> {
@@ -69,12 +78,21 @@ public class FilesInputTest {
 	@Test
 	public void exceptionTest() throws InputException, IOException {
 		final String filename = "src/test/resources/logs/app1.log";
+		final String[][] argss = {
+				{CmdArgs.START + Input.ARG_LOGS, FilesInput.ID, filename, " "},
+				{CmdArgs.START + Input.ARG_LOGS, "src/test/resources", " "},
+				{CmdArgs.START + Input.ARG_LOGS, "LICENCE"}
+			};
 
-		assertThrows(InputException.class, () -> {
-				try (final FilesInput in = (FilesInput) Input.build(null, filename, "")) {
-					while (in.readLine() != null) {}
-				}
-			});
+		for (final String[] args : argss) {
+			final CmdArgs cmdArgs = new CmdArgs(args);
+	
+			assertThrows(InputException.class, () -> {
+					try (final FilesInput in = (FilesInput) Input.build(cmdArgs)) {
+						while (in.readLine() != null) {}
+					}
+				});
+		}
 	}
 
 } // end class FilesInputTest

@@ -1,6 +1,7 @@
 package uk.co.bocaditos.log2xlsx.out.html;
 
 import uk.co.bocaditos.log2xlsx.Application;
+import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.in.filter.FieldFilter;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
 import uk.co.bocaditos.utils.cmd.CmdException;
@@ -29,7 +30,7 @@ public class Info {
 		this.version = version;
 		this.formats = cmdArgs.getArgument(Application.ARG_FORMATS);
 		this.idFiledName = cmdArgs.getArgument(Application.ARG_ID_FIELD_NAME);
-		this.logFiles = cmdArgs.getArgument(Application.ARG_LOGS);
+		this.logFiles = cmdArgs.getArgument(Input.ARG_LOGS);
 		this.filter = cmdArgs.getParam(FieldFilter.ARG_FILTER, (String) null);
 	}
 
