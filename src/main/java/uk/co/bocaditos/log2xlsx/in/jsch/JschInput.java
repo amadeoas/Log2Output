@@ -46,7 +46,7 @@ public class JschInput extends Input {
 	static final String ARG_KNOWHOSTS = "k:";
 	static final String ARG_USERNAME  = "u:";
 	static final String ARG_PASSWORD  = "ps:";
-	static final String ARG_DIR		  = "d;";
+	static final String ARG_DIR		  = "d:";
 	static final String ARG_FILENAMES = "f:";
 
 	private static final String DEFAULT_KNOWHOSTS 
