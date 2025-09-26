@@ -39,7 +39,7 @@ public class CloudInput extends Input {
 
     private static final Logger logger = LoggerFactory.getLogger(CloudInput.class);
 
-	static final String ID = "CLOUD";
+	public static final String ID = "CLOUD";
 
 	static final String ARG_HOST		= "host:";
 	static final String ARG_TRUST_CERTS	= "trustCerts:";

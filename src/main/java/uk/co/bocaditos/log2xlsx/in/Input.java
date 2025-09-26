@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
 
+import uk.co.bocaditos.log2xlsx.in.cloud.CloudInput;
 import uk.co.bocaditos.log2xlsx.in.jsch.JschInput;
 import uk.co.bocaditos.log2xlsx.in.local.FilesInput;
 import uk.co.bocaditos.utils.Utils;
@@ -100,9 +101,11 @@ public abstract class Input implements Closeable {
 	public static void initHelp() throws CmdException {
 		new CmdHelpArgDef(CMD_LOGS, "Sets the files or directory with the log lines.", true, 
 				new CmdHelpArgParamDef("type", "The type of input, i.e. \"" + FilesInput.ID 
-					+ " or \"" + JschInput.ID + "\". \"" + FilesInput.ID + "\" reads the log file " 
-					+ "from local file system and \"" + JschInput.ID + "\" from a remote. The " 
-					+ "abscence of this value means " + FilesInput.ID,
+					+ ", " + CloudInput.ID + " or \"" + JschInput.ID + "\". \"" 
+					+ FilesInput.ID + "\" reads the log files from local file system, \"" 
+					+ CloudInput.ID + "\" reads the logs files for OpenShift, and \"" 
+					+ JschInput.ID + "\" from a remote. The abscence of this value means " 
+					+ FilesInput.ID,
 					false),
 				new CmdHelpArgParamDef("others", "If a just one value without '.' then it is " 
 					+ "interpreted as a directory. A type of \"" + FilesInput.ID + "\" means the " 

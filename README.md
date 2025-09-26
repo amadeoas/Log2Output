@@ -84,8 +84,8 @@ Example:
 	Sets the files or directory with the log lines.
 
 	type
-		The type of input, i.e. "FILE" or "JSCH". "FILE" reads the log file from the local 
-		file system and "JSCH" from a remote.
+		The type of input, i.e. "FILE", "CLOUD" or "JSCH". "FILE" reads the log file from 
+		the local file system and "JSCH" from a remote.
 	others
 		If a just one value without '.' then it is interpreted as a directory. A type of 
 		"FILES" means the following arguments are a comma separated list of filenames, where
@@ -267,7 +267,22 @@ Example:
 	size
 		A size, e.g. 150px.
 
-[Jsch](#Jsch)<br />
+[CLOUD](#Cloud)<br>
+
+[-<b>logs CLOUD</b> host:&lt;host&gt; trustCerts:&lt;trust-certs&gt; u:&lt;username&gt; p:&lt;password>&gt; namespace:&lt;namespace&gt; artifact:&lt;artifact&gt; from:&lt;from|YYYYMMddTHH:mm:ss.SSSS&gt; to:&lt;to|YYYYMMddTHH:mm:ss.SSSS&gt; dir:&lt;dir&gt;]
+	Sets the Cloud log input.
+
+	host the host URL.
+	trustCerts the trust certificate file.
+	username The user's name.
+	password The user's password.
+	namespace The name space.
+	artifact the deployment artifact.
+	from The from date and time in the format YYYYMMddTHH:mm:ss.SSSS.
+	to The to date and time in the format YYYYMMddTHH:mm:ss.SSSS.
+	dir The directories of the log files.
+
+[JSCH](#Jsch)<br>
 
 <a name="jschKnownHost"></a>
  [-<b>jschKnownHost</b> &lt;hos&gt;]
@@ -300,6 +315,18 @@ Example:
 
 	filenames
 		The directory.
+
+<a name="logsJSCH"></a>
+[-<b>logs JSCH</b> [h:&lt;host&gt;][ p:&lt;port&gt;][ u:&lt;username&gt;&gt;][ ps:&lt;password&gt;][ k:&lt;known-hosts&gt;][ d:&lt;dir&gt;][ f:&lt;filenames&gt;]]
+	Sets the JSCH log inputs.
+
+		host The name of the host.
+		port The port number.
+		username The user's name.
+		password The user's password.
+		known-host The known host file.
+		dir The directory where to search for logs.
+		filenames A comma separated list of log file names.
 
 ---
 
