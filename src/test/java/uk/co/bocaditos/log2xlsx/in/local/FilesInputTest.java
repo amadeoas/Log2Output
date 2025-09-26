@@ -44,8 +44,8 @@ public class FilesInputTest {
 	public void test() throws InputException, IOException, CmdException {
 		final String filename = "src/test/resources/logs/app1.log";
 		final String[][] argss = {
-				{CmdArgs.START + Input.ARG_LOGS, FilesInput.ID, filename},
-				{CmdArgs.START + Input.ARG_LOGS, filename}
+				{CmdArgs.START + Input.CMD_LOGS, FilesInput.ID, filename},
+				{CmdArgs.START + Input.CMD_LOGS, filename}
 			};
 
 		for (final String[] args : argss) {
@@ -79,9 +79,9 @@ public class FilesInputTest {
 	public void exceptionTest() throws InputException, IOException {
 		final String filename = "src/test/resources/logs/app1.log";
 		final String[][] argss = {
-				{CmdArgs.START + Input.ARG_LOGS, FilesInput.ID, filename, " "},
-				{CmdArgs.START + Input.ARG_LOGS, "src/test/resources", " "},
-				{CmdArgs.START + Input.ARG_LOGS, "LICENCE"}
+				{CmdArgs.START + Input.CMD_LOGS, FilesInput.ID, filename, " "},
+				{CmdArgs.START + Input.CMD_LOGS, "src/test/resources", " "},
+				{CmdArgs.START + Input.CMD_LOGS, "LICENCE"}
 			};
 
 		for (final String[] args : argss) {

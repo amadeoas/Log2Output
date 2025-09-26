@@ -25,13 +25,13 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public class HtmlOutput implements LogOutput {
 
-	public static final String ARG_DIR4TEMPLATE = "dir4template";
-	public static final String ARG_TEMPLATE 	= "template";
-	public static final String ARG_ENCODING 	= "encoding";
-	public static final String ARG_FREEMARKER_VERSION = "freemarkerVersion";
-	public static final String ARG_HTML_DEFAULT_SIZE = "htmlDefaultSize";
-	public static final String ARG_HTML_SIZE	= "htmlSize";
-	public static final String ARG_HTML_MAX_CELL_LENGTH	= "maxCellLength";
+	public static final String CMD_DIR4TEMPLATE = "dir4template";
+	public static final String CMD_TEMPLATE 	= "template";
+	public static final String CMD_ENCODING 	= "encoding";
+	public static final String CMD_FREEMARKER_VERSION = "freemarkerVersion";
+	public static final String CMD_HTML_DEFAULT_SIZE = "htmlDefaultSize";
+	public static final String CMD_HTML_SIZE	= "htmlSize";
+	public static final String CMD_HTML_MAX_CELL_LENGTH	= "maxCellLength";
 
 	// Defaults
 	public static final String DEFAULT_TEMPLATE 	= "htmlLogs.ftlh";
@@ -53,46 +53,46 @@ public class HtmlOutput implements LogOutput {
 	public void write(final CmdArgs cmdArgs, final FieldsSet set) throws UtilsException {
 		final Configuration config = config(cmdArgs);
 		final Map<String, Object> variables = new HashMap<>();
-		final String filename = cmdArgs.getArgument(ARG_OUT);
+		final String filename = cmdArgs.getArgument(CMD_OUT);
 		final Info info = new Info(this.appName, this.version, cmdArgs);
 
 		variables.put("set", set);
 		variables.put("headers", update(cmdArgs, LogOutput.sorted(cmdArgs, set)));
 		variables.put("info", info);
-		variables.put("maxCellLength", cmdArgs.getParam(ARG_HTML_MAX_CELL_LENGTH, DEFAULT_HTML_MAX_CELL_LENGTH));
+		variables.put("maxCellLength", cmdArgs.getParam(CMD_HTML_MAX_CELL_LENGTH, DEFAULT_HTML_MAX_CELL_LENGTH));
 		try (final Writer writer = buildWrite(filename)) {
 			final Template temp 
-					= config.getTemplate(cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE));
+					= config.getTemplate(cmdArgs.getParam(CMD_TEMPLATE, DEFAULT_TEMPLATE));
 
 			temp.process(variables, writer);
 		} catch (final TemplateException te) {
 			throw new OutException(te, "Issue with template file \"{0}\": {1}", 
-					cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE), te.getMessage());
+					cmdArgs.getParam(CMD_TEMPLATE, DEFAULT_TEMPLATE), te.getMessage());
 		} catch (final Exception ioe) {
 			throw new OutException(ioe, 
 					"Access to template file \"{0}\" or output file \"{1}\": {2}", 
-					cmdArgs.getParam(ARG_TEMPLATE, DEFAULT_TEMPLATE), filename, ioe.getMessage());
+					cmdArgs.getParam(CMD_TEMPLATE, DEFAULT_TEMPLATE), filename, ioe.getMessage());
 		}
 	}
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(ARG_DIR4TEMPLATE, "Sets the template directory, default \"" 
+		new CmdHelpArgDef(CMD_DIR4TEMPLATE, "Sets the template directory, default \"" 
 				+ DEFAULT_DIR4TEMPLATE + "\".", 
 				false, new CmdHelpArgParamDef("dir", "the template directory.", true));
-		new CmdHelpArgDef(ARG_TEMPLATE, "Sets the template to convert to HTML, default \"" 
+		new CmdHelpArgDef(CMD_TEMPLATE, "Sets the template to convert to HTML, default \"" 
 				+ DEFAULT_TEMPLATE + "\".", 
 				false, new CmdHelpArgParamDef("name", "the template to convert to HTML.", true));
-		new CmdHelpArgDef(ARG_ENCODING, "Sets the tool name, default \"" + DEFAULT_ENCODING + "\".", 
+		new CmdHelpArgDef(CMD_ENCODING, "Sets the tool name, default \"" + DEFAULT_ENCODING + "\".", 
 				false, new CmdHelpArgParamDef("name", "The name of the tool.", true));
-		new CmdHelpArgDef(ARG_FREEMARKER_VERSION, "Sets the tool name, default \"" 
+		new CmdHelpArgDef(CMD_FREEMARKER_VERSION, "Sets the tool name, default \"" 
 				+ DEFAULT_FREEMARKER_VERSION + "\".", 
 				false, new CmdHelpArgParamDef("name", "The name of the tool.", true));
-		new CmdHelpArgDef(ARG_HTML_DEFAULT_SIZE, "Sets the table default column size, default \"" 
+		new CmdHelpArgDef(CMD_HTML_DEFAULT_SIZE, "Sets the table default column size, default \"" 
 				+ DEFAULT_HTML_SIZE + "\".", 
 				false, new CmdHelpArgParamDef("size", "A size, e.g. 150px.", true));
-		new CmdHelpArgDef(ARG_HTML_SIZE, "Sets the table column size.", 
+		new CmdHelpArgDef(CMD_HTML_SIZE, "Sets the table column size.", 
 				false, new CmdHelpArgParamDef("size", "A size, e.g. 150px.", true));
-		new CmdHelpArgDef(ARG_HTML_MAX_CELL_LENGTH, "Sets the maximum number of characters in a " 
+		new CmdHelpArgDef(CMD_HTML_MAX_CELL_LENGTH, "Sets the maximum number of characters in a " 
 				+ "cell before truncating it and providing full text on clicking the cell text."
 				+ "Default value is " + DEFAULT_HTML_MAX_CELL_LENGTH, 
 				false, 
@@ -100,10 +100,10 @@ public class HtmlOutput implements LogOutput {
 	}
 
 	private Configuration config(final CmdArgs args) throws CmdException, OutException {
-        final File dir4template = new File(args.getParam(ARG_DIR4TEMPLATE, DEFAULT_DIR4TEMPLATE));
+        final File dir4template = new File(args.getParam(CMD_DIR4TEMPLATE, DEFAULT_DIR4TEMPLATE));
 
         try {
-        	final String[] version = args.getParam(ARG_FREEMARKER_VERSION, DEFAULT_FREEMARKER_VERSION)
+        	final String[] version = args.getParam(CMD_FREEMARKER_VERSION, DEFAULT_FREEMARKER_VERSION)
         		.split("\\.");
 			// Create and adjust the configuration singleton
 	        final Configuration config = new Configuration(new Version(Integer.parseInt(version[0]),
@@ -134,10 +134,10 @@ public class HtmlOutput implements LogOutput {
 	}
 
 	private FieldNames update(final CmdArgs cmdArgs, final FieldNames names) {
-		final String defaultSize = cmdArgs.getParam(ARG_HTML_DEFAULT_SIZE, DEFAULT_HTML_SIZE);
+		final String defaultSize = cmdArgs.getParam(CMD_HTML_DEFAULT_SIZE, DEFAULT_HTML_SIZE);
 
 		for (final LogField field : names) {
-			final String argName = ARG_HTML_SIZE + field.getTitle().replaceAll(" ", "");
+			final String argName = CMD_HTML_SIZE + field.getTitle().replaceAll(" ", "");
 
 			field.setSize(cmdArgs.getParam(argName, defaultSize));
 		}

@@ -28,10 +28,10 @@ public class Info {
 
 		this.appName = appName;
 		this.version = version;
-		this.formats = cmdArgs.getArgument(Application.ARG_FORMATS);
-		this.idFiledName = cmdArgs.getArgument(Application.ARG_ID_FIELD_NAME);
-		this.logFiles = cmdArgs.getArgument(Input.ARG_LOGS);
-		this.filter = cmdArgs.getParam(FieldFilter.ARG_FILTER, (String) null);
+		this.formats = cmdArgs.getArgument(Application.CMD_FORMATS);
+		this.idFiledName = cmdArgs.getArgument(Application.CMD_ID_FIELD_NAME);
+		this.logFiles = cmdArgs.getArgument(Input.CMD_LOGS);
+		this.filter = cmdArgs.getParam(FieldFilter.CMD_FILTER, (String) null);
 	}
 
 	public String getAppName() {

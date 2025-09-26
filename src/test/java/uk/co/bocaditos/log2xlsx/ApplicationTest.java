@@ -39,11 +39,11 @@ public class ApplicationTest {
 	@Test
 	public void mainTest() throws UtilsException {
 		final String[] args = {
-				CmdArgs.START + Application.ARG_FORMATS,		"src/test/resources/formats.txt",
-				CmdArgs.START + LogOutput.ARG_OUT,				OUT_FILE,
-				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
-				CmdArgs.START + Application.ARG_ID_FIELD_NAME,	"id",
-				CmdArgs.START + Input.ARG_LOGS,					"src/test/resources/logs"
+				CmdArgs.START + Application.CMD_FORMATS,		"src/test/resources/formats.txt",
+				CmdArgs.START + LogOutput.CMD_OUT,				OUT_FILE,
+				CmdArgs.START + HtmlOutput.CMD_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
+				CmdArgs.START + Application.CMD_ID_FIELD_NAME,	"id",
+				CmdArgs.START + Input.CMD_LOGS,					"src/test/resources/logs"
 		};
 
 		Application.main(args);
@@ -56,12 +56,12 @@ public class ApplicationTest {
 	@Test
 	public void mainFilterTest() throws IOException {
 		final String[] args = {
-				CmdArgs.START + Application.ARG_FORMATS,		"src/test/resources/formats.txt",
-				CmdArgs.START + LogOutput.ARG_OUT,				OUT_FILE,
-				CmdArgs.START + HtmlOutput.ARG_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
-				CmdArgs.START + Application.ARG_ID_FIELD_NAME,	"id",
-				CmdArgs.START + Input.ARG_LOGS,					"src/test/resources/logs",
-				CmdArgs.START + FieldFilter.ARG_FILTER,			"datetime", 
+				CmdArgs.START + Application.CMD_FORMATS,		"src/test/resources/formats.txt",
+				CmdArgs.START + LogOutput.CMD_OUT,				OUT_FILE,
+				CmdArgs.START + HtmlOutput.CMD_DIR4TEMPLATE,	"src/main/resources" + HtmlOutput.DEFAULT_DIR4TEMPLATE,
+				CmdArgs.START + Application.CMD_ID_FIELD_NAME,	"id",
+				CmdArgs.START + Input.CMD_LOGS,					"src/test/resources/logs",
+				CmdArgs.START + FieldFilter.CMD_FILTER,			"datetime", 
 																"20241223 10:11:10.206", 
 																"20241223 10:11:10.212"
 		};

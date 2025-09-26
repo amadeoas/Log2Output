@@ -176,7 +176,7 @@ public class XlsxOutput implements LogOutput {
 	@Override
 	public void write(final CmdArgs cmdmArgs, final FieldsSet set) 
 			throws UtilsException {
-		final String filename = cmdmArgs.getArgument(ARG_OUT);
+		final String filename = cmdmArgs.getArgument(CMD_OUT);
 
 		try (final OutputStream os = Files.newOutputStream(Paths.get(filename));
 				final Workbook wb = new Workbook(os, this.appName, this.workSheetVersion)) {

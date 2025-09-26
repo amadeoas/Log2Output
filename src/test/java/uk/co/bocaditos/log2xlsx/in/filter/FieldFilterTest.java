@@ -62,66 +62,66 @@ public class FieldFilterTest {
 			};
 		final String[][] filterArgs = {
 				// Datetime - 0 to 5
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20231230 13:01:00.001", "20240121 15:01:00.001"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20240101 12:01:00.001"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20231230 13:01:00.001", "20240101 12:01:00.001"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20231230 13:01:00.001", "20240121 15:01:00.001"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20240101 12:01:00.001"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20231230 13:01:00.001", "20240101 12:01:00.001"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20231230 13:01:00.001", "20240101 12:01:00.000"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20240101 12:01:00.002", "20250101 12:01:00.000"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "datetime", "20231230 13:01:00.001"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20231230 13:01:00.001", "20240101 12:01:00.000"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20240101 12:01:00.002", "20250101 12:01:00.000"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "datetime", "20231230 13:01:00.001"},
 				// Date - 6 to 11
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20231230", "20240121"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20240101"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20231230", "20240101"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20231230", "20240121"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20240101"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20231230", "20240101"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20231230", "20231231"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20240102", "20250101"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "date", "20231230"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20231230", "20231231"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20240102", "20250101"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "date", "20231230"},
 				// String - 12 to 14
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "str", "value"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "str", "value"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "str", "sd1"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "str", "sdt"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "str", "sd1"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "str", "sdt"},
 				// Integer - 15 to 20
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "8", "45"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "10", "45"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "0", "10"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "10"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "8", "45"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "10", "45"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "0", "10"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "10"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "0", "9"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "int", "11", "17"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "0", "9"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "int", "11", "17"},
 				// Long - 21 to 26
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "80", "450"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "100", "450"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "80", "100"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "100"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "80", "450"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "100", "450"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "80", "100"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "100"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "0", "99"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "long", "101", "450"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "0", "99"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "long", "101", "450"},
 				// Double - 27 to 32
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "10", "50"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "10.1", "50"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "8", "10.1"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "10.1"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "10", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "10.1", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "8", "10.1"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "10.1"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "0", "10"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "double", "10.2", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "0", "10"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "double", "10.2", "50"},
 				// Float - 33 to 38
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "10", "50"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "10.1", "50"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "8", "10.1"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "10.1"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "10", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "10.1", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "8", "10.1"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "10.1"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "0", "10"},
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "float", "10.2", "50"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "0", "10"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "float", "10.2", "50"},
 				// Boolean - 39 to 36
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "boolean", "true"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "boolean", "true"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "boolean", "false"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "boolean", "false"},
 				// Character - 37 - 38
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "char", "c"},
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "char", "c"},
 
-				{CmdArgs.START + FieldFilter.ARG_FILTER, "char", "l"}
+				{CmdArgs.START + FieldFilter.CMD_FILTER, "char", "l"}
 		};
 		final LogSet set = Formats.load(format);
 

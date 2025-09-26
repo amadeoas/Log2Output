@@ -14,8 +14,8 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public interface LogOutput {
 
-	public static final String ARG_OUT = "out"; // -out <filename>
-	public static final String ARG_HEADERS_SORT = "sort";
+	public static final String CMD_OUT = "out"; // -out <filename>
+	public static final String CMD_HEADERS_SORT = "sort";
 
 	/**
 	 * Loads the provides fields into output
@@ -26,9 +26,9 @@ public interface LogOutput {
 	public void write(CmdArgs args, FieldsSet set) throws UtilsException;
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(ARG_OUT, "Sets the output file name.", true, 
+		new CmdHelpArgDef(CMD_OUT, "Sets the output file name.", true, 
 				new CmdHelpArgParamDef("filename", "A filename for the outpur.", true));
-		new CmdHelpArgDef(ARG_HEADERS_SORT, "Sets the order of the columns based on the fields " 
+		new CmdHelpArgDef(CMD_HEADERS_SORT, "Sets the order of the columns based on the fields " 
 				+ "names separated by comma. The field names not present will not be part of the " 
 				+ "output", 
 				false,
@@ -37,7 +37,7 @@ public interface LogOutput {
 	}
 
 	public static FieldNames sorted(final CmdArgs cmdArgs, final FieldsSet set) {
-		final String names = cmdArgs.getParam(ARG_HEADERS_SORT, (String) null);
+		final String names = cmdArgs.getParam(CMD_HEADERS_SORT, (String) null);
 		final String[] ns;
 
 		if (names == null) {

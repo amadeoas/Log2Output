@@ -24,7 +24,7 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public abstract class FieldFilter<T> implements Filter {
 
-	public static final String ARG_FILTER = "filter";
+	public static final String CMD_FILTER = "filter";
 
 	private static final List<String> FILTER_EMPTY_ARGS = new ArrayList<>(0);
 
@@ -54,7 +54,7 @@ public abstract class FieldFilter<T> implements Filter {
 			return build();
 		}
 
-		final List<String> argValues = cmdArgs.getArguments(ARG_FILTER, FILTER_EMPTY_ARGS);
+		final List<String> argValues = cmdArgs.getArguments(CMD_FILTER, FILTER_EMPTY_ARGS);
 
 		if (Utils.isEmpty(argValues)) {
 			return build();
@@ -64,7 +64,7 @@ public abstract class FieldFilter<T> implements Filter {
 
 		if (field.getFieldClass() == String.class) {
 			if (argValues.size() > 2) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 
 			return new StringFilter(field, (String) field.build(argValues.get(1)));
@@ -77,7 +77,7 @@ public abstract class FieldFilter<T> implements Filter {
 				return new LocalDateTimeFilter(field, (LocalDateTime) field.build(argValues.get(1)), 
 						(LocalDateTime) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
@@ -88,7 +88,7 @@ public abstract class FieldFilter<T> implements Filter {
 				return new LocalDateFilter(field, (LocalDate) field.build(argValues.get(1)), 
 						(LocalDate) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
@@ -99,7 +99,7 @@ public abstract class FieldFilter<T> implements Filter {
 				return new IntFilter(field, (Integer) field.build(argValues.get(1)), 
 						(Integer) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
@@ -110,7 +110,7 @@ public abstract class FieldFilter<T> implements Filter {
 				return new LongFilter(field, (Long) field.build(argValues.get(1)), 
 						(Long) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
@@ -121,7 +121,7 @@ public abstract class FieldFilter<T> implements Filter {
 				return new DoubleFilter(field, (Double) field.build(argValues.get(1)), 
 						(Double) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
@@ -132,13 +132,13 @@ public abstract class FieldFilter<T> implements Filter {
 				return new FloatFilter(field, (Float) field.build(argValues.get(1)), 
 						(Float) field.build(argValues.get(2)));
 			} else {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 		}
 
 		if (field.getFieldClass() == char.class) {
 			if (argValues.size() != 2) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 
 			return new CharFilter(field, (Character) field.build(argValues.get(1)));
@@ -146,7 +146,7 @@ public abstract class FieldFilter<T> implements Filter {
 
 		if (field.getFieldClass() == boolean.class) {
 			if (argValues.size() != 2) {
-				throw new FormatException(MSG_TOO_MANY_ARGS, ARG_FILTER);
+				throw new FormatException(MSG_TOO_MANY_ARGS, CMD_FILTER);
 			}
 
 			return new BooleanFilter(field, (Boolean) field.build(argValues.get(1)));
@@ -174,7 +174,7 @@ public abstract class FieldFilter<T> implements Filter {
 	}
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(ARG_FILTER, "Sets the filter of the log lines to consider.", 
+		new CmdHelpArgDef(CMD_FILTER, "Sets the filter of the log lines to consider.", 
 			true, 
 			new CmdHelpArgParamDef("fieldname", "The name of the field to filter against.",
 				true), 

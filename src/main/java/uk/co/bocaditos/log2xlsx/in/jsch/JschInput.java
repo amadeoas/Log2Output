@@ -15,7 +15,6 @@ import com.jcraft.jsch.ChannelSftp.LsEntry;
 
 import uk.co.bocaditos.log2xlsx.in.Input;
 import uk.co.bocaditos.log2xlsx.in.InputException;
-import uk.co.bocaditos.utils.Utils;
 import uk.co.bocaditos.utils.cmd.CmdArgs;
 import uk.co.bocaditos.utils.cmd.CmdException;
 import uk.co.bocaditos.utils.cmd.CmdHelpArgDef;
@@ -31,14 +30,14 @@ public class JschInput extends Input {
 
 	public static final String ID = "JSCH";
 
-	static final String CDM_HOST	  = "jschHost";
-	static final String CDM_PORT	  = "jschPort";
-	static final String CDM_KNOWHOSTS = "jschKnownHost";
-	static final String CDM_USERNAME  = "jschUsername";
-	static final String CDM_PASSWORD  = "jschPassword";
-	static final String CDM_DIR		  = "jschDir";
-	static final String CDM_FILENAMES = "jschFiles";
-	static final String CDM_STRICT_HOST_KEY_CHECKING = "stricthostkeychecking";
+	static final String CMD_HOST	  = "jschHost";
+	static final String CMD_PORT	  = "jschPort";
+	static final String CMD_KNOWHOSTS = "jschKnownHost";
+	static final String CMD_USERNAME  = "jschUsername";
+	static final String CMD_PASSWORD  = "jschPassword";
+	static final String CMD_DIR		  = "jschDir";
+	static final String CMD_FILENAMES = "jschFiles";
+	static final String CMD_STRICT_HOST_KEY_CHECKING = "stricthostkeychecking";
 
 	// JSCH h:<host> [p:<port|22>] k:<known_host> u:<user> ps:<password> d:<dir> [f:<file>[,<file>...]]
 	static final String ARG_HOST	  = "h:";
@@ -66,7 +65,7 @@ public class JschInput extends Input {
 
 		this.sftp = setupJsch(cmdArgs, args);
 
-		final String dir = getValue(cmdArgs, CDM_DIR, args, "d:");
+		final String dir = getValue(cmdArgs, CMD_DIR, args, "d:");
 
 		if (dir == null) {
 			try {
@@ -78,7 +77,7 @@ public class JschInput extends Input {
 
 			try {
 				List<LsEntry> entries = this.sftp.ls(".");
-				final String str = getValue(cmdArgs, CDM_FILENAMES, args, ARG_FILENAMES);
+				final String str = getValue(cmdArgs, CMD_FILENAMES, args, ARG_FILENAMES);
 
 				if (str != null) {
 					entries = entries.stream()
@@ -98,7 +97,7 @@ public class JschInput extends Input {
 						ID, dir);
 			}
 		} else {
-			this.filenames = getValue(cmdArgs, CDM_FILENAMES, args, ARG_FILENAMES).split(",");
+			this.filenames = getValue(cmdArgs, CMD_FILENAMES, args, ARG_FILENAMES).split(",");
 		}
 	}
 
@@ -164,42 +163,53 @@ public class JschInput extends Input {
 	}
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(CDM_HOST, "Sets the host to JSCH.", false, 
+		new CmdHelpArgDef(CMD_HOST, "Sets the host to JSCH.", false, 
 				new CmdHelpArgParamDef("hos", "The name of the host.", true));
-		new CmdHelpArgDef(CDM_PORT, "Sets the port. Default " + DEFAULT_PORT, 
+		new CmdHelpArgDef(CMD_PORT, "Sets the port. Default " + DEFAULT_PORT, 
 				false, new CmdHelpArgParamDef("port", "The port number.", true));
-		new CmdHelpArgDef(CDM_KNOWHOSTS, "Sets the know hosts. Default " + DEFAULT_KNOWHOSTS, 
+		new CmdHelpArgDef(CMD_KNOWHOSTS, "Sets the know hosts. Default " + DEFAULT_KNOWHOSTS, 
 				false, new CmdHelpArgParamDef("filename", "The name of the knowhots.", true));
-		new CmdHelpArgDef(CDM_USERNAME, "Sets the user's name.", false, 
+		new CmdHelpArgDef(CMD_USERNAME, "Sets the user's name.", false, 
 				new CmdHelpArgParamDef("username", "The user's name.", true));
-		new CmdHelpArgDef(CDM_PASSWORD, "Sets the pasword.", false, 
+		new CmdHelpArgDef(CMD_PASSWORD, "Sets the pasword.", false, 
 				new CmdHelpArgParamDef("password", "The password.", true));
-		new CmdHelpArgDef(CDM_DIR, "Sets the directory from where to reade the loag files.", false, 
+		new CmdHelpArgDef(CMD_DIR, "Sets the directory from where to reade the loag files.", false, 
 				new CmdHelpArgParamDef("dir", "The directory.", true));
-		new CmdHelpArgDef(CDM_FILENAMES, "Sets the log files to read as comma separated list if " 
-				+ CDM_DIR + " has not been set otherwise the starting text in the name of the " 
+		new CmdHelpArgDef(CMD_FILENAMES, "Sets the log files to read as comma separated list if " 
+				+ CMD_DIR + " has not been set otherwise the starting text in the name of the " 
 				+ "files to read from the set directory.", false, 
 				new CmdHelpArgParamDef("filenames", "The directory.", true));
-		new CmdHelpArgDef(CDM_STRICT_HOST_KEY_CHECKING, 
+		new CmdHelpArgDef(CMD_STRICT_HOST_KEY_CHECKING, 
 				"If exists set the stricthostkeychecking as \"yes\", otherwise \"no\".", false);
+
+		new CmdHelpArgDef(Input.CMD_LOGS + " " + ID, "Sets the " + ID + " log inputs.", false, 
+				new CmdHelpArgParamDef(
+						"[" + ARG_HOST	+ "<host>][ " 
+						+ ARG_PORT		+ "<port>][ "
+						+ ARG_USERNAME	+ "<username>][ "
+						+ ARG_PASSWORD	+ "<password>][ "
+						+ ARG_KNOWHOSTS	+ "<known-hosts>][ "
+						+ ARG_DIR		+ "<dir>][ "
+						+ ARG_FILENAMES + "<filenames>]",
+						"The name of the host.", true));
 	}
 
 	private ChannelSftp setupJsch(final CmdArgs cmdArgs, final String... args) 
 			throws InputException, CmdException {
 	    final JSch jsch = new JSch();
-	    final String password = getValue(cmdArgs, CDM_PASSWORD, args, ARG_PASSWORD);
+	    final String password = getValue(cmdArgs, CMD_PASSWORD, args, ARG_PASSWORD);
 
 	    try {
 	    	final Session jschSession;
 
-	    	jsch.setKnownHosts(getValue(cmdArgs, CDM_KNOWHOSTS, args, ARG_KNOWHOSTS, DEFAULT_KNOWHOSTS));
+	    	jsch.setKnownHosts(getValue(cmdArgs, CMD_KNOWHOSTS, args, ARG_KNOWHOSTS, DEFAULT_KNOWHOSTS));
 		    jschSession = jsch.getSession(
-		    		getValue(cmdArgs, CDM_USERNAME, args, ARG_USERNAME), 
-		    		getValue(cmdArgs, CDM_HOST, args, ARG_HOST), 
-		    		getValue(cmdArgs, CDM_PORT, args, ARG_PORT, DEFAULT_PORT));
+		    		getValue(cmdArgs, CMD_USERNAME, args, ARG_USERNAME), 
+		    		getValue(cmdArgs, CMD_HOST, args, ARG_HOST), 
+		    		getValue(cmdArgs, CMD_PORT, args, ARG_PORT, DEFAULT_PORT));
 		    jschSession.setPassword(password);
 		    jschSession.setConfig("stricthostkeychecking", 
-		    		cmdArgs.contains(CDM_STRICT_HOST_KEY_CHECKING) ? "yes" : "no");
+		    		cmdArgs.contains(CMD_STRICT_HOST_KEY_CHECKING) ? "yes" : "no");
 		    jschSession.connect();
 
 		    return (ChannelSftp) jschSession.openChannel("sftp");
@@ -208,13 +218,14 @@ public class JschInput extends Input {
 		}
 	}
 
-	private static String getValue(final CmdArgs cmdArgs, final String cmdKey, final String[] args, 
-			final String argsKey) throws CmdException {
+	static String getValue(final CmdArgs cmdArgs, final String cmdKey, 
+			final String[] args, final String argsKey) throws CmdException {
 		return getValue(cmdArgs, cmdKey, args, argsKey, null);
 	}
 
-	private static String getValue(final CmdArgs cmdArgs, final String cmdKey, final String[] args, 
-			final String argsKey, final String defaultValue) throws CmdException {
+	static String getValue(final CmdArgs cmdArgs, final String cmdKey, 
+			final String[] args, final String argsKey, final String defaultValue) 
+			throws CmdException {
 		final String value = cmdArgs.getParam(cmdKey, getValue(args, argsKey, defaultValue));
 
 		if (value == null) {
@@ -224,7 +235,7 @@ public class JschInput extends Input {
 		return value;
 	}
 
-	private static int getValue(final CmdArgs cmdArgs, final String cmdKey, final String[] args, 
+	static int getValue(final CmdArgs cmdArgs, final String cmdKey, final String[] args, 
 			final String argsKey, final int defaultValue) throws CmdException {
 		final String value = cmdArgs.getParam(cmdKey, getValue(args, argsKey, ""));
 
@@ -233,21 +244,6 @@ public class JschInput extends Input {
 		}
 
 		return Integer.parseInt(value);
-	}
-
-	private static String getValue(final String[] args, final String key, 
-			final String defaultValue) {
-		if (Utils.isEmpty(args)) {
-			return defaultValue;
-		}
-
-		for (final String arg : args) {
-			if (arg.startsWith(key)) {
-				return arg.substring(key.length());
-			}
-		}
-
-		return defaultValue;
 	}
 
 } // end class JschInput

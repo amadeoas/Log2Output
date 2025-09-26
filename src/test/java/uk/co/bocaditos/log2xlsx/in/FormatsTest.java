@@ -169,7 +169,7 @@ public class FormatsTest {
 		if (cmdArgs == null) {
 			cmdArgs = new CmdArgs(new String[] {});
 		}
-		cmdArgs.set(Input.ARG_LOGS, FilesInput.ID, 
+		cmdArgs.set(Input.CMD_LOGS, FilesInput.ID, 
 				"src/test/resources/logs/app1.log,src/test/resources/logs/app2.log");
 
 		final Input in = Input.build(cmdArgs);

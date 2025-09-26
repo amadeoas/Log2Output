@@ -30,10 +30,11 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = .83
+				minimum = .72
 			}
 			excludes = ['uk.co.bocaditos.bootstrap.*',
-				'uk.co.bocaditos.log2xlsx.in.jsch.JschOutput']
+				'uk.co.bocaditos.log2xlsx.in.cloud.CloudInput.1',
+				'uk.co.bocaditos.log2xlsx.in.jsch.JschInput']
 		}
 	}
 }

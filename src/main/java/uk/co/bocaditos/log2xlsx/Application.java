@@ -46,8 +46,8 @@ public class Application implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-    public static final String ARG_FORMATS		 = "formats";
-    public static final String ARG_ID_FIELD_NAME = "idFieldName";
+    public static final String CMD_FORMATS		 = "formats";
+    public static final String CMD_ID_FIELD_NAME = "idFieldName";
 
     @Autowired
     Environment env;
@@ -92,10 +92,10 @@ public class Application implements CommandLineRunner {
 	}
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(ARG_FORMATS, "Sets the log formats to use.", true, 
+		new CmdHelpArgDef(CMD_FORMATS, "Sets the log formats to use.", true, 
 				new CmdHelpArgParamDef("filename", "The format filename",
 					true));
-		new CmdHelpArgDef(ARG_ID_FIELD_NAME, "Sets the field name to use as ID for groups.", true, 
+		new CmdHelpArgDef(CMD_ID_FIELD_NAME, "Sets the field name to use as ID for groups.", true, 
 				new CmdHelpArgParamDef("idFieldName", "The name of the field used as ID for groups",
 					true));
 	}
@@ -124,8 +124,8 @@ public class Application implements CommandLineRunner {
 	}
 
 	private FieldsSet load(final CmdArgs cmdArgs) throws UtilsException {
-    	final LogSet set = Formats.loadFiles(cmdArgs.getArgument(ARG_FORMATS).split(","));
-    	final FieldsSet fieldsSet = new FieldsSet(set, cmdArgs.getArgument(ARG_ID_FIELD_NAME));
+    	final LogSet set = Formats.loadFiles(cmdArgs.getArgument(CMD_FORMATS).split(","));
+    	final FieldsSet fieldsSet = new FieldsSet(set, cmdArgs.getArgument(CMD_ID_FIELD_NAME));
     	final Filter filter = FieldFilter.build(cmdArgs, set);
     	
     	try (final Input in = Input.build(cmdArgs)) {
@@ -136,7 +136,7 @@ public class Application implements CommandLineRunner {
 	}
 
 	private LogOutput buildOuter(final CmdArgs cmdArgs) throws UtilsException {
-    	final String outFilename = cmdArgs.getArgument(LogOutput.ARG_OUT);
+    	final String outFilename = cmdArgs.getArgument(LogOutput.CMD_OUT);
     	LogOutput output;
 
     	if (outFilename.endsWith(".xlsx")) {

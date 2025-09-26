@@ -679,12 +679,6 @@ class DateTimeFormatterInternal {
 		return this.format;
 	}
 
-	public StringBuilder toString(final StringBuilder buf) {
-		buf.append(this.format);
-
-		return buf;
-	}
-
 	final DateTimeFormatter formatter() {
 		return this.formatter;
 	}

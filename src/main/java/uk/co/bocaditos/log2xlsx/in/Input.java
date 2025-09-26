@@ -19,7 +19,7 @@ import uk.co.bocaditos.utils.cmd.CmdHelpArgParamDef;
  */
 public abstract class Input implements Closeable {
 
-	public static final String ARG_LOGS = "logs";
+	public static final String CMD_LOGS = "logs";
 
 
 	protected Input(final String... args) throws InputException {
@@ -37,7 +37,7 @@ public abstract class Input implements Closeable {
 			throw new CmdException("Missing CMD line");
 		}
 
-		List<String> args = cmdArgs.getArguments(ARG_LOGS);
+		List<String> args = cmdArgs.getArguments(CMD_LOGS);
 
 		if (Utils.isEmpty(args)) {
 			throw new InputException("Missing arguments to build input logs support");
@@ -98,7 +98,7 @@ public abstract class Input implements Closeable {
 	}
 
 	public static void initHelp() throws CmdException {
-		new CmdHelpArgDef(ARG_LOGS, "Sets the files or directory with the log lines.", true, 
+		new CmdHelpArgDef(CMD_LOGS, "Sets the files or directory with the log lines.", true, 
 				new CmdHelpArgParamDef("type", "The type of input, i.e. \"" + FilesInput.ID 
 					+ " or \"" + JschInput.ID + "\". \"" + FilesInput.ID + "\" reads the log file " 
 					+ "from local file system and \"" + JschInput.ID + "\" from a remote. The " 
@@ -110,6 +110,43 @@ public abstract class Input implements Closeable {
 					+ "filenames must end with \".log\", in the case of a directory only the "
 					+ "contained files ending with \".log\" will be used.", 
 					true));
+	}
+
+	protected static String getArgument(final String[] args, final String key) 
+			throws InputException {
+		final String value = getValue(args, key, null);
+
+		if (value == null) {
+			throw new InputException("Missing argument \"{0}\"", key);
+		}
+
+		return value;
+	}
+
+	protected static boolean getValue(final String[] args, final String key, 
+			final boolean defaultValue) {
+		final String value = getValue(args, key, null);
+
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return Boolean.parseBoolean(value);
+	}
+
+	protected static String getValue(final String[] args, final String key, 
+			final String defaultValue) {
+		if (Utils.isEmpty(args)) {
+			return defaultValue;
+		}
+
+		for (final String arg : args) {
+			if (arg.startsWith(key)) {
+				return arg.substring(key.length());
+			}
+		}
+
+		return defaultValue;
 	}
 
 } // end interface Input

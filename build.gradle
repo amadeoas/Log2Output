@@ -49,6 +49,7 @@ dependencies {
 	implementation 'org.freemarker:freemarker:2.3.34'
 //	implementation 'co.uk.bocaditos:CdmLib:1.00.000'
 	implementation 'com.github.mwiede:jsch:2.27.3'
+	implementation 'io.fabric8:openshift-client:7.4.0'
 
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

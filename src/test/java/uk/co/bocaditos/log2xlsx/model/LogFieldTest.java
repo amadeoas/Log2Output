@@ -159,6 +159,16 @@ public class LogFieldTest {
 		});
 	}
 
+	@Test
+	public void dateTimeFormatterInternalTests() {
+		final String FORMAT = "YYYYMMdd HH:mm:ss.SSS";
+		final DateTimeFormatterInternal datetime 
+				= new DateTimeFormatterInternal(FORMAT);
+
+		assertNotNull(datetime.formatter());
+		assertEquals(FORMAT, datetime.toString());
+	}
+
 	private void numTests() throws FormatException {
 		LogField field;
 

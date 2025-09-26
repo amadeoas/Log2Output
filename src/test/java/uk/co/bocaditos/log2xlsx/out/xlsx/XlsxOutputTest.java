@@ -23,15 +23,15 @@ public class XlsxOutputTest {
 	public void writeTest() throws UtilsException {
 		final LogSet set = FormatsTest.load();
 		final String[] args = {
-				CmdArgs.START + LogOutput.ARG_OUT, 			"testOut.xlsx",
-				CmdArgs.START + LogOutput.ARG_HEADERS_SORT,	"datetime,computer,class,id,message," 
+				CmdArgs.START + LogOutput.CMD_OUT, 			"testOut.xlsx",
+				CmdArgs.START + LogOutput.CMD_HEADERS_SORT,	"datetime,computer,class,id,message," 
 				+ "request,headers,body"
 			};
 		final XlsxOutput out = build(args);
 		final FieldsSet fields = FormatsTest.load(null, set);
 		final CmdArgs cdmArgs = new CmdArgs(args);
 
-		final File file = new File(cdmArgs.getArgument(LogOutput.ARG_OUT));
+		final File file = new File(cdmArgs.getArgument(LogOutput.CMD_OUT));
 
 		if (file.exists()) {
 			file.delete();
