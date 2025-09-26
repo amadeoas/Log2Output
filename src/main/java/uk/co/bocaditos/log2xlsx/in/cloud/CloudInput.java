@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +124,7 @@ public class CloudInput extends Input {
 		return new KubernetesClientBuilder().withConfig(config).build();
 	}
 
-	ByteArrayInputStream buildIn(final ByteArrayOutputStream out) {
+	ByteArrayInputStream buildIn(final Pod pod, final ByteArrayOutputStream out) {
 		return new ByteArrayInputStream(out.toByteArray());
 	}
 	// End of Needed for JUnit test
@@ -156,7 +154,6 @@ public class CloudInput extends Input {
 		}
 
 		final PodResource rsc = this.namespace.resource(pod);
-		final CountDownLatch execLatch = new CountDownLatch(1);
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		try (final ExecWatch execWatch = rsc.writingOutput(out).withTTY().usingListener(
@@ -164,54 +161,48 @@ public class CloudInput extends Input {
 
 		    		@Override
 		            public void onOpen() {
-		    			logger.debug("[POD \"{0}\"] Shell was opened for directory \"{1}\"", 
-		    					pod.getMetadata(), dir);
-		            }
+	                	logger.debug("[POD \"{0}\"] Shell on open for directory \"{1}\"", 
+	                		pod.getMetadata().getName(), dir);
+		    		}
 
 		            @Override
 		            public void onFailure(final Throwable throwable, final Response response) {
-		                try {
-							logger.warn("[POD \"" + pod.getMetadata() + "\"] Failure code " 
-									+ response.code() + " " + response.body() + " and directory \"" 
-									+ dir + "\"",
-									throwable);
+		            	String body;
+
+		            	try {
+							body = response.body();
 						} catch (final IOException ioe) {
-							logger.warn("[POD \"" + pod.getMetadata() + "\"] Failure code "
-									+ response.code() + " and directory \"" + dir + "\"", 
-									throwable);
+							body = null;
 						}
-		                execLatch.countDown();
+		            	logger.warn("[POD \"" + pod.getMetadata().getName() + "\"] Shell on close: " 
+		                		+ "code " + response.code() + " with reason \"" + body + "\" " 
+		                		+ "for directory \"" + dir + "\"", 
+		                		throwable);
 		            }
 
 		            @Override
 		            public void onClose(final int code, final String reason) {
-		                logger.warn(
-		                		"[POD \"{0}\"] Shell on close: code {1, number} with reson \"{2}\" " 
-		                		+ "for rirectpry \"{3}\"", 
+		                logger.debug("[POD \"{0}\"] Shell on close: code {1, number} with reason " 
+		                		+ "\"{2}\" for directory \"{3}\"", 
 		                		pod.getMetadata().getName(), code, reason, dir);
-		                execLatch.countDown();
 		            }
 
 		            @Override
 		            public void onExit(final int code, final Status status) {
-		                logger.warn(
-		                		"[POD \"{0}\"] Shell on exit: code {1, number} with status \"{2}\" " 
-		                		+ "for directory \"{3}\"", 
+		                logger.debug("[POD \"{0}\"] Shell on exit: code {1, number} with status " 
+		                		+ "\"{2}\" for directory \"{3}\"", 
 		                		pod.getMetadata().getName(), code, status, dir);
 		            }
 
-		    	}).exec("ls", dir)) {
-			execLatch.await(5, TimeUnit.SECONDS);
+		    	})
+				.exec("ls", dir)) {
+		    execWatch.exitCode().join();
 			this.files.add(new FilePair(pod, out));
-		} catch (final InterruptedException ie) {
-			throw new InputException(ie, "[POD \"{0}\"] Issue when retrieving files from directory " 
-					+ "\"{1}\"", 
-					pod.getMetadata().getName(), dir);
 		}
 	}
 
 	List<String> load(final Pod pod, final ByteArrayOutputStream out) throws InputException {
-		final ByteArrayInputStream in = buildIn(out);
+		final ByteArrayInputStream in = buildIn(pod, out);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		final List<String> filenames = new ArrayList<>();
 		String line;

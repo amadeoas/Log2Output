@@ -48,7 +48,7 @@ public class FilesInput extends Input {
 		for (final String filename : filenames) {
 			final File file = new File(filename);
 
-			if (!file.isFile() && !file.exists()) {
+			if (!file.isFile()) { // doesn't exist or not a file
 				return false;
 			}
 		}
