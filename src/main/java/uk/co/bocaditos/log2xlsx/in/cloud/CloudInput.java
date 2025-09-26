@@ -58,7 +58,6 @@ public class CloudInput extends Input {
 	private BufferedReader reader;
 	private List<FilePair> files;
 	private int indexFile;
-
 	private final KubernetesClient client;
 	private NonNamespaceOperation<Pod, PodList, PodResource> namespace;
 
@@ -90,6 +89,7 @@ public class CloudInput extends Input {
 				}
 			}
 		}
+		this.client.close();
 	}
 
 	@Override
@@ -226,7 +226,7 @@ public class CloudInput extends Input {
 
 			return filenames;
 		} catch (final IOException ioe) {
-			throw new InputException(ioe, "Failed to get files on POD \"{0}\"", 
+			throw new InputException(ioe, "[POD \"{0}\"] Failed to get files", 
 					pod.getMetadata().getName());
 		}
 	}
@@ -276,7 +276,7 @@ public class CloudInput extends Input {
 				return line;
 			} catch (final IOException ioe) {
 				throw new InputException(ioe, 
-						"[ POD \"{0}\"] Failure when reading line in file \"{1}\"", 
+						"[POD \"{0}\"] Failure when reading line in file \"{1}\"", 
 						this.pod.getMetadata().getName(), this.filenames.get(this.iFile));
 			}
 		}

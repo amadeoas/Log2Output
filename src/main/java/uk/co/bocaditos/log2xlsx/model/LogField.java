@@ -645,7 +645,7 @@ public class LogField extends LogEntry {
 
 
 /**
- * .
+ * Wrapping of a DateTimeFormatter.
  */
 class DateTimeFormatterInternal {
 
