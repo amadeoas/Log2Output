@@ -147,7 +147,7 @@ public class CloudInput extends Input {
 		}
 	}
 
-	private void files(final String artifact, final String dir, final Pod pod) 
+	void files(final String artifact, final String dir, final Pod pod) 
 			throws InputException {
 		if (!pod.getMetadata().getName().startsWith(artifact)) {
 			return;
@@ -280,8 +280,9 @@ public class CloudInput extends Input {
 					CloudInput.this.reader = null;
 					reader.close();
 				} catch (final IOException ioe) {
-					logger.warn("[POD \"" + this.pod.getMetadata().getName() + "\"] Failed to close " 
-							+ "file \"" + this.filenames.get(this.iFile) + "\"", 
+					logger.warn("[POD \"" + this.pod.getMetadata().getName() 
+							+ "\"] Failed to close " + "file \"" + this.filenames.get(this.iFile) 
+							+ "\"", 
 							ioe);
 				}
 			}

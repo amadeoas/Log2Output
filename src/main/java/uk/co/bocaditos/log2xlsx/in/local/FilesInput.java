@@ -134,11 +134,6 @@ public class FilesInput extends Input {
 
 		final String filename = this.filenames[this.currentFile];
 
-		if (Utils.isEmpty(filename)) {
-			throw new InputException("Missing the file name for file index {0, number}", 
-					this.currentFile);
-		}
-
 		try {
 			final File file = new File(filename);
 

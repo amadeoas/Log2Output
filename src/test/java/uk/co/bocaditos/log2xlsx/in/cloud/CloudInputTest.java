@@ -38,6 +38,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
+import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import uk.co.bocaditos.log2xlsx.in.InputException;
 
 
@@ -91,9 +92,24 @@ public class CloudInputTest {
 				public Integer answer(InvocationOnMock invocation) throws Throwable {
 					final int code = 0;
 					final String reason = "Completed";
+					final Throwable throwable = new Throwable();
+					final Response response = new Response() {
+
+						@Override
+						public int code() {
+							return 1;
+						}
+
+						@Override
+						public String body() throws IOException {
+							return "TEST";
+						}
+						
+					};
 
 					listener.listener.onOpen();
 					Thread.sleep(5000);
+					listener.listener.onFailure(throwable, response);
 					listener.listener.onClose(code, reason);
 					listener.listener.onExit(code, new Status("0.00", 0, new StatusDetails(), 
 							"kind", "Completed", null, "Completed", reason));
@@ -185,6 +201,15 @@ public class CloudInputTest {
 				}
 			}
 		}
+
+		final Pod p = mock(Pod.class);
+		final ObjectMeta m = mock(ObjectMeta.class);
+
+		// pod.getMetadata().getName().startsWith(artifact)
+		doReturn("test-1").when(m).getName();
+		doReturn(m).when(p).getMetadata();
+		input.files("none", "", p);
+
 		input.close();
 		assertNull(input.readLine());
 	}
