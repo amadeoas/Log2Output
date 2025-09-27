@@ -78,6 +78,62 @@ public abstract class BaseModel<T extends BaseModelInterface<T>> implements Base
 	/**
 	 * Appends the passed field value to the provided buffer.
 	 * 
+	 * @param buf a buffer.
+	 * @param fieldName the field names.
+	 * @param value the value.
+	 * @return the passed buffer.
+	 */
+	public static StringBuilder append(final StringBuilder buf, final String fieldName, 
+			final WithID value) {
+		if (value != null) {
+			separator(buf);
+			appendFieldName(buf, fieldName)
+				.append('"')
+				.append(value.getID())
+				.append('"');
+		}
+
+		return buf;
+	}
+
+	/**
+	 * Appends the passed field value to the provided buffer.
+	 * 
+	 * @param buf a buffer.
+	 * @param fieldName the field names.
+	 * @param values the values.
+	 * @return the passed buffer.
+	 */
+	public static StringBuilder appendIDs(final StringBuilder buf, final String fieldName, 
+			final Collection<? extends WithID> values) {
+		if (!Utils.isEmpty(values)) {
+			separator(buf);
+			if (!Utils.isEmpty(fieldName)) {
+				buf.append(fieldName)
+					.append(": ");
+			}
+
+			final int length;
+
+			buf.append('[');
+			length = buf.length();
+			for (final WithID id : values) {
+				if (buf.length() > length) {
+					buf.append(", ");
+				}
+				buf.append('"')
+					.append(id.getID())
+					.append('"');
+			}
+			buf.append(']');
+		}
+
+		return buf;
+	}
+
+	/**
+	 * Appends the passed field value to the provided buffer.
+	 * 
 	 * @param <T> the class of the value.
 	 * @param buf a buffer.
 	 * @param fieldName the field names.

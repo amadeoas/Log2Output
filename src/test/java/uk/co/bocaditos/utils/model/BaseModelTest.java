@@ -6,8 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import org.junit.Test;
@@ -69,6 +71,35 @@ public class BaseModelTest {
 		buf.setLength(0);
 		buf.append('[');
 		assertEquals("[", BaseModel.separator(buf).toString());
+
+		final List<WithID> values = new ArrayList<>(1);
+		final String[] labels = {"LABEL", "label"};
+
+		for (final String label : labels) {
+			values.add(new WithID() {
+	
+				@Override
+				public String getID() {
+					return label;
+				}
+				
+			});
+		}
+		buf.setLength(0);
+		assertEquals("[\"" + labels[0] + "\", \"" + labels[1] + "\"]", 
+				BaseModel.appendIDs(buf, null, values).toString());
+		buf.setLength(0);
+		assertEquals("values: [\"" + labels[0] + "\", \"" + labels[1] + "\"]", 
+				BaseModel.appendIDs(buf, "values", values).toString());
+		buf.setLength(0);
+		assertEquals("\"" + labels[0] + "\"", BaseModel.append(buf, null, values.get(0)).toString());
+		buf.setLength(0);
+		assertEquals("value: \"" + labels[0] + "\"", 
+				BaseModel.append(buf, "value", values.get(0)).toString());
+
+		buf.setLength(0);
+		assertEquals("", BaseModel.append(buf, null, (WithID) null).toString());
+		assertEquals("", BaseModel.appendIDs(buf, null, null).toString());
 	}
 
 } // end class BaseModelTest
