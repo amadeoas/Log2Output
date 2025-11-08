@@ -7,18 +7,28 @@
 		"dateTo": "2025-11-07T12:00:01.000",
 		"msgs": [{
 			"on": "2025-11-07T12:00:00.000",
-			"type": "REQUEST"
+			"type": "REQUEST",
+			"msg": "Request to App1"
 		}, {
 			"on": "2025-11-07T12:00:00.100",
 			"app": "App2",
-			"type": "SENT-REQUEST"
+			"type": "SENT-REQUEST",
+			"msg": "Request sent from App1 to App2"
+		}, {
+			"on": "2025-11-07T12:00:00.500",
+			"msg": "Doing somethings..."
+		}, {
+			"on": "2025-11-07T12:00:00.700",
+			"msg": "Complected"
 		}, {
 			"on": "2025-11-07T12:00:00.910",
 			"app": "App2",
-			"type": "SENT-RESPONSE"
+			"type": "SENT-RESPONSE",
+			"msg": "Response received from App2"
 		}, {
 			"on": "2025-11-07T12:00:01.000",
-			"type": "RESPONSE"
+			"type": "RESPONSE",
+			"msg": "Response from App1"
 		}]
 	}, {
 		"name": "App2",
@@ -27,11 +37,13 @@
 		"msgs": [{
 			"on": "2025-11-07T12:00:00.110",
 			"app": "App1",
-			"type": "REQUEST"
+			"type": "REQUEST",
+			"msg": "Request to App2 from App1"
 		}, {
 			"on": "2025-11-07T12:00:00.900",
 			"app": "App1",
-			"type": "RESPONSE"
+			"type": "RESPONSE",
+			"msg": "Response from App2 to App1"
 		}]
 	}]
 }

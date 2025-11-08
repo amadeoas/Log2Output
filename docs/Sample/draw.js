@@ -1,28 +1,32 @@
 const maxZoomUp = 4;
 const minZoomDown = .4;
 const y0 = 26;
-const arrowSize = 6;
+const arrowSize = 8;
 const DEFAULT_STYLE = '#AE81DB';
 const APP_FONT = '16px serif';
 const GRID_STYLE = '#D3D3D3';
 const GRID_FILL_STYLE = '#A3A3A3';
 const GRID_FONT = '10px serif';
-const GRID_NUM_LINES = 2 + 4;
+const GRID_NUM_LINES = 2 + 4; // 2 must be kept but 4 may be change to increase the number of grid lines
 const GRID_DASH = [15, 5];
 const ARROW_REQUEST = '#00008B';
 const ARROW_RESPONSE = '#00008B';
 const ARROW_SENT_REQUEST = '#6495ED';
 const ARROW_SENT_RESPONSE = '#6495ED';
+const MSG_LINE_STYLE = '#D2691E';
+const MSG_LINE_LENGTH = 6;
+
 let W;
 let H;
 let data;
 let zoom = 1.0;
+let canvas;
 let ctx;
 
 function init() {
 	const menus = document.getElementById('menu');
-	const canvas = document.getElementById('draws');
 
+	canvas = document.getElementById('draws');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight - parseInt(menus.style.height);
 	W = canvas.width;
@@ -31,6 +35,7 @@ function init() {
 	ctx.font = APP_FONT;
 	ctx.strokeStyle = DEFAULT_STYLE;
 	ctx.lineWidth = 1;
+	canvas.addEventListener("mouseover", function(e) {handleMouseMove(e);}, false);
 
 	document.getElementById('fInputData')
 		.addEventListener('change', function selectedFileChanged() {
@@ -183,7 +188,7 @@ function drawVrLine(ctx, x) {
 
 function message(w, h, dateFrom, x0, msg, appIndex) {
 	let index =  getIndex(msg.app);
-	let from_x = -1000;
+	let from_x;
 	let fillStyle = ctx.strokeStyle;
 	let to_x;
 	let forward;
@@ -236,18 +241,16 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 		fillStyle = ARROW_SENT_REQUEST;
 	}
 
-	if (from_x != -1000) {
-		const ms = getMilliseconds(msg.on) - dateFrom;
-		const y = y0 + (h * ms);
-		const oldFillStyle = ctx.fillStyle;
-		const oldStrokeStyle = ctx.strokeStyle;
+	const ms = getMilliseconds(msg.on) - dateFrom;
+	const y = y0 + (h * ms);
+	const oldFillStyle = ctx.fillStyle;
+	const oldStrokeStyle = ctx.strokeStyle;
 
-		ctx.fillStyle = fillStyle;
-		ctx.strokeStyle = fillStyle;
-		arrow(from_x, y, to_x, arrowSize, forward);
-		ctx.fillStyle = oldFillStyle;
-		ctx.strokeStyle = oldStrokeStyle;
-	}
+	ctx.fillStyle = fillStyle;
+	ctx.strokeStyle = fillStyle;
+	arrow(msg, x0, from_x, y, to_x, arrowSize, forward);
+	ctx.fillStyle = oldFillStyle;
+	ctx.strokeStyle = oldStrokeStyle;
 }
 
 function getIndex(appName) {
@@ -267,35 +270,61 @@ function getIndex(appName) {
 	return -1;
 }
 
-function arrow(from_x, y0, to_x, r, forward) {
-	var x;
-	var y;
-	
-	if (forward) {
-		r = -r;
-	} else {
+function arrow(msg, x0, from_x, y, to_x, r, forward) {
+	if (msg.paths == undefined) {
+		var x;
+
+		msg.paths = new Array();
+
+		// Line
+		msg.paths[0] = new Array();
+		x = x0 - MSG_LINE_LENGTH;
+		msg.paths[0][0] = {x: x, y: y};
+		x = x0 + MSG_LINE_LENGTH;
+		msg.paths[0][1] = {x: x, y: y};
+
+		if (msg.type !== undefined) {
+			var y1;
+
+			if (forward) {
+				r = -r;
+			}
+
+			// Line
+			msg.paths[1] = new Array();
+			msg.paths[1][0] = {x: from_x, y: y};
+			x = to_x + r;
+			msg.paths[1][1] = {x: x, y: y};
+
+			// Arrow
+			msg.paths[2] = new Array();
+			msg.paths[2][0] = msg.paths[1][1];
+			y1 = y - (r / 2);
+			msg.paths[2][1] = {x: x, y: y1};
+			msg.paths[2][2] = {x: to_x, y: y};
+			y1 = y + (r / 2);
+			msg.paths[2][3] = {x: x, y: y1};
+			msg.paths[2][4] = msg.paths[1][1];
+		}
 	}
-	ctx.moveTo(from_x, y0);
 
-	x = to_x + r;
-	ctx.lineTo(x, y0);
+	const oldFillStyle = ctx.fillStyle;
+	const oldStrokeStyle = ctx.strokeStyle;
 
+	ctx.fillStyle = MSG_LINE_STYLE;
+	ctx.strokeStyle = MSG_LINE_STYLE;
+	definePath(msg.paths[0]);
+	ctx.stroke();
+	ctx.fillStyle = oldFillStyle;
+	ctx.strokeStyle = oldStrokeStyle;
+	if (msg.paths.length == 1) {
+		return;
+	}
+
+	definePath(msg.paths[1]);
 	ctx.stroke();
 
-	ctx.beginPath();
-
-	y = y0 - (r / 2);
-	ctx.lineTo(x, y);
-
-	ctx.lineTo(to_x, y0);
-
-	y = y0 + (r / 2);
-	ctx.lineTo(x, y);
-
-	x = to_x + r;
-	ctx.lineTo(x, y0);
-
-	ctx.closePath();
+	definePath(msg.paths[2]);
 	ctx.fill();
 }
 
@@ -380,4 +409,37 @@ function addZeros(value, length) {
 	}
 
 	return data;
+}
+
+function handleMouseMove(e) {
+	// Tell the browser we're handling this event
+	e.preventDefault();
+	e.stopPropagation();
+	
+	mouseX = e.offsetX;
+	mouseY = e.offsetY;
+
+	// Put your mousemove stuff here
+	for (const app  of data.apps) {
+		for (const msg of app.msgs) {
+			for (const path of msg.paths) {
+	    		definePath(path);
+    			if (ctx.isPointInPath(mouseX, mouseY)) {
+      				canvas.style.cursor = 'pointer';
+
+					return;
+				}
+			}
+		}
+	}
+	canvas.style.cursor = 'default';
+}
+
+function definePath(p) {
+	ctx.beginPath();
+	ctx.moveTo(p[0].x, p[0].y);
+	for (var i = 1; i < p.length; ++i) {
+		ctx.lineTo(p[i].x,p[i].y);
+	}
+	ctx.closePath();
 }
