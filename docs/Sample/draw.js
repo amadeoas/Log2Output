@@ -418,8 +418,6 @@ function handleMouseMove(e) {
 	
 	mouseX = e.offsetX;
 	mouseY = e.offsetY;
-
-	// Put your mousemove stuff here
 	for (const app  of data.apps) {
 		for (const msg of app.msgs) {
 			for (const path of msg.paths) {
