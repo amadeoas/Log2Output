@@ -415,22 +415,27 @@ function handleMouseMove(e) {
 	// Tell the browser we're handling this event
 	e.preventDefault();
 	e.stopPropagation();
-	
-	mouseX = e.offsetX;
-	mouseY = e.offsetY;
+	if (getMsg(e.offsetX, e.offsetY) != null) {
+		canvas.style.cursor = 'pointer';
+
+		return;
+	}
+	canvas.style.cursor = 'default';
+}
+
+function getMsg(x, y) {
 	for (const app  of data.apps) {
 		for (const msg of app.msgs) {
 			for (const path of msg.paths) {
 	    		definePath(path);
-    			if (ctx.isPointInPath(mouseX, mouseY)) {
-      				canvas.style.cursor = 'pointer';
-
-					return;
+    			if (ctx.isPointInPath(x, y)) {
+					return msg;
 				}
 			}
 		}
 	}
-	canvas.style.cursor = 'default';
+
+	return null;
 }
 
 function definePath(p) {
