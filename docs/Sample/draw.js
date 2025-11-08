@@ -1,10 +1,22 @@
+const maxZoomUp = 4;
+const minZoomDown = .4;
+const y0 = 26;
+
+let W;
+let H;
 let data;
 let zoom = 1;
-let maxZoomUp = 4;
-let minZoomDown = .4;
 let ctx;
 
 function init() {
+	const canvas = document.getElementById("draws");
+
+	W = canvas.width;
+	H = canvas.height;
+	ctx = canvas.getContext('2d');
+	ctx.font = "16px serif";
+	ctx.strokeStyle = '#AE81DB';
+
 	document.getElementById('fInputData')
 		.addEventListener('change', function selectedFileChanged() {
 			if (this.files.length === 0) {
@@ -56,28 +68,22 @@ function drawAll(filename) {
 function drawAll_() {
 	const canvas = document.getElementById("draws");
 
-	ctx = canvas.getContext('2d');
 	// Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, W, H);
 	ctx.scale(zoom, zoom);
 
-	const W = canvas.width;
 	const w = W / data.apps.length;
-	const dateFrom = getMilliseconds(data.dateFrom);
 	let x0 = w / 2;
-	const y0 = 40;
-	const H = canvas.height;
+	const dateFrom = getMilliseconds(data.dateFrom);
 	const h = (H - y0) / (getMilliseconds(data.dateTo) - dateFrom);
 	let index = -1;
 
-	ctx.font = "28px serif";
-	ctx.strokeStyle = '#AE81DB'
 	for (const app of data.apps) {
 		++index;
-		ctx.fillText(app.name, x0, 26);
-		drawVrLine(ctx, x0, y0, H);
+		ctx.fillText(app.name, x0, 16);
+		drawVrLine(ctx, x0);
 		for (const msg of app.msgs) {
-			message(ctx, w, h, dateFrom, x0, y0, msg, index);
+			message(ctx, w, h, dateFrom, x0, msg, index);
 		}
 		x0 += w;
 	}
@@ -92,15 +98,15 @@ function getMilliseconds(datetime) {
 	return d.getTime();
 }
 
-function drawVrLine(ctx, x0, y0, height) {
+function drawVrLine(ctx, x0) {
 	ctx.beginPath();
 	ctx.moveTo(x0, y0);
-	ctx.lineTo(x0, height);
+	ctx.lineTo(x0, H);
 
 	ctx.stroke();
 }
 
-function message(ctx, w, h, dateFrom, x0, y0, msg, appIndex) {
+function message(ctx, w, h, dateFrom, x0, msg, appIndex) {
 	let index =  getIndex(msg.app);
 	let from_x = -1000;
 	let to_x;
@@ -226,6 +232,7 @@ function zoomItUp() {
 	}
 	zoom += .1;
 	drawAll_();
+	zoom = +zoom.toFixed(2);
 	if (zoom >= maxZoomUp) {
 		let element = document.getElementById('zoomUp');
 
@@ -234,7 +241,7 @@ function zoomItUp() {
 }
 
 function zoomItDown() {
-	if (zoom >= minZoomDown) {
+	if (zoom <= minZoomDown) {
 		return;
 	}
 	if (zoom >= maxZoomUp) {
@@ -244,8 +251,9 @@ function zoomItDown() {
 	}
 	zoom -= .1;
 	drawAll_();
+	zoom = +zoom.toFixed(2);
 	if (zoom <= minZoomDown) {
-		let element = document.getElementById('zoomSDown');
+		let element = document.getElementById('zoomDown');
 
 		element.disabled = true;
 	}
