@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Draw data!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="draw.js"></script>
+    <style>
+    	div#menu {
+  			height: 20px;
+  			width: 100px;
+  			float: right;
+		}
+
+		canvas { 
+			height: 100vh; 
+			width: 100vw; 
+			overflow: auto;
+		}
+    </style>
+  </head>
+  <body onload="init()">
+		<div id="finput"><input type="file" id="fInputData"></div>
+		<div id="view" style="width: 100%; height: 100%;" hidden>
+			<div id="menu">
+				<button id="zoomDown" title="Zoom down" class="btn" onclick="zoomItDown()"><i class="fa fa-search-minus"></i></button>
+				<button id="zoomUp" title="Zoom up" class="btn" onclick="zoomItUp()"><i class="fa fa-search-plus"></i></button>
+
+				<button id="CloseView" title="Close View" class="btn" onclick="closeView()"><i class="fa fa-times-circle-o"></i></button>
+			</div>
+			<div style="width: 100%; height: 100%; overflow: scroll;">
+			<canvas id="draws"></canvas>
+			</div>
+		</div>
+  </body>
+</html>
