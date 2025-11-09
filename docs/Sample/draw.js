@@ -61,6 +61,13 @@ function init() {
 				if (data.grid === undefined) {
 					data.grid = false;
 				}
+
+				// Init data
+				for (const app of data.apps) {
+					for (const msg of app.msgs) {
+						msg.parent = app;
+					}
+				}
 				drawAll(filename); // when the reader is done, the content is in reader.result
 				setCursor('default');
 	 		};
@@ -205,10 +212,11 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 	if ("REQUEST" === msg.type) {
 		from_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			from_x = Math.round(from_x - w/2);
+			from_x -= w/2;
 		} else {
-			from_x = Math.round(from_x + w/2);
+			from_x += w/2;
 		}
+		from_x = Math.round(from_x);
 		to_x = x0;
 		forward = true;
 		fillStyle = ARROW_REQUEST;
@@ -216,29 +224,32 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 		from_x = x0;
 		to_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			to_x = Math.round(to_x - w/2);
+			to_x -= w/2;
 		} else {
-			to_x = Math.round(to_x + w/2);
+			to_x += w/2;
 		}
+		to_x = Math.round(to_x);
 		forward = false;
 		fillStyle = ARROW_RESPONSE;
 	} else if ("SENT-REQUEST" === msg.type) {
 		from_x = x0;
 		to_x = Math.round(x0 + (w * index))
 		if (index >= 0) {
-			to_x = Math.round(to_x - w/2);
+			to_x -= w/2;
 		} else {
-			to_x = Math.round(to_x + w/2);
+			to_x += w/2;
 		}
+		to_x = Math.round(to_x);
 		forward = true;
 		fillStyle = ARROW_SENT_REQUEST;
 	} else if ("SENT-RESPONSE" === msg.type) {
 		from_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			from_x = Math.round(from_x - w/2);
+			from_x -= w/2;
 		} else {
-			from_x = Math.round(from_x + w/2);
+			from_x += w/2;
 		}
+		from_x = Math.round(from_x);
 		to_x = x0;
 		forward = false;
 		fillStyle = ARROW_SENT_REQUEST;
@@ -426,13 +437,31 @@ function handleMouseMove(e) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	displayCoord(e.offsetX, e.offsetY);
-	if (getMsg(e.offsetX, e.offsetY) != null) {
+	// Calculate mouse position
+    const mouseX = getMouseX(e)
+    const mouseY = getMouseY(e);
+
+	displayCoord(mouseX, mouseY);
+	if (getMsg(mouseX, mouseY) != null) {
 		canvas.style.cursor = 'pointer';
 
 		return;
 	}
 	canvas.style.cursor = 'default';
+}
+
+function getMouseX(e) {
+	const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;    // relationship between actual and displayed width
+
+    return Math.round((e.clientX - rect.left) * scaleX);
+}
+
+function getMouseY(e) {
+	const rect = canvas.getBoundingClientRect();
+    const scaleY = canvas.height / rect.height;  // relationship between actual and displayed height
+
+    return Math.round((e.clientY - rect.top) * scaleY);
 }
 
 function displayCoord(x, y) {
@@ -513,9 +542,18 @@ function onclickCavas(e) {
 	e.stopPropagation();
 
 	if (canvas.style.cursor === 'pointer') {
-		let msg = getMsg(e.offsetX, e.offsetY);
+		let msg = getMsg(getMouseX(e), getMouseY(e));
 		let div
 		let element;
+
+		div = document.getElementById('popupTitle');
+		if (msg.parent === undefined) {
+			div.style.display = 'none';
+		} else {
+			element = document.getElementById('appName');
+			element.innerHTML = msg.parent.name;
+			div.style.display = 'display';
+		}
 
 		div = document.getElementById('onData');
 		if (msg.on === undefined) {
