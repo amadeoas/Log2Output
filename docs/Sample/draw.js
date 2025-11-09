@@ -79,9 +79,9 @@ function hide(id, hidden) {
   	let element = document.getElementById(id);
   			
     if (hidden) {
-       element.setAttribute("hidden", "true");
+       element.style.display = 'none';
     } else {
-       element.removeAttribute("hidden");
+       element.style.display = 'block';
     }
 }
 
