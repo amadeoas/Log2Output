@@ -34,7 +34,7 @@
 		div#popupMenu {
 			display: inline;
   			height: 20px;
-  			width: 18px;
+  			width: 28px;
   			float: right;
 		}
 
@@ -86,24 +86,23 @@
 			margin-bottom: 4px;
 		}
 
-		#inOnData {
+		.dataLine {
 			flex: 2;
+		}
+
+		#inOnData {
 		}
 
 		#inFromData {
-			flex: 2;
 		}
 
 		#inToData {
-			flex: 2;
 		}
 
 		#inTypeData {
-			flex: 2;
 		}
 
 		div#inMsgData {
-			flex: 2;
 		}
 
 		#view {
@@ -246,19 +245,32 @@
 				</div>
 			</div>
 			<hr />
+
+			<!-- App -->
+			<div id="dateFromData" class="dataLine">
+				<label>From: </label><input id="inDateFromData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
+			</div>
+			<div id="dateToData" class="dataLine">
+				<label>To: </label><input id="inDateToData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
+			</div>
+			<div id="numMsgsData" class="dataLine">
+				<label>Num messages: </label><input id="inNumMsgsData" class="dataLine" type="text" minlength="1" maxlength="4" disabled>
+			</div>
+
+			<!-- Msg -->
 			<div id="onData" class="dataLine">
-				<label>On: </label><input id="inOnData" type="text" minlength="23" maxlength="23" disabled>
+				<label>On: </label><input id="inOnData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
 			</div>
 			<div id="fromData" class="dataLine">
-				<label>From: </label><input id="inFromData" type="text" minlength="7" maxlength="30" disabled>
+				<label>From: </label><input id="inFromData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
 			</div>
 			<div id="toData" class="dataLine">
-				<label>To: </label><input id="inToData" type="text" minlength="7" maxlength="30" disabled>
+				<label>To: </label><input id="inToData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
 			</div>
 			<div id="typeData" class="dataLine">
-				<label>Type: </label><input id="inTypeData" type="text" minlength="7" maxlength="15" disabled>
+				<label>Type: </label><input id="inTypeData" class="dataLine" type="text" minlength="7" maxlength="15" disabled>
 			</div>
-			<label>Message: </label>
+			<label id="msgDataLabel">Message: </label>
 			<div id="msgData">
 				<textarea id="inMsgData" type="text" rows="20" disabled></textarea>
 			</div>

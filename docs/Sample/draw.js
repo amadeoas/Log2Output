@@ -24,6 +24,7 @@ let zoom = 1.0;
 let canvas;
 let ctx;
 
+
 function init() {
 	const menus = document.getElementById('menu');
 
@@ -119,8 +120,7 @@ function drawAll_() {
 
 	for (const app of data.apps) {
 		++index;
-		mesure = ctx.measureText(app.name);
-		ctx.fillText(app.name, x0 - (mesure.width / 2), 16);
+		drawTitle(app, x0);
 		drawVrLine(ctx, x0);
 		for (const msg of app.msgs) {
 			message(w, h, dateFrom, x0, msg, index);
@@ -130,6 +130,22 @@ function drawAll_() {
 
 	ctx.stroke();
 	hide("view", false);
+}
+
+function drawTitle(app, x0) {
+	if (app.path === undefined) {
+		let mesure = ctx.measureText(app.name);
+		let aWidth = Math.round(mesure.width / 2);
+
+		app.path = new Array();
+		app.path[0] = {x: x0 - aWidth, y: 16};
+		app.path[1] = {x: app.path[0].x, y: 16 - Math.round(mesure.actualBoundingBoxAscent)};
+		app.path[2] = {x: x0 + aWidth, y: app.path[1].y};
+		app.path[3] = {x: app.path[2].x, y: 16 + Math.round(mesure.actualBoundingBoxDescent)};
+		app.path[4] = {x: app.path[1].x, y: app.path[3].y};
+	}
+
+	ctx.fillText(app.name, app.path[0].x, app.path[0].y);
 }
 
 function drawGrid() {
@@ -442,12 +458,23 @@ function handleMouseMove(e) {
     const mouseY = getMouseY(e);
 
 	displayCoord(mouseX, mouseY);
-	if (getMsg(mouseX, mouseY) != null) {
+	if (getApp(mouseX, mouseY) != null || getMsg(mouseX, mouseY) != null) {
 		canvas.style.cursor = 'pointer';
 
 		return;
 	}
 	canvas.style.cursor = 'default';
+}
+
+function getApp(x, y) {
+	for (const app of data.apps) {
+		if (x >= app.path[1].x && x <= app.path[2].x
+				&& y >= app.path[1].y && y <= app.path[3].y) {
+			return app;
+		}
+	}
+
+	return null;
 }
 
 function getMouseX(e) {
@@ -476,8 +503,6 @@ function getMsg(x, y) {
 	for (const app  of data.apps) {
 		for (const msg of app.msgs) {
 			for (const path of msg.paths) {
-//	    		definePath(path);
-//    			if (ctx.isPointInPath(x, y)) {
 				if (isPointInPath(path, x, y)) {
 					return msg;
 				}
@@ -542,13 +567,20 @@ function onclickCavas(e) {
 	e.stopPropagation();
 
 	if (canvas.style.cursor === 'pointer') {
-		let msg = getMsg(getMouseX(e), getMouseY(e));
+		let msg = getData(getMouseX(e), getMouseY(e));
+		let isApp = false;
 		let div
 		let element;
 
 		div = document.getElementById('popupTitle');
 		if (msg.parent === undefined) {
-			div.style.display = 'none';
+			if (msg.name !== undefined) {
+				div.style.display = 'display';
+				showApp(msg);
+				isApp = true;
+			} else {
+				div.style.display = 'none';
+			}
 		} else {
 			element = document.getElementById('appName');
 			element.innerHTML = msg.parent.name;
@@ -556,7 +588,7 @@ function onclickCavas(e) {
 		}
 
 		div = document.getElementById('onData');
-		if (msg.on === undefined) {
+		if (isApp || msg.on === undefined) {
 			div.style.display = 'none';
 		} else {
 			element = document.getElementById('inOnData');
@@ -564,7 +596,7 @@ function onclickCavas(e) {
 			div.style.display = 'flex';
 		}
 
-		if (msg.app === undefined) {
+		if (isApp || msg.app === undefined) {
 			div = document.getElementById('fromData');
 			div.style.display = 'none';
 			div = document.getElementById('toData');
@@ -586,7 +618,7 @@ function onclickCavas(e) {
 		}
 
 		div = document.getElementById('typeData');
-		if (msg.type === undefined) {
+		if (isApp || msg.type === undefined) {
 			div.style.display = 'none';
 		} else {
 			element = document.getElementById('inTypeData');
@@ -595,12 +627,14 @@ function onclickCavas(e) {
 		}
 
 		div = document.getElementById('msgData');
-		if (msg.msg === undefined) {
+		if (isApp || msg.msg === undefined) {
 			div.style.display = 'none';
+			document.getElementById('msgDataLabel').style.display = 'none';
 		} else {
 			element = document.getElementById('inMsgData');
 			element.value = msg.msg;
 			div.style.display = 'flex';
+			document.getElementById('msgDataLabel').style.display = 'block';
 		}
 
 		element = document.getElementById('popup');
@@ -608,6 +642,56 @@ function onclickCavas(e) {
 		element = document.getElementById('popupFade');
 		element.style.display = 'flex';
 	}
+}
+
+function showApp(app) {
+	let element;
+	let div;
+
+	element = document.getElementById('appName');
+	element.innerHTML = app.name;
+
+	div = document.getElementById('dateFromData');
+	if (app.dateFrom === undefined) {
+		div.style.display = 'none';
+	} else {
+		element = document.getElementById('inDateFromData');
+		element.value = app.dateFrom;
+		div.style.display = 'flex';
+	}
+
+	div = document.getElementById('dateToData');
+	if (app.dateFrom === undefined) {
+		div.style.display = 'none';
+	} else {
+		element = document.getElementById('inDateToData');
+		element.value = app.dateTo;
+		div.style.display = 'flex';
+	}
+
+	div = document.getElementById('numMsgsData');
+	if (app.dateFrom === undefined) {
+		div.style.display = 'none';
+	} else {
+		element = document.getElementById('inNumMsgsData');
+		element.value = app.msgs.length;
+		div.style.display = 'flex';
+	}
+}
+
+function getData(x, y) {
+	let element = getApp(x, y);
+
+	if (element != null) {
+		return element;
+	}
+
+	element = getMsg(x, y);
+	if (element != null) {
+		return element;
+	}
+	
+	return null;
 }
 
 function closePopup() {
