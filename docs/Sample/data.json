@@ -8,26 +8,36 @@
 		"msgs": [{
 			"on": "2025-11-07T12:00:00.000",
 			"type": "REQUEST",
+			"level": "INFO",
 			"msg": "Request to App1"
 		}, {
 			"on": "2025-11-07T12:00:00.100",
 			"app": "App2",
 			"type": "SENT-REQUEST",
+			"level": "INFO",
 			"msg": "Request sent from App1 to App2"
 		}, {
 			"on": "2025-11-07T12:00:00.500",
+			"level": "DEBUG",
 			"msg": "Doing somethings..."
 		}, {
 			"on": "2025-11-07T12:00:00.700",
+			"level": "DEBUG",
 			"msg": "Complected"
+		}, {
+			"on": "2025-11-07T12:00:00.790",
+			"level": "ERROR",
+			"msg": "Exception in thread \"main\" java.lang.NullPointerException\n\tat co.uk.bocaditos.example.getTitle(Book.java:16)\n\tat co.uk.bocaditos.example.Author.getBookTitles(Author.java:25)\n\tat co.uk.bocaditos.example.Bootstrap.main(Bootstrap.java:14)"
 		}, {
 			"on": "2025-11-07T12:00:00.910",
 			"app": "App2",
 			"type": "SENT-RESPONSE",
+			"level": "INFO",
 			"msg": "Response received from App2"
 		}, {
 			"on": "2025-11-07T12:00:01.000",
 			"type": "RESPONSE",
+			"level": "INFO",
 			"msg": "Response from App1"
 		}]
 	}, {
@@ -38,11 +48,13 @@
 			"on": "2025-11-07T12:00:00.110",
 			"app": "App1",
 			"type": "REQUEST",
+			"level": "INFO",
 			"msg": "Request to App2 from App1"
 		}, {
 			"on": "2025-11-07T12:00:00.900",
 			"app": "App1",
 			"type": "RESPONSE",
+			"level": "INFO",
 			"msg": "Response from App2 to App1"
 		}]
 	}]

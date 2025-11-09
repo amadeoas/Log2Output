@@ -17,6 +17,9 @@ const MSG_LINE_STYLE = '#D2691E';
 const MSG_LINE_LENGTH = 6;
 const ay = 1; // extra heigh for line detection
 
+const ignore = ['name', 'msgs', 'paths', 'parent', 'path'];
+const fields = [{name: 'msg', type: 'textarea'}];
+
 let W;
 let H;
 let data;
@@ -65,7 +68,9 @@ function init() {
 
 				// Init data
 				for (const app of data.apps) {
+					app.numMsgs = app.msgs.length;
 					for (const msg of app.msgs) {
+						msg.name = app.name;
 						msg.parent = app;
 					}
 				}
@@ -561,6 +566,95 @@ function definePath(p) {
 	ctx.closePath();
 }
 
+function getLabelTxt(value) {
+	let vs = value.match(/[A-Z][a-z]+/g);
+
+	if (vs == null) {
+		value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
+	} else if (vs.length > 1) {
+		vs[0] = vs[0].charAt(0).toUpperCase() + value.substring(1, vs[0].length);
+		value = '';
+		for (const v of vs) {
+			if (value.length > 0) {
+				value += ' ';
+			}
+			value += v;
+		}
+	}
+
+	return value;
+}
+
+function showElement(value) {
+	var fieldNames = Object.keys(value);
+	let popupFields;
+	let div
+	let element;
+	let def;
+
+	popupFields = document.getElementById('popupFields');
+	popupFields.innerHTML = '';
+
+	element = document.getElementById('appName');
+	element.innerHTML = value.name;
+
+	outerlook:
+	for (const fieldName of fieldNames) {
+		for (const i of ignore) {
+			if (fieldName === i) {
+				continue outerlook;
+			}
+		}
+
+		div = document.createElement("div");
+		div.id = fieldName + "Data";
+
+		element = document.createElement("label");
+		element.innerHTML = getLabelTxt(fieldName) + ": ";
+		div.appendChild(element);
+
+		def = null;
+		for (const field of fields) {
+			if (fieldName === field.name) {
+				def = field;
+
+				continue;
+			}
+		}
+
+		if (def === null) {
+			div.classList.add('dataLine');
+
+			element = document.createElement("input");
+			element.id = "in" + div.id;
+			element.classList.add('dataLine');
+			element.classList.add('allLine');
+			element.type = 'text';
+			element.disabled = true;
+			element.value = value[fieldName];
+		} else {
+			let d = document.createElement("div");
+
+			d.classList.add('divTextareaData');
+			element = document.createElement(def.type);
+			element.id = "in" + div.id;
+			element.classList.add('textareaData');
+			element.disabled = true;
+			element.value = value[fieldName];
+			d.appendChild(element);
+
+			element = d;
+		}
+		div.appendChild(element);
+		popupFields.appendChild(div);
+	}
+
+	element = document.getElementById('popup');
+	element.style.display = 'block';
+	element = document.getElementById('popupFade');
+	element.style.display = 'flex';
+}
+
 function onclickCavas(e) {
 	// Tell the browser we're handling this event
 	e.preventDefault();
@@ -568,114 +662,8 @@ function onclickCavas(e) {
 
 	if (canvas.style.cursor === 'pointer') {
 		let msg = getData(getMouseX(e), getMouseY(e));
-		let isApp = false;
-		let div
-		let element;
 
-		div = document.getElementById('popupTitle');
-		if (msg.parent === undefined) {
-			if (msg.name !== undefined) {
-				div.style.display = 'display';
-				showApp(msg);
-				isApp = true;
-			} else {
-				div.style.display = 'none';
-			}
-		} else {
-			element = document.getElementById('appName');
-			element.innerHTML = msg.parent.name;
-			div.style.display = 'display';
-		}
-
-		div = document.getElementById('onData');
-		if (isApp || msg.on === undefined) {
-			div.style.display = 'none';
-		} else {
-			element = document.getElementById('inOnData');
-			element.value = msg.on;
-			div.style.display = 'flex';
-		}
-
-		if (isApp || msg.app === undefined) {
-			div = document.getElementById('fromData');
-			div.style.display = 'none';
-			div = document.getElementById('toData');
-			div.style.display = 'none';
-		} else {
-			if (msg.type === "REQUEST" || msg.type === "SENT_RESPONSE") {
-				div = document.getElementById('toData');
-				div.style.display = 'none';
-				div = document.getElementById('fromData');
-				element = document.getElementById('inFromData');
-			} else {
-				div = document.getElementById('fromData');
-				div.style.display = 'none';
-				div = document.getElementById('toData');
-				element = document.getElementById('inToData');
-			}
-			element.value = msg.app;
-			div.style.display = 'flex';
-		}
-
-		div = document.getElementById('typeData');
-		if (isApp || msg.type === undefined) {
-			div.style.display = 'none';
-		} else {
-			element = document.getElementById('inTypeData');
-			element.value = msg.type;
-			div.style.display = 'flex';
-		}
-
-		div = document.getElementById('msgData');
-		if (isApp || msg.msg === undefined) {
-			div.style.display = 'none';
-			document.getElementById('msgDataLabel').style.display = 'none';
-		} else {
-			element = document.getElementById('inMsgData');
-			element.value = msg.msg;
-			div.style.display = 'flex';
-			document.getElementById('msgDataLabel').style.display = 'block';
-		}
-
-		element = document.getElementById('popup');
-		element.style.display = 'block';
-		element = document.getElementById('popupFade');
-		element.style.display = 'flex';
-	}
-}
-
-function showApp(app) {
-	let element;
-	let div;
-
-	element = document.getElementById('appName');
-	element.innerHTML = app.name;
-
-	div = document.getElementById('dateFromData');
-	if (app.dateFrom === undefined) {
-		div.style.display = 'none';
-	} else {
-		element = document.getElementById('inDateFromData');
-		element.value = app.dateFrom;
-		div.style.display = 'flex';
-	}
-
-	div = document.getElementById('dateToData');
-	if (app.dateFrom === undefined) {
-		div.style.display = 'none';
-	} else {
-		element = document.getElementById('inDateToData');
-		element.value = app.dateTo;
-		div.style.display = 'flex';
-	}
-
-	div = document.getElementById('numMsgsData');
-	if (app.dateFrom === undefined) {
-		div.style.display = 'none';
-	} else {
-		element = document.getElementById('inNumMsgsData');
-		element.value = app.msgs.length;
-		div.style.display = 'flex';
+		showElement(msg);
 	}
 }
 

@@ -24,7 +24,7 @@
 			top: 25%;
 			left: 25%;
 			width: 50%;
-			height: 50%;
+			height: auto;
 			padding: 16px;
 			background-color: white;
 			z-index: 1002;
@@ -54,7 +54,7 @@
 		#inMsgData {
 			width: 100%;
 			overflow-y: scroll;
-    		height: 240px;
+    		height: 210px;
 		}
 
 		#popupFade {
@@ -71,38 +71,27 @@
 			filter: alpha(opacity=80);
 		}
 
-		div#onData {
-		}
-
-		div#typeData {
-		}
-
-		div#msgData {
-			overflow: auto;
-		}
-
 		.dataLine {
 			display: flex;
 			margin-bottom: 4px;
 		}
 
-		.dataLine {
+		.divTextareaData {
+			overflow: auto;
+		}
+
+		.textareaData {
+			width: 100%;
+			overflow-y: scroll;
+    		height: 240px;
+		}
+
+		.allLine {
 			flex: 2;
 		}
 
-		#inOnData {
-		}
-
-		#inFromData {
-		}
-
-		#inToData {
-		}
-
-		#inTypeData {
-		}
-
-		div#inMsgData {
+		.dataLine {
+			flex: 2;
 		}
 
 		#view {
@@ -246,33 +235,30 @@
 			</div>
 			<hr />
 
-			<!-- App -->
-			<div id="dateFromData" class="dataLine">
-				<label>From: </label><input id="inDateFromData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
-			</div>
-			<div id="dateToData" class="dataLine">
-				<label>To: </label><input id="inDateToData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
-			</div>
-			<div id="numMsgsData" class="dataLine">
-				<label>Num messages: </label><input id="inNumMsgsData" class="dataLine" type="text" minlength="1" maxlength="4" disabled>
+			<div id="popupFields">
 			</div>
 
 			<!-- Msg -->
-			<div id="onData" class="dataLine">
-				<label>On: </label><input id="inOnData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
-			</div>
-			<div id="fromData" class="dataLine">
-				<label>From: </label><input id="inFromData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
-			</div>
-			<div id="toData" class="dataLine">
-				<label>To: </label><input id="inToData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
-			</div>
-			<div id="typeData" class="dataLine">
-				<label>Type: </label><input id="inTypeData" class="dataLine" type="text" minlength="7" maxlength="15" disabled>
-			</div>
-			<label id="msgDataLabel">Message: </label>
-			<div id="msgData">
-				<textarea id="inMsgData" type="text" rows="20" disabled></textarea>
+			<div id="PopupMsg" style="display: none;">
+				<div id="onData" class="dataLine">
+					<label>On: </label><input id="inOnData" class="dataLine" type="text" minlength="23" maxlength="23" disabled>
+				</div>
+				<div id="fromData" class="dataLine">
+					<label>From: </label><input id="inFromData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
+				</div>
+				<div id="toData" class="dataLine">
+					<label>To: </label><input id="inToData" class="dataLine" type="text" minlength="7" maxlength="30" disabled>
+				</div>
+				<div id="typeData" class="dataLine">
+					<label>Type: </label><input id="inTypeData" class="dataLine" type="text" minlength="7" maxlength="15" disabled>
+				</div>
+				<div id="levelData" class="dataLine">
+					<label>Level: </label><input id="inLevelData" class="dataLine" type="text" minlength="7" maxlength="20" disabled>
+				</div>
+				<label id="msgDataLabel">Message: </label>
+				<div id="msgData">
+					<textarea id="inMsgData" type="text" rows="20" disabled></textarea>
+				</div>
 			</div>
 		</div>
 		<div id="popupFade"></div>
