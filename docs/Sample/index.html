@@ -6,10 +6,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="draw.js"></script>
     <style>
+		div#coord {
+			display: inline;
+			float: left;
+		}
+
     	div#menu {
+			display: inline;
   			height: 20px;
   			width: 174px;
   			float: right;
+		}
+
+		#popup {
+			display: none;
+			position: absolute;
+			top: 25%;
+			left: 25%;
+			width: 50%;
+			height: 50%;
+			padding: 16px;
+			background-color: white;
+			z-index: 1002;
+			overflow: auto;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+
+		div#popupMenu {
+			display: inline;
+  			height: 20px;
+  			width: 18px;
+  			float: right;
+		}
+
+		#popupFade {
+			display: none;
+			position: absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			background-color: black;
+			z-index: 1001;
+			-moz-opacity: 0.8;
+			opacity: .80;
+			filter: alpha(opacity=80);
+		}
+
+		div#onData {
+		}
+
+		div#typeData {
+		}
+
+		div#msgData {
 		}
 
 		canvas { 
@@ -112,25 +162,54 @@
   <body onload="init()">
 		<div id="finput"><input type="file" id="fInputData"></div>
 		<div id="view" style="width: 100%; height: 100%;" hidden>
-			<div id="menu" style="height: 28px;">
-				<button id="zoomDown" title="Zoom down" class="btn" onclick="zoomItDown()"><i class="fa fa-search-minus"></i></button>
-				<button id="zoomUp" title="Zoom up" class="btn" onclick="zoomItUp()"><i class="fa fa-search-plus"></i></button>
+			<div id="headers">
+				<div id="coord">
+					<label>X: </label><input id="xCoord" type="text" minlength="1" maxlength="3" size="3" disabled><label>, Y: </label><input id="yCoord" type="text" minlength="1" maxlength="3" size="3" disabled>
+				</div>
+				<div id="menu" style="height: 28px;">
+					<button id="zoomDown" title="Zoom down" class="btn" onclick="zoomItDown()"><i class="fa fa-search-minus"></i></button>
+					<button id="zoomUp" title="Zoom up" class="btn" onclick="zoomItUp()"><i class="fa fa-search-plus"></i></button>
 
-				<!-- Rounded switch -->
-				<label id="grid" class="switch" onclick="switchIt()">
- 					<input type="checkbox" id="togBtn">
- 					<div class="slider round">
-						<!--ADDED HTML -->
-						<span id="switchOn" class="on">GRID</span>
-						<span id="switchOff" class="off">GRID</span>
-						<!--END-->
-					</div>
-				</label>
-				<button id="CloseView" title="Close View" class="btn" onclick="closeView()"><i class="fa fa-times-circle-o"></i></button>
+					<!-- Rounded switch -->
+					<label id="grid" class="switch" onclick="switchIt()">
+ 						<input type="checkbox" id="togBtn">
+ 						<div class="slider round">
+							<!--ADDED HTML -->
+							<span id="switchOn" class="on">GRID</span>
+							<span id="switchOff" class="off">GRID</span>
+							<!--END-->
+						</div>
+					</label>
+					<button id="CloseView" title="Close View" class="btn" onclick="closeView()"><i class="fa fa-times-circle-o"></i></button>
+				</div>
 			</div>
-			<div id="pDraws" style="width: 100vw; height: 100vh; overflow: scroll;">
+			<div id="pDraws" style="width: 100%; height: 100%; overflow: scroll;">
 				<canvas id="draws"></canvas>
 			</div>
 		</div>
+
+		<div id="popup">
+			<div id="popupMenu">
+				<button id="closePopup" title="Close Popup" class="btn" onclick="closePopup()"><i class="fa fa-times-circle-o"></i></button>
+			</div>
+
+			<div id="onData">
+				<label>On: </label><input id="inOnData" type="text" minlength="23" maxlength="23" size="23" disabled>
+			</div>
+			<div id="fromData">
+				<label>From: </label><input id="inFromData" type="text" minlength="7" maxlength="30" size="30" disabled>
+			</div>
+			<div id="toData">
+				<label>To: </label><input id="inToData" type="text" minlength="7" maxlength="30" size="30" disabled>
+			</div>
+			<div id="typeData">
+				<label>Type: </label><input id="inTypeData" type="text" minlength="7" maxlength="13" size="13" disabled>
+			</div>
+			<div id="msgData">
+				<label>Message: </label>
+				<textarea id="inMsgData" type="text" rows="5" cols="50" disabled></textarea>
+			</div>
+		</div>
+		<div id="popupFade"></div>
   </body>
 </html>

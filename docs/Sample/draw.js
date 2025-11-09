@@ -1,7 +1,7 @@
 const maxZoomUp = 4;
 const minZoomDown = .4;
 const y0 = 26;
-const arrowSize = 8;
+const arrowSize = 10;
 const DEFAULT_STYLE = '#AE81DB';
 const APP_FONT = '16px serif';
 const GRID_STYLE = '#D3D3D3';
@@ -28,18 +28,19 @@ function init() {
 
 	canvas = document.getElementById('draws');
 	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight - parseInt(menus.style.height);
+	canvas.height = window.innerHeight - parseInt(menus.style.height) - 8;
 	W = canvas.width;
 	H = canvas.height - 6;
 	ctx = canvas.getContext('2d');
 	ctx.font = APP_FONT;
 	ctx.strokeStyle = DEFAULT_STYLE;
 	ctx.lineWidth = 1;
-	canvas.addEventListener("mouseover", function(e) {handleMouseMove(e);}, false);
+	canvas.addEventListener("mousemove", function(e) {handleMouseMove(e);}, false);
+	canvas.addEventListener("click", function(e) {onclickCavas(e);}, false);
 
 	document.getElementById('fInputData')
 		.addEventListener('change', function selectedFileChanged() {
-			if (this.files.length === 0) {
+			if (this.files.length == 0) {
 	    		console.log('No file selected.');
 
 		    	return;
@@ -187,7 +188,7 @@ function drawVrLine(ctx, x) {
 }
 
 function message(w, h, dateFrom, x0, msg, appIndex) {
-	let index =  getIndex(msg.app);
+	let index = getIndex(msg.app);
 	let from_x;
 	let fillStyle = ctx.strokeStyle;
 	let to_x;
@@ -200,41 +201,41 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 	}
 
 	if ("REQUEST" === msg.type) {
-		from_x = (x0 + (w * index));
+		from_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			from_x -= w/2
+			from_x = Math.round(from_x - w/2);
 		} else {
-			from_x += w/2
+			from_x = Math.round(from_x + w/2);
 		}
 		to_x = x0;
 		forward = true;
 		fillStyle = ARROW_REQUEST;
 	} else if ("RESPONSE" === msg.type) {
 		from_x = x0;
-		to_x = (x0 + (w * index));
+		to_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			to_x -= w/2
+			to_x = Math.round(to_x - w/2);
 		} else {
-			to_x += w/2
+			to_x = Math.round(to_x + w/2);
 		}
 		forward = false;
 		fillStyle = ARROW_RESPONSE;
 	} else if ("SENT-REQUEST" === msg.type) {
 		from_x = x0;
-		to_x = (x0 + (w * index))
+		to_x = Math.round(x0 + (w * index))
 		if (index >= 0) {
-			to_x -= w/2
+			to_x = Math.round(to_x - w/2);
 		} else {
-			to_x += w/2
+			to_x = Math.round(to_x + w/2);
 		}
 		forward = true;
 		fillStyle = ARROW_SENT_REQUEST;
 	} else if ("SENT-RESPONSE" === msg.type) {
-		from_x = (x0 + (w * index));
+		from_x = Math.round(x0 + (w * index));
 		if (index >= 0) {
-			from_x -= w/2
+			from_x = Math.round(from_x - w/2);
 		} else {
-			from_x += w/2
+			from_x = Math.round(from_x + w/2);
 		}
 		to_x = x0;
 		forward = false;
@@ -242,7 +243,7 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 	}
 
 	const ms = getMilliseconds(msg.on) - dateFrom;
-	const y = y0 + (h * ms);
+	const y = (y0 + (h * ms));
 	const oldFillStyle = ctx.fillStyle;
 	const oldStrokeStyle = ctx.strokeStyle;
 
@@ -299,10 +300,10 @@ function arrow(msg, x0, from_x, y, to_x, r, forward) {
 			// Arrow
 			msg.paths[2] = new Array();
 			msg.paths[2][0] = msg.paths[1][1];
-			y1 = y - (r / 2);
+			y1 = Math.round(y - (r / 2));
 			msg.paths[2][1] = {x: x, y: y1};
 			msg.paths[2][2] = {x: to_x, y: y};
-			y1 = y + (r / 2);
+			y1 = Math.round(y + (r / 2));
 			msg.paths[2][3] = {x: x, y: y1};
 			msg.paths[2][4] = msg.paths[1][1];
 		}
@@ -415,12 +416,22 @@ function handleMouseMove(e) {
 	// Tell the browser we're handling this event
 	e.preventDefault();
 	e.stopPropagation();
+
+	displayCoord(e.offsetX, e.offsetY);
 	if (getMsg(e.offsetX, e.offsetY) != null) {
 		canvas.style.cursor = 'pointer';
 
 		return;
 	}
 	canvas.style.cursor = 'default';
+}
+
+function displayCoord(x, y) {
+	let xCoord = document.getElementById('xCoord');
+	let yCoord = document.getElementById('yCoord');
+
+	xCoord.value = x;
+	yCoord.value = y;
 }
 
 function getMsg(x, y) {
@@ -445,4 +456,77 @@ function definePath(p) {
 		ctx.lineTo(p[i].x,p[i].y);
 	}
 	ctx.closePath();
+}
+
+function onclickCavas(e) {
+	// Tell the browser we're handling this event
+	e.preventDefault();
+	e.stopPropagation();
+
+	if (canvas.style.cursor === 'pointer') {
+		let msg = getMsg(e.offsetX, e.offsetY);
+		let div
+		let element;
+
+		div = document.getElementById('onData');
+		if (msg.on === undefined) {
+			div.style.display = 'none';
+		} else {
+			element = document.getElementById('inOnData');
+			element.value = msg.on;
+			div.style.display = 'display';
+		}
+
+		if (msg.app === undefined) {
+			div = document.getElementById('fromData');
+			div.style.display = 'none';
+			div = document.getElementById('toData');
+			div.style.display = 'none';
+		} else {
+			if (msg.type === "REQUEST" || msg.type === "SENT_RESPONSE") {
+				div = document.getElementById('toData');
+				div.style.display = 'none';
+				div = document.getElementById('fromData');
+				element = document.getElementById('inFromData');
+			} else {
+				div = document.getElementById('fromData');
+				div.style.display = 'none';
+				div = document.getElementById('toData');
+				element = document.getElementById('inToData');
+			}
+			element.value = msg.app;
+			div.style.display = 'block';
+		}
+
+		div = document.getElementById('typeData');
+		if (msg.type === undefined) {
+			div.style.display = 'none';
+		} else {
+			element = document.getElementById('inTypeData');
+			element.value = msg.type;
+			div.style.display = 'block';
+		}
+
+		div = document.getElementById('msgData');
+		if (msg.msg === undefined) {
+			div.style.display = 'none';
+		} else {
+			element = document.getElementById('inMsgData');
+			element.value = msg.msg;
+			div.style.display = 'block';
+		}
+
+		element = document.getElementById('popup');
+		element.style.display = 'block';
+		element = document.getElementById('popupFade');
+		element.style.display = 'block';
+	}
+}
+
+function closePopup() {
+	let element = document.getElementById('popup');
+
+	element.style.display = 'none';
+	element = document.getElementById('popupFade');
+	element.style.display = 'none';
 }
