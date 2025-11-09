@@ -15,6 +15,7 @@ const ARROW_SENT_REQUEST = '#6495ED';
 const ARROW_SENT_RESPONSE = '#6495ED';
 const MSG_LINE_STYLE = '#D2691E';
 const MSG_LINE_LENGTH = 6;
+const ay = 1; // extra heigh for line detection
 
 let W;
 let H;
@@ -37,6 +38,7 @@ function init() {
 	ctx.lineWidth = 1;
 	canvas.addEventListener("mousemove", function(e) {handleMouseMove(e);}, false);
 	canvas.addEventListener("click", function(e) {onclickCavas(e);}, false);
+	showScale();
 
 	document.getElementById('fInputData')
 		.addEventListener('change', function selectedFileChanged() {
@@ -379,6 +381,13 @@ function drawAllZoom(inc) {
 	zoom = z / zoom;
 	drawAll_();
 	zoom = z;
+	showScale();
+}
+
+function showScale() {
+	let scale = document.getElementById('scale');
+
+	scale.value = zoom;
 }
 
 function switchIt() {
@@ -438,8 +447,9 @@ function getMsg(x, y) {
 	for (const app  of data.apps) {
 		for (const msg of app.msgs) {
 			for (const path of msg.paths) {
-	    		definePath(path);
-    			if (ctx.isPointInPath(x, y)) {
+//	    		definePath(path);
+//    			if (ctx.isPointInPath(x, y)) {
+				if (isPointInPath(path, x, y)) {
 					return msg;
 				}
 			}
@@ -447,6 +457,45 @@ function getMsg(x, y) {
 	}
 
 	return null;
+}
+
+function isPointInPath(path, x, y) {
+	if (path.length == 2) {
+		// Line
+		let p0 = path[0];
+
+		if (y == p0.y || y == (p0.y - ay)) {
+			let p1 = path[1];
+			let min = Math.min(p0.x, p1.x);
+			let max = Math.max(p0.x, p1.x);
+
+			if (x >= min && x <= max) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Triangle
+	return pointInTriangle(path, x, y);
+}
+
+function pointInTriangle(path, x, y) {
+	const p = {x: x, y: y};
+	const p0 = path[0];
+	const p1 = path[1];
+	const p2 = path[2];
+    let s = (p0.x - p2.x) * (p.y - p2.y) - (p0.y - p2.y) * (p.x - p2.x);
+    var t = (p1.x - p0.x) * (p.y - p0.y) - (p1.y - p0.y) * (p.x - p0.x);
+
+    if ((s < 0) != (t < 0) && s != 0 && t != 0) {
+        return false;
+    }
+
+    let d = (p2.x - p1.x) * (p.y - p1.y) - (p2.y - p1.y) * (p.x - p1.x);
+
+    return d == 0 || (d < 0) == (s + t <= 0);
 }
 
 function definePath(p) {
