@@ -567,22 +567,36 @@ function definePath(p) {
 }
 
 function getLabelTxt(value) {
-	let vs = value.match(/[A-Z][a-z]+/g);
+	let v = '';
+	let from = 0;
+	let to = 1;
 
-	if (vs == null) {
-		value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
-	} else if (vs.length > 1) {
-		vs[0] = vs[0].charAt(0).toUpperCase() + value.substring(1, vs[0].length);
-		value = '';
-		for (const v of vs) {
-			if (value.length > 0) {
-				value += ' ';
-			}
-			value += v;
+	value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
+	do {
+		while (to < value.length && isLowerCase(value, to)) {
+			++to;
 		}
-	}
 
-	return value;
+		if (from < to) {
+			if (v.length > 0) {
+				v += ' ';
+			}
+			v += value.substring(from, to);
+		}
+		from = to;
+	} while (++to < value.length);
+
+	return v;
+}
+
+function isLowerCase(value, index) {
+	let c = value.charAt(index);
+
+    if (c >= 'a' && c <= 'z') {
+        return true;
+    }
+
+	return false;
 }
 
 function showElement(value) {
@@ -610,6 +624,7 @@ function showElement(value) {
 		div.id = fieldName + "Data";
 
 		element = document.createElement("label");
+		element.classList.add('inputLabel');
 		element.innerHTML = getLabelTxt(fieldName) + ": ";
 		div.appendChild(element);
 
