@@ -561,7 +561,7 @@ function onclickCavas(e) {
 		} else {
 			element = document.getElementById('inOnData');
 			element.value = msg.on;
-			div.style.display = 'display';
+			div.style.display = 'flex';
 		}
 
 		if (msg.app === undefined) {
@@ -582,7 +582,7 @@ function onclickCavas(e) {
 				element = document.getElementById('inToData');
 			}
 			element.value = msg.app;
-			div.style.display = 'block';
+			div.style.display = 'flex';
 		}
 
 		div = document.getElementById('typeData');
@@ -591,7 +591,7 @@ function onclickCavas(e) {
 		} else {
 			element = document.getElementById('inTypeData');
 			element.value = msg.type;
-			div.style.display = 'block';
+			div.style.display = 'flex';
 		}
 
 		div = document.getElementById('msgData');
@@ -600,13 +600,13 @@ function onclickCavas(e) {
 		} else {
 			element = document.getElementById('inMsgData');
 			element.value = msg.msg;
-			div.style.display = 'block';
+			div.style.display = 'flex';
 		}
 
 		element = document.getElementById('popup');
 		element.style.display = 'block';
 		element = document.getElementById('popupFade');
-		element.style.display = 'block';
+		element.style.display = 'flex';
 	}
 }
 

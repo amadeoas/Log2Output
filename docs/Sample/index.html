@@ -28,7 +28,6 @@
 			padding: 16px;
 			background-color: white;
 			z-index: 1002;
-			overflow: auto;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
 
@@ -77,10 +76,32 @@
 		}
 
 		div#msgData {
+			overflow: auto;
 		}
 
 		.dataLine {
+			display: flex;
 			margin-bottom: 4px;
+		}
+
+		#inOnData {
+			flex: 2;
+		}
+
+		#inFromData {
+			flex: 2;
+		}
+
+		#inToData {
+			flex: 2;
+		}
+
+		#inTypeData {
+			flex: 2;
+		}
+
+		div#inMsgData {
+			flex: 2;
 		}
 
 		canvas { 
@@ -219,19 +240,19 @@
 			</div>
 			<hr />
 			<div id="onData" class="dataLine">
-				<label>On: </label><input id="inOnData" type="text" minlength="23" maxlength="23" size="23" disabled>
+				<label>On: </label><input id="inOnData" type="text" minlength="23" maxlength="23" disabled>
 			</div>
 			<div id="fromData" class="dataLine">
-				<label>From: </label><input id="inFromData" type="text" minlength="7" maxlength="30" size="30" disabled>
+				<label>From: </label><input id="inFromData" type="text" minlength="7" maxlength="30" disabled>
 			</div>
 			<div id="toData" class="dataLine">
-				<label>To: </label><input id="inToData" type="text" minlength="7" maxlength="30" size="30" disabled>
+				<label>To: </label><input id="inToData" type="text" minlength="7" maxlength="30" disabled>
 			</div>
 			<div id="typeData" class="dataLine">
-				<label>Type: </label><input id="inTypeData" type="text" minlength="7" maxlength="13" size="13" disabled>
+				<label>Type: </label><input id="inTypeData" type="text" minlength="7" maxlength="15" disabled>
 			</div>
+			<label>Message: </label>
 			<div id="msgData">
-				<label>Message: </label>
 				<textarea id="inMsgData" type="text" rows="20" disabled></textarea>
 			</div>
 		</div>
