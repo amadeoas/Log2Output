@@ -277,7 +277,7 @@ function message(w, h, dateFrom, x0, msg, appIndex) {
 	}
 
 	const ms = getMilliseconds(msg.on) - dateFrom;
-	const y = (y0 + (h * ms));
+	const y = Math.round(y0 + (h * ms));
 	const oldFillStyle = ctx.fillStyle;
 	const oldStrokeStyle = ctx.strokeStyle;
 
