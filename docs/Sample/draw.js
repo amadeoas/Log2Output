@@ -2,20 +2,23 @@ const maxZoomUp = 4;
 const minZoomDown = .4;
 const y0 = 26;
 const arrowSize = 10;
-const DEFAULT_STYLE = '#AE81DB';
+const DEFAULT_STYLE = '#ae81db';
 const APP_FONT = '16px serif';
-const GRID_STYLE = '#D3D3D3';
-const GRID_FILL_STYLE = '#A3A3A3';
+const GRID_STYLE = '#d3d3d3';
+const GRID_FILL_STYLE = '#a3a3a3';
 const GRID_FONT = '10px serif';
 const GRID_NUM_LINES = 2 + 4; // 2 must be kept but 4 may be change to increase the number of grid lines
 const GRID_DASH = [15, 5];
-const ARROW_REQUEST = '#00008B';
-const ARROW_RESPONSE = '#00008B';
-const ARROW_SENT_REQUEST = '#6495ED';
-const ARROW_SENT_RESPONSE = '#6495ED';
-const MSG_LINE_STYLE = '#D2691E';
+const ARROW_REQUEST = '#00008b';
+const ARROW_RESPONSE = '#00008b';
+const ARROW_SENT_REQUEST = '#6495ed';
+const ARROW_SENT_RESPONSE = '#6495ed';
+const MSG_LINE_STYLE = '#d2691e';
 const MSG_LINE_LENGTH = 6;
 const ay = 1; // extra heigh for line detection
+const defaultLineColout = MSG_LINE_STYLE;
+const lineColours = {INFO: '#00008b', DEBUG: '#696969', ERROR: '#b22222', WARN: '#ffa07a', 
+					 TRACE: '#d3d3d3'};
 
 const ignore = ['name', 'msgs', 'paths', 'parent', 'path'];
 const fields = [{name: 'msg', type: 'textarea'}];
@@ -346,8 +349,12 @@ function arrow(msg, x0, from_x, y, to_x, r, forward) {
 	const oldFillStyle = ctx.fillStyle;
 	const oldStrokeStyle = ctx.strokeStyle;
 
-	ctx.fillStyle = MSG_LINE_STYLE;
-	ctx.strokeStyle = MSG_LINE_STYLE;
+	if (msg.level === undefined) {
+		ctx.fillStyle = MSG_LINE_STYLE;
+	} else {
+		ctx.fillStyle = lineColours[msg.level];
+	}
+	ctx.strokeStyle = ctx.fillStyle;
 	definePath(msg.paths[0]);
 	ctx.stroke();
 	ctx.fillStyle = oldFillStyle;
