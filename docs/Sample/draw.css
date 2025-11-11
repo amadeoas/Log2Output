@@ -84,6 +84,10 @@ div#popupTitle {
 	flex: 2;
 }
 
+.pointer-sqr {
+	cursor: url('./pointer-sqr.cur') 10 4, pointer;
+}
+
 .dataLine {
 	flex: 2;
 }

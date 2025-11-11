@@ -20,6 +20,13 @@ const defaultLineColout = MSG_LINE_STYLE;
 const lineColours = {INFO: '#00008b', DEBUG: '#696969', ERROR: '#b22222', WARN: '#ffa07a', 
 					 TRACE: '#d3d3d3'};
 
+// 
+const AREA_OUT = -1;
+const AREA_APP_NAME = 0;
+const AREA_LINE = 1;
+const AREA_SHORT_LINE = 2;
+const AREA_ARROW = 3;
+
 const ignore = ['name', 'msgs', 'paths', 'parent', 'path'];
 const fields = [{name: 'msg', type: 'textarea'}];
 
@@ -468,14 +475,24 @@ function handleMouseMove(e) {
 	// Calculate mouse position
     const mouseX = getMouseX(e)
     const mouseY = getMouseY(e);
+    let type;
 
 	displayCoord(mouseX, mouseY);
-	if (getApp(mouseX, mouseY) != null || getMsg(mouseX, mouseY) != null) {
-		canvas.style.cursor = 'pointer';
+	type = getType(mouseX, mouseY);
+	if (type != AREA_OUT) {
+		if (type == AREA_SHORT_LINE) {
+			if (!canvas.classList.contains('pointer-sqr')) {
+				canvas.style.cursor = '';
+				canvas.classList.add('pointer-sqr');
+			}
 
-		return;
+			return;
+		}
+		canvas.style.cursor = 'pointer';
+	} else {
+		canvas.style.cursor = 'default';
 	}
-	canvas.style.cursor = 'default';
+	canvas.classList.remove('pointer-sqr');
 }
 
 function getApp(x, y) {
@@ -525,6 +542,54 @@ function getMsg(x, y) {
 	return null;
 }
 
+function getType(x, y) {
+	for (const app  of data.apps) {
+		if (x >= app.path[1].x && x <= app.path[2].x
+				&& y >= app.path[1].y && y <= app.path[3].y) {
+			return AREA_APP_NAME;
+		}
+
+		for (const msg of app.msgs) {
+			let index = -1;
+
+			for (const path of msg.paths) {
+				++index;
+				if (isPointInPath(path, x, y)) {
+					if (index == 1) {
+						return AREA_LINE;
+					} else if (index == 2) {
+						return AREA_ARROW;
+					}
+
+					return AREA_SHORT_LINE;
+				}
+			}
+		}
+	}
+
+	return AREA_OUT;
+}
+
+function getPath(x, y) {
+	for (const app  of data.apps) {
+		if (x >= app.path[1].x && x <= app.path[2].x
+				&& y >= app.path[1].y && y <= app.path[3].y) {
+			return path;
+		}
+
+		for (const msg of app.msgs) {
+			for (const path of msg.paths) {
+				if (isPointInPath(path, x, y)) {
+					return path;
+				}
+			}
+		}
+	}
+
+	return null;
+}
+
+
 function isPointInPath(path, x, y) {
 	if (path.length == 2) {
 		// Line
@@ -549,9 +614,9 @@ function isPointInPath(path, x, y) {
 
 function pointInTriangle(path, x, y) {
 	const p = {x: x, y: y};
-	const p0 = path[0];
-	const p1 = path[1];
-	const p2 = path[2];
+	const p0 = path[1];
+	const p1 = path[2];
+	const p2 = path[3];
     let s = (p0.x - p2.x) * (p.y - p2.y) - (p0.y - p2.y) * (p.x - p2.x);
     var t = (p1.x - p0.x) * (p.y - p0.y) - (p1.y - p0.y) * (p.x - p0.x);
 
