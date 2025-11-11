@@ -747,7 +747,7 @@ function onclickCavas(e) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	if (canvas.style.cursor === 'pointer') {
+	if (canvas.style.cursor === 'pointer' || canvas.classList.length == 1) {
 		let msg = getData(getMouseX(e), getMouseY(e));
 
 		showElement(msg);
