@@ -196,3 +196,7 @@ input:checked + .slider .off {
 .slider.round:before {
 	border-radius: 50%;
 }
+
+.datetime {
+	width: 148px;
+}

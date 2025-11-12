@@ -85,6 +85,14 @@ function init() {
 					}
 				}
 				drawAll(filename); // when the reader is done, the content is in reader.result
+
+				let element;
+
+				element = document.getElementById("dateFrom");
+				element.value = data.dateFrom.replace('T', ' ');
+				element = document.getElementById("dateTo");
+				element.value = data.dateFrom.replace('T', ' ');
+
 				setCursor('default');
 	 		};
 			reader.readAsText(this.files[0]);
