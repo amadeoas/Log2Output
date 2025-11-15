@@ -51,6 +51,7 @@ function init() {
 	ctx.strokeStyle = DEFAULT_STYLE;
 	ctx.lineWidth = 1;
 	canvas.addEventListener("mousemove", function(e) {handleMouseMove(e);}, false);
+	canvas.addEventListener("mouseout", function(e) {handleMouseOut(e);}, false);
 	canvas.addEventListener("click", function(e) {onclickCavas(e);}, false);
 	showScale();
 
@@ -475,7 +476,21 @@ function addZeros(value, length) {
 	return data;
 }
 
+function handleMouseOut() {
+	let xCoord = document.getElementById('xCoord');
+	let yCoord = document.getElementById('yCoord');
+	let scale = document.getElementById('scale');
+
+	xCoord.value = '';
+	yCoord.value = '';
+	scale.value = '';
+}
+
 function handleMouseMove(e) {
+	if (document.getElementById('scale').value == '') {
+		showScale();
+	}
+
 	// Tell the browser we're handling this event
 	e.preventDefault();
 	e.stopPropagation();
