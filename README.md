@@ -347,7 +347,13 @@ Example of HTML result from log lines can be seen at [testOut.html](testOut_.htm
 
 # Backlog
 
-- Display log data as flows, e.g. [Apps Flow without GRID](URL "https://github.com/amadeoas/Log2Output/blob/aas/docs/Sample/flowExample/flowExampleNoGrid.png?raw=true"), and with GRID [Apps Flow with GRID](URL "https://github.com/amadeoas/Log2Output/blob/aas/docs/Sample/flowExample/flowExampleWithGrid.html?raw=true")
+- Display log data as flows, e.g.
+
+View of an example without grid:
+<img src="flowExampleNoGrid.png" style="border:thin solid lightgray;" width="900" />
+
+View of an example with grid:
+<img src="flowExampleWithGrid.png" style="border:thin solid lightgray;" width="900" />
 
 ---
 
