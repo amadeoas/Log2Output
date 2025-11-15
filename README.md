@@ -347,7 +347,7 @@ Example of HTML result from log lines can be seen at [testOut.html](testOut_.htm
 
 # Backlog
 
-- Display log data as flows, e.g. [Apps Flow](URL "./docs/Sample/index.html").
+- Display log data as flows, e.g. [Apps Flow without GRID](URL "docs/Sample/flowExample/flowExampleNoGrid.png"), and with GRID [Apps Flow with GRID](URL "docs/Sample/flowExample/flowExampleWithGrid.html")
 
 ---
 
